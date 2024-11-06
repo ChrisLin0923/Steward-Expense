@@ -1,6 +1,5 @@
 // Dashboard.tsx
 import React, { useEffect, useState } from "react"; //Reach hooks (UseState, useEffect)
-import { getDatabase, ref, onValue, set } from "firebase/database"; //Firebase database functions.
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../../Backend/config/firebaseConfig"; // Adjust import path
 import styles from "./Dashboard.module.css";
@@ -10,6 +9,7 @@ import Navbar from "./Navbar";
 import nav from "./Navbar.module.css";
 import { FirestoreService } from "../../../Backend/config/firestoreService";
 import { ArrowUpCircle, ArrowDownCircle, PiggyBank } from 'lucide-react'; // Add this import
+import Sidebar from "../Sidebar/sidebar";
 
 //React,FC = React.FunctionComponent which is a typescript type used to define function components.
 const Dashboard: React.FC = () => {
@@ -85,38 +85,7 @@ const Dashboard: React.FC = () => {
 	//The left side is the navigation sidebar, and the right side is the main container that contains the dashboard visuals.
 	return (
 		<div className={styles.dashboard}>
-			<aside className={nav.sidebar}>
-				<div className={nav.logo}>
-					<img
-						src='src/assets/steward_logo.png'
-						alt='Steward Logo'
-						className={nav.stewardlogo}
-					/>
-				</div>
-
-				<nav className={nav.navigation}>
-					<Navbar />
-					<InputButton setTransactions={setTransactions} />
-				</nav>
-				<div className={nav.userInfo}>
-					<img
-						src='src/components/Dashboard/Avatars/Avatar1.png'
-						alt='User Avatar'
-						className={nav.stewardlogo}
-					/>
-					{loading ? (
-						<>
-							<div className={styles.skeletonText}></div>
-							<div className={styles.skeletonText}></div>
-						</>
-					) : (
-						<>
-							<h5>Welcome, {userData?.firstName}!</h5>
-							<p>{userData?.email}</p>
-						</>
-					)}
-				</div>
-			</aside>
+			<Sidebar />
 
 			<main className={styles.dashboardContent}>
 				<section className={styles.topCards}>

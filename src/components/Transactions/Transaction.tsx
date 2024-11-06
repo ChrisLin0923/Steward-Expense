@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Transaction.module.css";
 import editFormStyles from "../InputExpense/TransactionCard.module.css";
-import Navbar from "../Dashboard/Navbar";
-import nav from "../Dashboard/Navbar.module.css";
 import { auth } from "../../../Backend/config/firebaseConfig";
 import { FirestoreService } from "../../../Backend/config/firestoreService";
 import { Transaction as TransactionType } from "../../types";
-import InputButton from "../InputExpense/InputButton";
+import Sidebar from "../Sidebar/sidebar";
 import { 
     AttachMoney, 
     ShoppingCart, 
@@ -25,6 +23,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import EditTransactionCard from "./EditTransactionCard";
 import MeatballMenu from "./MeatballMenu";
 import { Pencil, Trash2 } from 'lucide-react';
+import InputButton from "../InputExpense/InputButton";
 
 const Transaction: React.FC = () => {
 
@@ -64,6 +63,17 @@ const Transaction: React.FC = () => {
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	// Add this near your other state declarations
 	const [error, setError] = useState<string | null>(null);
+	const datePickerRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
+				setShowDatePicker(false);
+			}
+		};
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => document.removeEventListener('mousedown', handleClickOutside);
+	}, []);
 
 	// Data Loading Effect
 	// ------------------
@@ -223,29 +233,7 @@ const Transaction: React.FC = () => {
 	// ---------------
 	return (
 		<div className={styles.transaction}>
-			<aside className={nav.sidebar}>
-				<div className={nav.logo}>
-					<img src='src/assets/steward_logo.png' alt='Steward Logo' className={nav.stewardlogo} />
-				</div>
-				<nav className={nav.navigation}>
-					<Navbar />
-					<InputButton setTransactions={setTransactions} />
-				</nav>
-				<div className={nav.userInfo}>
-					<img src='src/components/Dashboard/Avatars/Avatar1.png' alt='User Avatar' className={nav.stewardlogo} />
-					{userData ? (
-						<>
-							<h5>Welcome, {userData.firstName}!</h5>
-							<p>{userData.email}</p>
-						</>
-					) : (
-						<>
-							<div className={styles.skeleton}></div>
-							<div className={styles.skeleton}></div>
-						</>
-					)}
-				</div>
-			</aside>
+			<Sidebar />
 
 			<main className={styles.mainContent}>
 				<div className={styles.header}>
@@ -274,17 +262,19 @@ const Transaction: React.FC = () => {
 								Date Range
 							</button>
 							{showDatePicker && (
-								<div className={styles.datePickerContainer}>
-									<DateRangePicker
+								<div ref={datePickerRef} className={styles.datePickerContainer}>
+									{showDatePicker && <DateRangePicker
 										ranges={dateRange}
 										onChange={(item: any) => {
 											if (item.selection.startDate && item.selection.endDate) {
 												setDateRange([item.selection]);
 											}
 										}}
+										
 										months={2}
-										direction="horizontal"
-									/>
+										direction="vertical"
+										editableDateInputs={true}  
+									/>}
 								</div>
 							)}
 							<button 
@@ -299,6 +289,7 @@ const Transaction: React.FC = () => {
 							>
 								Expenses
 							</button>
+							<InputButton setTransactions={setTransactions} />
 						</div>
 					</div>
 				</div>

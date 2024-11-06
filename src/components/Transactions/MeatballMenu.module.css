@@ -44,11 +44,12 @@
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     z-index: 1000;
     white-space: nowrap;
-    animation: slideInLeft 0.2s ease;
+    animation: slideInLeft 0.2s ease forwards;
   }
   
   .closing .menuDropdown {
-    animation: slideOutRight 0.2s ease forwards;
+    animation: slideOutLeft 0.2s ease forwards;
+    pointer-events: none;
   }
   
   .menuItem {
@@ -63,6 +64,12 @@
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.2s ease;
+    opacity: 0;
+    animation: fadeIn 0.2s ease forwards;
+  }
+
+  .closing .menuItem {
+    animation: fadeOut 0.2s ease forwards;
   }
   
   
@@ -72,7 +79,7 @@
   
   .danger:hover {
     background-color: var(--btn-danger);
-    color: white;
+    color: var(--text-white);
   }
 
   .edit:hover{
@@ -113,34 +120,36 @@
     }
   }
   
-  @keyframes slideOutRight {
-    0% {
+  @keyframes slideOutLeft {
+    from {
       opacity: 1;
       transform: translate(0, -50%);
-      filter: blur(0);
     }
-    100% {
+    to {
       opacity: 0;
-      transform: translate(30px, -50%);
-      filter: blur(2px);
+      transform: translate(20px, -50%);
     }
   }
   
   @keyframes fadeIn {
-    0% {
+    from {
       opacity: 0;
-      transform: translateX(15px) scale(0.98);
-      filter: blur(2px);
+      transform: translateX(10px);
     }
-    60% {
-      opacity: 0.8;
-      transform: translateX(-2px) scale(1.01);
-      filter: blur(0);
-    }
-    100% {
+    to {
       opacity: 1;
-      transform: translateX(0) scale(1);
-      filter: blur(0);
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(10px);
     }
   }
   
@@ -157,7 +166,7 @@
   } 
 
   .meatballMenu[data-state="closed"] .menuDropdown {
-    animation: slideInHorizontalRight 0.2s ease;
+    animation: slideOutLeft 0.2s ease;
   }
   
   .meatballMenu[data-state="open"]::after {
@@ -166,23 +175,19 @@
   }
 
   .menuItem:nth-child(1) {
-    animation-delay: 0s;
+    animation-delay: 0.1s;
   }
 
   .menuItem:nth-child(2) {
-    animation-delay: 0.1s;
-  }
-
-  .closing .menuItem {
-    animation: pushIn 0.3s ease forwards;
+    animation-delay: 0.0s;
   }
 
   .closing .menuItem:nth-child(1) {
-    animation-delay: 0.1s;
+    animation-delay: 0.0s;
   }
 
   .closing .menuItem:nth-child(2) {
-    animation-delay: 0s;
+    animation-delay: 0.1s;
   }
 
   @keyframes pushOut {

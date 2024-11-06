@@ -1,6 +1,8 @@
 .container {
     position: relative;
     display: inline-block;
+    align-items: center;
+    align-self: center;
 }
 
 .addButton {

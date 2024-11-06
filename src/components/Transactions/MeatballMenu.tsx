@@ -23,7 +23,7 @@ const MeatballMenu: React.FC<MeatballMenuProps> = ({ options }) => {
     setTimeout(() => {
       setIsOpen(false);
       setIsClosing(false);
-    }, 300);
+    }, 200);
   };
 
   useEffect(() => {
