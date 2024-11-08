@@ -2,20 +2,17 @@ import React, { useEffect, useState } from "react";
 import nav from "../Dashboard/Navbar.module.css";
 import Navbar from "../Dashboard/Navbar";
 import styles from "../Transactions/Transaction.module.css";
-import { Transaction as TransactionType } from "../../types";
 import { FirestoreService } from "../../../Backend/config/firestoreService";
 import { auth } from "../../../Backend/config/firebaseConfig";
 
 const Sidebar: React.FC = () => {
     const[userData, setUserData] = useState<any>(null);
-    const[transactions, setTransactions] = useState<TransactionType[]>([]);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const currentUser = auth.currentUser;
                 if (currentUser) {
-                    const firestoreService = new FirestoreService();
                     const userDoc = await FirestoreService.getUserData(currentUser.uid);
                     if (userDoc) {
                         setUserData(userDoc);

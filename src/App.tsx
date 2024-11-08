@@ -6,6 +6,7 @@ import Login from "./components/Login/Login";
 import Dashboard from "./components/Dashboard/Dashboard";
 import ProtectedRoute from "../Backend/Routes/ProtectedRoute";
 import Transaction from "./components/Transactions/Transaction";
+import Budget from "./components/Budget/Budget";
 const App: React.FC = () => {
 	return (
 		<Router>
@@ -23,6 +24,7 @@ const App: React.FC = () => {
 				<Route element={<ProtectedRoute auth={auth} />}>
 					<Route path='/dashboard' element={<Dashboard />} />
 					<Route path='/transaction' element={<Transaction />} />
+					<Route path='/budget' element={<Budget />} />
 					{/* Add more protected routes here */}
 				</Route>
 			</Routes>

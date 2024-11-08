@@ -1,0 +1,93 @@
+.modalOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.modalContent {
+	background-color: var(--bg-white);
+	padding: 2rem;
+	border-radius: 1rem;
+	width: 90%;
+	max-width: 500px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modalContent h2 {
+	margin-bottom: 1.5rem;
+	color: var(--text-primary);
+	font-size: 1.5rem;
+	font-weight: 500;
+}
+
+.formGroup {
+	margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+	display: block;
+	margin-bottom: 0.5rem;
+	color: var(--text-primary);
+	font-weight: 500;
+}
+
+.formGroup input {
+	width: 100%;
+	padding: 0.75rem;
+	border: 1px solid var(--border-light);
+	border-radius: 0.5rem;
+	background-color: rgba(255, 255, 255, 0.997);
+	font-size: 1rem;
+}
+
+.formGroup input:hover {
+	border-color: var(--border-focus);
+}
+
+.formGroup input:focus {
+	outline: none;
+	border-color: var(--btn-primary);
+	box-shadow: 0 0 0 4px rgba(116, 185, 255, 0.1);
+}
+
+.formActions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 1rem;
+	margin-top: 2rem;
+}
+
+.cancelBtn {
+	padding: 0.5rem 1rem;
+	border: 1px solid var(--border-light);
+	border-radius: 0.5rem;
+	background-color: var(--bg-white);
+	color: var(--text-primary);
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.cancelBtn:hover {
+	background-color: var(--btn-danger-hover);
+}
+
+.submitBtn {
+	padding: 0.5rem 1rem;
+	border: none;
+	border-radius: 0.5rem;
+	background-color: var(--btn-primary);
+	color: var(--text-white);
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.submitBtn:hover {
+	background-color: var(--btn-primary-hover);
+}

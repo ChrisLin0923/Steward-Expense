@@ -231,13 +231,40 @@ body {
 
 .datePickerContainer{
 	position: absolute;
-	top:100%;
+	top: calc(100% + 10px);
 	right: 0;
 	z-index: 1000;
-	background-color: var(--bg-white);
-	padding: 1rem;
-	border-radius: 12px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	padding: 8px;
+	animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Override default date picker styles */
+.datePickerContainer :global(.rdrDateRangeWrapper) {
+	border-radius: 8px;
+}
+
+.datePickerContainer :global(.rdrDateDisplayItem) {
+	border-radius: 4px;
+	background-color: #f5f5f5;
+}
+
+.datePickerContainer :global(.rdrDateDisplayItemActive) {
+	background-color: #e6effd;
+	border-color: #0052cc;
 }
 
 .filterButtons{
@@ -322,4 +349,28 @@ body {
   .actions {
     opacity: 1;
   }
+}
+
+.datePickerContainer :global(.rdrStaticRange) {
+    border-radius: 6px;
+    background: transparent;
+    padding: 5px 8px;
+    margin: 4px 8px;
+    transition: all 0.2s ease;
+}
+
+.datePickerContainer :global(.rdrStaticRange:hover) {
+    background: #f0f5ff;
+    color: #0052cc;
+}
+
+.datePickerContainer :global(.rdrStaticRangeLabel) {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.datePickerContainer :global(.rdrStaticRangeSelected) {
+    background: #e6effd;
+    color: #0052cc;
+    border-left: 3px solid #0052cc;
 }

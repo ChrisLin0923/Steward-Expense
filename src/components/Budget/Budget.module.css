@@ -1,0 +1,315 @@
+.budget {
+	display: grid;
+	grid-template-columns: 230px 4fr;
+}
+
+.mainContent {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	background-color: var(--bg-secondary);
+	align-items: center;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	margin: 2rem;
+	background-color: var(--bg-white);
+	height: 90%;
+	max-height: 90vh;
+	border-radius: 1rem;
+	border: 1px solid var(--border-light);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	align-items: center;
+	overflow-y: auto;
+}
+
+.sectionHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding: 1rem;
+}
+
+.addButton {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 1rem;
+	border: none;
+	border-radius: 0.5rem;
+	background-color: var(--btn-primary);
+	color: var(--text-white);
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.addButton:hover {
+	background-color: var(--btn-primary-hover);
+	transform: translateY(-1px);
+}
+.goalMenu {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.goalItem {
+	margin: 1rem;
+	padding: 1.5rem;
+	background-color: var(--bg-white);
+	min-height: 15rem;
+	width: 95%;
+	border-radius: 1rem;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	flex-shrink: 0;
+	transition: all 0.2s ease;
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	border: 1px solid var(--border-light);
+}
+
+.goalItem:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.goalHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.goalTitleSection {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.goalTitle {
+	font-size: 1.25rem;
+	font-weight: 600;
+	margin: 0;
+	color: var(--text-primary);
+}
+
+.percentageBadge {
+	padding: 0.25rem 0.75rem;
+	border-radius: 1rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	background-color: var(--success-light);
+	color: var(--success-dark);
+}
+
+.percentageBadge.overBudget {
+	background-color: var(--danger-light);
+	color: var(--danger-dark);
+}
+
+.goalAmount {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 1.25rem;
+	margin-bottom: 0.5rem;
+}
+
+.currentAmount {
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.separator {
+	color: var(--text-secondary);
+}
+
+.targetAmount {
+	color: var(--text-secondary);
+}
+
+.progressSection {
+	margin: 0.5rem 0 1rem 0;
+}
+
+.progressBarContainer {
+	position: relative;
+	width: 100%;
+	height: 2.5rem;
+	background-color: var(--bg-secondary);
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.progressBar {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	display: flex;
+}
+
+.progressSegment {
+	position: absolute;
+	height: 100%;
+	transition: all 0.3s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2px;
+}
+
+.progressSegment:hover {
+	filter: brightness(1.1);
+	transform: scaleY(1.02);
+}
+
+.segmentLabel {
+	color: white;
+	font-size: 0.75rem;
+	font-weight: 500;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 0 0.5rem;
+}
+
+.progressMarkers {
+	position: absolute;
+	bottom: -1.5rem;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 0.5rem;
+}
+
+.progressMarkers span {
+	font-size: 0.75rem;
+	color: var(--text-secondary);
+	position: relative;
+}
+
+.progressMarkers span::before {
+	content: "";
+	position: absolute;
+	top: -0.5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	height: 4px;
+	width: 1px;
+	background-color: var(--border-light);
+}
+
+.targetIndicator {
+	position: absolute;
+	top: 0;
+	bottom: -1.5rem;
+	width: 2px;
+	transform: translateX(-50%);
+}
+
+.targetLine {
+	position: absolute;
+	top: 0;
+	bottom: 1.5rem;
+	width: 2px;
+	background-color: var(--text-primary);
+}
+
+.targetLabel {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 0.75rem;
+	color: var(--text-primary);
+	white-space: nowrap;
+}
+
+.targetIndicator.exceeded .targetLine {
+	background-color: var(--danger-dark);
+}
+
+.targetIndicator.exceeded .targetLabel {
+	color: var(--danger-dark);
+}
+
+/* Add hover effect for the entire progress bar */
+.progressBarContainer:hover .progressSegment {
+	filter: brightness(1.05);
+}
+
+/* Add these new CSS variables to your root */
+:root {
+	--progress-gradient: linear-gradient(
+		180deg,
+		rgba(255, 255, 255, 0.15) 0%,
+		rgba(255, 255, 255, 0) 100%
+	);
+}
+
+/* Optional: Add a glass effect to segments */
+.progressSegment::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: var(--progress-gradient);
+	pointer-events: none;
+}
+
+.tagBreakdown {
+	background-color: var(--bg-secondary);
+	border-radius: 0.5rem;
+	padding: 1rem;
+	margin-top: 0.5rem;
+}
+
+.tagBreakdownHeader {
+	display: grid;
+	grid-template-columns: 2fr 1fr 1fr;
+	padding: 0.5rem 0;
+	border-bottom: 1px solid var(--border-light);
+	font-size: 0.875rem;
+	color: var(--text-secondary);
+	font-weight: 500;
+}
+
+.tagItem {
+	display: grid;
+	grid-template-columns: 2fr 1fr 1fr;
+	align-items: center;
+	padding: 0.75rem 0;
+	border-bottom: 1px solid var(--border-light);
+}
+
+.tagItem:last-child {
+	border-bottom: none;
+}
+
+.tagLabel {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.tagColor {
+	width: 12px;
+	height: 12px;
+	border-radius: 3px;
+}
+
+.tagAmount {
+	font-weight: 500;
+	color: var(--text-primary);
+}
+
+.tagPercentage {
+	color: var(--text-secondary);
+}

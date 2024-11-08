@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import InputButton from "../InputExpense/InputButton";
 import styles from "./Navbar.module.css";
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
@@ -40,10 +39,10 @@ const Navbar: React.FC = () => {
 						</Link>
 					</li>
 					<li>
-						<Link to='/budgets' onClick={() => setIsOpen(false)}>Budgets</Link>
+						<Link to='/budget' className={location.pathname === "/budget" ? styles.active : ""} onClick={() => setIsOpen(false)}>Budget</Link>
 					</li>
 					<li>
-						<Link to='/savings-goals' onClick={() => setIsOpen(false)}>Savings Goals</Link>
+						<Link to='/savings-goals' className={location.pathname === "/savings-goals" ? styles.active : ""} onClick={() => setIsOpen(false)}>Savings Goals</Link>
 					</li>
 				</ul>
 			</nav>
