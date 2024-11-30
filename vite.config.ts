@@ -13,13 +13,17 @@ export default defineConfig({
 	build: {
 		assetsDir: "assets",
 		rollupOptions: {
+			input: {
+				main: path.resolve(__dirname, "index.html"),
+			},
 			output: {
 				assetFileNames: (assetInfo) => {
-					let extType = assetInfo.name.split(".")[1];
-					if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-						extType = "img";
+					const info = assetInfo.name.split(".");
+					const ext = info[info.length - 1];
+					if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
+						return `assets/images/[name]-[hash][extname]`;
 					}
-					return `assets/${extType}/[name]-[hash][extname]`;
+					return `assets/[name]-[hash][extname]`;
 				},
 			},
 		},
