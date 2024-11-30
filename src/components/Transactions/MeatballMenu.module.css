@@ -1,242 +1,240 @@
 .meatballMenu {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-  }
-  
-  .meatballButton {
-    background: transparent;
-    border: none;
-    padding: 6px;
-    cursor: pointer;
-    border-radius: 8px;
-    color: var(--text-secondary);
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.5rem;
-    height: 32px;
-    width: 32px;
-  }
-  
-  .meatballButton:hover {
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-  }
-  
-  .meatballButton:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--border-focus);
-  }
-  
-  .menuDropdown {
-    position: absolute;
-    right: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    padding: 3px;
-    background: var(--bg-white);
-    border-radius: 12px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-    z-index: 1000;
-    white-space: nowrap;
-    animation: slideInLeft 0.2s ease forwards;
-  }
-  
-  .closing .menuDropdown {
-    animation: slideOutLeft 0.2s ease forwards;
-    pointer-events: none;
-  }
-  
-  .menuItem {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border: none;
-    background: transparent;
-    color: var(--text-primary);
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    opacity: 0;
-    animation: fadeIn 0.2s ease forwards;
-  }
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+}
 
-  .closing .menuItem {
-    animation: fadeOut 0.2s ease forwards;
-  }
-  
-  
-  .danger {
-    color: var(--text-primary);
-  }
-  
-  .danger:hover {
-    background-color: var(--btn-danger);
-    color: var(--text-white);
-  }
+.meatballButton {
+	background: transparent;
+	border: none;
+	padding: 6px;
+	cursor: pointer;
+	border-radius: 8px;
+	color: var(--text-secondary);
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 0.5rem;
+	height: 32px;
+	width: 32px;
+}
 
-  .edit:hover{
-    background-color: var(--btn-primary-hover);
-    color: var(--text-white);
-  }
+.meatballButton:hover {
+	background: var(--bg-secondary);
+	color: var(--text-primary);
+}
 
-  .danger:hover .menuItemIcon {
-    color: white;
-  }
+.meatballButton:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px var(--border-focus);
+}
 
-  .edit:hover .menuItemIcon {
-    color: var(--text-white);
-  }
-  
-  .disabled {
-    opacity: 0.5;
-    pointer-events: none;
-    
-  }
-  
-  .menuItemIcon {
-    display: flex;
-    align-items: center;
-    color: var(--text-secondary);
-    width: 16px;
-    height: 16px;
-  }
-  
-  @keyframes slideInLeft {
-    from {
-      opacity: 0;
-      transform: translate(20px, -50%);
-    }
-    to {
-      opacity: 1;
-      transform: translate(0, -50%);
-    }
-  }
-  
-  @keyframes slideOutLeft {
-    from {
-      opacity: 1;
-      transform: translate(0, -50%);
-    }
-    to {
-      opacity: 0;
-      transform: translate(20px, -50%);
-    }
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateX(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-  @keyframes fadeOut {
-    from {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateX(10px);
-    }
-  }
-  
-  /* Optional: Add a subtle backdrop when menu is open */
-  .meatballMenu::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.2);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
-    pointer-events: none;
-  } 
+.menuDropdown {
+	position: absolute;
+	right: 100%;
+	top: 50%;
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+	padding: 3px;
+	background: var(--dropdown-bg);
+	border-radius: 12px;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+	z-index: 1000;
+	white-space: nowrap;
+	animation: slideInLeft 0.2s ease forwards;
+}
 
-  .meatballMenu[data-state="closed"] .menuDropdown {
-    animation: slideOutLeft 0.2s ease;
-  }
-  
-  .meatballMenu[data-state="open"]::after {
-    opacity: 1;
-    visibility: visible;
-  }
+.closing .menuDropdown {
+	animation: slideOutLeft 0.2s ease forwards;
+	pointer-events: none;
+}
 
-  .menuItem:nth-child(1) {
-    animation-delay: 0.1s;
-  }
+.menuItem {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	border: none;
+	background: transparent;
+	color: var(--text-primary);
+	font-size: 14px;
+	cursor: pointer;
+	border-radius: 8px;
+	transition: all 0.2s ease;
+	opacity: 0;
+	animation: fadeIn 0.2s ease forwards;
+}
 
-  .menuItem:nth-child(2) {
-    animation-delay: 0.0s;
-  }
+.closing .menuItem {
+	animation: fadeOut 0.2s ease forwards;
+}
 
-  .closing .menuItem:nth-child(1) {
-    animation-delay: 0.0s;
-  }
+.danger {
+	color: var(--text-primary);
+}
 
-  .closing .menuItem:nth-child(2) {
-    animation-delay: 0.1s;
-  }
+.danger:hover {
+	background-color: var(--btn-danger);
+	color: var(--text-white);
+}
 
-  @keyframes pushOut {
-    0% {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
+.edit:hover {
+	background-color: var(--btn-primary-hover);
+	color: var(--text-white);
+}
 
-  @keyframes pushIn {
-    0% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    100% {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-  }
+.danger:hover .menuItemIcon {
+	color: white;
+}
 
-  .disabled {
-    opacity: 0.5;
-    pointer-events: none;
-    cursor: not-allowed;
-  }
+.edit:hover .menuItemIcon {
+	color: var(--text-white);
+}
 
-  .confirming .menuItem:not(.danger) {
-    opacity: 0.5;
-    pointer-events: none;
-  }
+.disabled {
+	opacity: 0.5;
+	pointer-events: none;
+}
 
-  .confirming .menuItem.danger {
-    background-color: var(--danger-color);
-    color: white;
-  }
+.menuItemIcon {
+	display: flex;
+	align-items: center;
+	color: var(--text-secondary);
+	width: 16px;
+	height: 16px;
+}
 
-  .confirming .menuItem.danger:hover {
-    background-color: var(--danger-hover-color);
-  }
+@keyframes slideInLeft {
+	from {
+		opacity: 0;
+		transform: translate(20px, -50%);
+	}
+	to {
+		opacity: 1;
+		transform: translate(0, -50%);
+	}
+}
 
-  .confirming {
-    background-color: var(--btn-danger);
-    color: white;
-  }
+@keyframes slideOutLeft {
+	from {
+		opacity: 1;
+		transform: translate(0, -50%);
+	}
+	to {
+		opacity: 0;
+		transform: translate(20px, -50%);
+	}
+}
 
-  .confirming .menuItemIcon {
-    color: white;
-  }
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateX(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateX(10px);
+	}
+}
+
+/* Optional: Add a subtle backdrop when menu is open */
+.meatballMenu::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.2);
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.2s ease;
+	pointer-events: none;
+}
+
+.meatballMenu[data-state="closed"] .menuDropdown {
+	animation: slideOutLeft 0.2s ease;
+}
+
+.meatballMenu[data-state="open"]::after {
+	opacity: 1;
+	visibility: visible;
+}
+
+.menuItem:nth-child(1) {
+	animation-delay: 0.1s;
+}
+
+.menuItem:nth-child(2) {
+	animation-delay: 0s;
+}
+
+.closing .menuItem:nth-child(1) {
+	animation-delay: 0s;
+}
+
+.closing .menuItem:nth-child(2) {
+	animation-delay: 0.1s;
+}
+
+@keyframes pushOut {
+	0% {
+		opacity: 0;
+		transform: translateX(100%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes pushIn {
+	0% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateX(100%);
+	}
+}
+
+.disabled {
+	opacity: 0.5;
+	pointer-events: none;
+	cursor: not-allowed;
+}
+
+.confirming .menuItem:not(.danger) {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.confirming .menuItem.danger {
+	background-color: var(--danger-color);
+	color: white;
+}
+
+.confirming .menuItem.danger:hover {
+	background-color: var(--danger-hover-color);
+}
+
+.confirming {
+	background-color: var(--btn-danger);
+	color: white;
+}
+
+.confirming .menuItemIcon {
+	color: white;
+}

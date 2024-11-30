@@ -10,7 +10,37 @@ interface ProgressBarProps {
 	total: number;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ tags, total }) => {
+interface SavingsProgressBarProps {
+	savedAmount: number;
+	total: number;
+}
+
+const SavingsProgressBar: React.FC<SavingsProgressBarProps> = ({
+	savedAmount,
+	total,
+}) => {
+	const percentageSaved = (savedAmount / total) * 100;
+	return (
+		<div className={styles.progressContainer}>
+			<div className={styles.progressBarContainer}>
+				<div className={styles.progressBar}>
+					<div
+						className={styles.progressSegment}
+						style={{
+							width: `${percentageSaved}%`,
+							backgroundColor: "var(--chart-gradient-3)",
+						}}
+					/>
+				</div>
+				<span className={styles.progressLabel}>
+					${savedAmount.toLocaleString()} / ${total.toLocaleString()}
+				</span>
+			</div>
+		</div>
+	);
+};
+
+const BudgetProgressBar: React.FC<ProgressBarProps> = ({ tags, total }) => {
 	const totalSpent = tags.reduce((acc, tag) => acc + tag.amount, 0);
 	const percentageUsed = (totalSpent / total) * 100;
 
@@ -46,16 +76,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ tags, total }) => {
 						</div>
 					))}
 				</div>
-
-				{/* Progress markers */}
-				<div className={styles.progressMarkers}>
-					<span>0%</span>
-					<span>25%</span>
-					<span>50%</span>
-					<span>75%</span>
-					<span>100%</span>
-				</div>
-
 				{/* Target indicator */}
 				<div
 					className={`${styles.targetIndicator} ${
@@ -71,4 +91,4 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ tags, total }) => {
 	);
 };
 
-export default ProgressBar;
+export default { BudgetProgressBar, SavingsProgressBar };

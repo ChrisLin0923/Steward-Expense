@@ -8,7 +8,7 @@ body {
 	overflow: hidden;
 }
 #root {
-	height: 100vh; /* Ensure the root container takes full height */
+	height: 100%; /* Ensure the root container takes full height */
 	width: 100%;
 }
 .dashboard {
@@ -17,7 +17,7 @@ body {
 	height: 100%;
 	width: 100%;
 	position: relative;
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 
 /* Main content area */
@@ -27,8 +27,8 @@ body {
 	display: grid;
 	grid-template-rows: auto 1fr; /* Make rows adjust to content */
 	gap: 20px;
-	height: 100%;
-	overflow: hidden;
+	height: 100vh;
+	/* overflow: hidden; */
 	width: 100%; /* Ensure full width */
 }
 
@@ -44,8 +44,8 @@ body {
 .card {
 	background: var(--bg-white);
 	border-radius: var(--card-radius);
-	padding: 15px; /* Reduced padding */
 	height: 100%;
+	padding: 15px;
 	position: relative;
 	overflow: hidden;
 	transition: all 0.3s ease;
@@ -53,7 +53,7 @@ body {
 }
 
 .card::after {
-	content: '';
+	content: "";
 	position: absolute;
 	inset: 0;
 	border-radius: 12px;
@@ -78,6 +78,7 @@ body {
 	grid-row: span 1;
 	grid-column: span 2;
 	width: 100%; /* Ensure it takes full width of the grid */
+	height: 100%;
 }
 
 /* Charts section */
@@ -87,14 +88,15 @@ body {
 	grid-template-rows: 1fr 1fr;
 	gap: 15px;
 	width: 100%;
-	height: 100%;
+
 	min-height: 0; /* Allow charts to shrink if needed */
 }
 
 .chart {
 	background-color: var(--bg-white);
-	padding: 8px;
-	border-radius: 4px;
+	border-radius: var(--border-radius);
+	height: 100%;
+	padding: 0.5rem;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 	min-height: 0;
 }
@@ -104,77 +106,103 @@ body {
 	grid-column-start: 1;
 	grid-row: span 1;
 	grid-column: span 1;
-}	
+	height: 100%;
+}
 
 .lineChart {
 	grid-row-start: 2;
 	grid-column-start: 2;
 	grid-row: span 1;
 	grid-column: span 1;
+	height: 100%;
 }
 
-.goals {
-	display: grid;
-	grid-row: span 2;
-	grid-column: span 1;
-	gap: 15px;
-	background: var(--card-bg);
-	border-radius: var(--card-radius);
-	padding: 20px;
-	display: grid;
-	gap: 24px;
-	border: 1px solid var(--border-light);
-}
-
-.goalSection {
+.sectionHeader {
 	display: flex;
-	flex-direction: column;
-	gap: 16px;
-}
-
-.goalSection h3 {
-	font-size: 1rem;
-	font-weight: 600;
-	color: var(--text-primary);
-	margin: 0;
-}
-
-.goalsList {
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
+	justify-content: space-between;
+	align-items: center;
+	height: auto;
+	width: 100%;
+	height: fit-content;
 }
 
 .goalItem {
+	background: var(--bg-secondary);
+	padding: 10px;
+	border-radius: var(--card-radius);
+	border: 1px solid var(--border-light);
+}
+
+.goalHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.goalTitle {
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.progressContainer {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 }
 
-.goalInfo {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-size: 0.875rem;
-}
-
-.goalText {
-	color: var(--text-primary);
-	font-size: 0.875rem;
-	font-weight: 500;
-}
-
-.goalValue {
-	color: var(--text-secondary);
-	font-size: 0.75rem;
+.progressBars {
+	position: relative;
+	height: 8px;
+	background-color: var(--bg-secondary);
+	border-radius: 4px;
+	overflow: hidden;
+	margin: 8px 0;
 }
 
 .progressBar {
-	height: 6px;
-	background: var(--bg-secondary);
-	border-radius: 3px;
-	overflow: hidden;
-	position: relative;
+	height: 100%;
+	border-radius: 4px;
+	transition: width 0.3s ease;
+}
+
+.progressBar.excellent {
+	background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+}
+
+.progressBar.good {
+	background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+}
+
+.progressBar.warning {
+	background: linear-gradient(90deg, #f1c40f 0%, #f39c12 100%);
+}
+
+.progressBar.danger {
+	background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.amounts {
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.875rem;
+	color: var(--text-secondary);
+}
+
+.targetAmount {
+	opacity: 0.7;
+}
+
+.sectionHeader .monthProgress {
+	background-color: var(--bg-primary);
+	color: var(--text-white);
+	border-radius: var(--card-radius);
+}
+
+.monthlyTarget {
+	margin-top: 8px;
+	font-size: 0.875rem;
+	color: var(--text-secondary);
 }
 
 .progressFill {
@@ -253,67 +281,67 @@ body {
 	}
 }
 
-.inputbutton{
+.inputbutton {
 	position: absolute;
 }
 
 .skeleton {
-    background: var(--skeleton-start);
-    background: linear-gradient(
-        110deg,
-        var(--skeleton-start) 8%,
-        var(--skeleton-middle) 18%,
-        var(--skeleton-end) 33%
-    );
-    background-size: 200% 100%;
-    animation: 1.5s shine linear infinite;
+	background: var(--skeleton-start);
+	background: linear-gradient(
+		110deg,
+		var(--skeleton-start) 8%,
+		var(--skeleton-middle) 18%,
+		var(--skeleton-end) 33%
+	);
+	background-size: 200% 100%;
+	animation: 1.5s shine linear infinite;
 }
 
 .skeletonText {
-    height: 1rem;
-    border-radius: 4px;
-    margin: 0.5rem 0;
-    width: 80%;
+	height: 1rem;
+	border-radius: 4px;
+	margin: 0.5rem 0;
+	width: 80%;
 }
 
 .skeletonChart {
-    height: 200px;
-    border-radius: 4px;
+	height: 200px;
+	border-radius: 4px;
 }
 
 @keyframes shine {
-    to {
-        background-position-x: -200%;
-    }
+	to {
+		background-position-x: -200%;
+	}
 }
 
 /* Add these media queries at the end of the file */
 @media screen and (max-width: 768px) {
-  .dashboard {
-    grid-template-columns: 1fr;
-    height: 100vh; /* Ensure full height on mobile */
-	overflow: scroll;
-  }
+	.dashboard {
+		grid-template-columns: 1fr;
+		height: 100vh; /* Ensure full height on mobile */
+		overflow: scroll;
+	}
 
-  .dashboardContent {
-    width: 100%;
-    padding: 60px 15px 15px 15px;
-    overflow-y: auto;
-    max-height: 100vh; /* Limit height to viewport */
-	overflow: scroll;
-  }
+	.dashboardContent {
+		width: 100%;
+		padding: 60px 15px 15px 15px;
+		overflow-y: auto;
+		max-height: 100vh; /* Limit height to viewport */
+		overflow: scroll;
+	}
 
-  .topCards {
-    grid-template-columns: 1fr;
-  }
+	.topCards {
+		grid-template-columns: 1fr;
+	}
 
-  .charts {
-    grid-template-columns: 1fr;
-  }
+	.charts {
+		grid-template-columns: 1fr;
+	}
 
-  .fullWidthChart {
-    grid-column: auto;
-  }
+	.fullWidthChart {
+		grid-column: auto;
+	}
 }
 
 .cardContent {
@@ -363,4 +391,446 @@ body {
 
 .savingsCard .cardIcon {
 	background: linear-gradient(135deg, var(--btn-primary) 0%, #3498db 100%);
+}
+
+/* Keep hover animation only for pie chart */
+.pieChartCard:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove hover animation for bar and line charts */
+.barChartCard:hover,
+.lineChartCard:hover {
+	transform: none;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.goals {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr 1fr;
+	grid-row-start: 1;
+	grid-column-start: 3;
+	grid-row: span 2;
+	grid-column: span 1;
+	background: var(--card-bg);
+	border-radius: var(--card-radius);
+	padding: 15px;
+	grid-gap: 1.5rem;
+}
+
+.goalsList {
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	gap: 15px;
+}
+.goals .budgetSection {
+	grid-row-start: 1;
+	grid-column-start: 1;
+	grid-row: span 1;
+	grid-column: span 1;
+	overflow-y: auto;
+	scrollbar-gutter: stable; /* Prevents layout shift when scrollbar appears */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.goals .budgetSection::-webkit-scrollbar {
+	display: none;
+}
+
+.goals .savingsSection {
+	grid-row-start: 2;
+	grid-column-start: 1;
+	grid-row: span 1;
+	grid-column: span 1;
+}
+
+.budgetItem,
+.savingsItem {
+	margin-bottom: 1.25rem;
+}
+
+.budgetHeader,
+.savingsHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 0.5rem;
+}
+
+.status {
+	padding: 0.25rem 0.75rem;
+	border-radius: 1rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+.status.excellent {
+	background: var(--gradient-green);
+	color: white;
+}
+.status.good {
+	background: var(--gradient-blue);
+	color: white;
+}
+.status.warning {
+	background: var(--gradient-orange);
+	color: white;
+}
+.status.danger {
+	background: var(--btn-danger);
+	color: white;
+}
+
+.progressBars {
+	position: relative;
+	height: 8px;
+	background: var(--bg-input);
+	max-width: 100%;
+	border-radius: 4px;
+	margin-bottom: 0.5rem;
+}
+
+.progressBar {
+	height: 100%;
+	border-radius: 4px;
+	transition: width 0.3s ease;
+}
+
+.usage {
+	background: var(--gradient-blue);
+}
+
+.monthIndicator {
+	position: absolute;
+	top: -4px;
+	width: 2px;
+	height: 16px;
+	background: var(--text-secondary);
+	transform: translateX(-50%);
+}
+
+.amounts {
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.875rem;
+	color: var(--text-secondary);
+}
+
+.monthProgress {
+	font-size: 0.875rem;
+	color: var(--text-secondary);
+	background: var(--bg-input);
+	padding: 0.25rem 0.75rem;
+	border-radius: 1rem;
+}
+
+.savings {
+	background: var(--gradient-green);
+	padding: 0.25rem 0.75rem;
+	border-radius: 1rem;
+	color: var(--text-white);
+}
+
+.savingsProgress {
+	padding: 0.25rem 0.75rem;
+	max-width: 100%;
+	background: var(--gradient-green);
+	border-radius: 1rem;
+}
+
+/* Tablet Styles (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+	.dashboard {
+		grid-template-columns: 1fr;
+		height: fit-content;
+		min-height: 100vh;
+		overflow-y: scroll;
+		background-color: var(--bg-secondary);
+	}
+
+	.dashboardContent {
+		padding: 80px 20px 20px;
+		height: auto;
+		overflow: visible;
+	}
+
+	.topCards {
+		grid-template-columns: repeat(2, 1fr); /* 2 columns for tablet */
+		gap: 15px;
+	}
+
+	.charts {
+		grid-template-columns: 1fr;
+		grid-template-rows: max-content;
+		gap: 10px;
+	}
+
+	.chart {
+		min-height: 400px; /* Taller height for better visibility */
+		width: 100%;
+	}
+
+	.fullWidthChart,
+	.pieChart,
+	.lineChart,
+	.goals {
+		grid-column: span 1;
+		margin-bottom: 20px;
+	}
+
+	/* Goals section adjustments */
+	.goals {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		padding: 20px;
+		height: auto;
+		background: var(--bg-white);
+	}
+
+	.budgetSection,
+	.savingsSection {
+		min-height: 300px;
+		padding: 15px;
+		background: var(--bg-white);
+		border-radius: var(--card-radius);
+	}
+
+	.goalsList {
+		max-height: 400px;
+		overflow-y: auto;
+		padding: 10px;
+		gap: 15px;
+	}
+}
+
+/* Mobile Styles (up to 767px) */
+@media screen and (max-width: 767px) {
+	.dashboard {
+		padding-bottom: 20px;
+	}
+
+	.topCards {
+		grid-template-columns: 1fr; /* Single column for mobile */
+		gap: 12px;
+	}
+
+	.chart {
+		min-height: 350px;
+		margin-bottom: 15px;
+	}
+
+	/* Adjust chart containers for better mobile viewing */
+	.fullWidthChart {
+		height: 400px;
+	}
+
+	.pieChart,
+	.lineChart {
+		height: 350px;
+	}
+
+	/* Goals section mobile adjustments */
+	.goals {
+		padding: 15px;
+		gap: 15px;
+	}
+
+	.goalItem {
+		margin: 0 !important;
+		width: 100%;
+	}
+
+	.budgetSection,
+	.savingsSection {
+		min-height: 250px;
+		padding: 12px;
+	}
+
+	.goalsList {
+		max-height: none; /* Remove max height to show all content */
+		overflow-y: visible;
+	}
+
+	.goalItem {
+		padding: 12px;
+		margin-bottom: 10px;
+	}
+
+	/* Improve text readability */
+	.cardInfo h3 {
+		font-size: 0.9rem;
+	}
+
+	.amount {
+		font-size: 1.2rem;
+	}
+
+	/* Ensure proper spacing between all sections */
+	.charts > * {
+		margin-bottom: 20px;
+	}
+
+	/* Fix scrolling and background */
+	html,
+	body {
+		overflow-y: auto;
+		background-color: var(--bg-secondary);
+	}
+
+	#root,
+	.dashboard {
+		min-height: 100vh;
+		background-color: var(--bg-secondary);
+	}
+
+	/* Ensure charts are properly contained */
+	.chartWrapper {
+		height: 100%;
+		width: 100%;
+	}
+
+	.chartContainer {
+		position: relative;
+		height: 100%;
+		width: 100%;
+	}
+}
+
+/* Add this to ensure proper scrolling behavior */
+@media screen and (max-width: 1024px) {
+	html,
+	body {
+		overflow: auto;
+		height: 100%;
+		background-color: var(--bg-secondary);
+	}
+
+	#root {
+		min-height: 100vh;
+		background-color: var(--bg-secondary);
+	}
+
+	.dashboard {
+		min-height: 100vh;
+		background-color: var(--bg-secondary);
+	}
+}
+
+/* Add smooth transitions for resizing */
+.dashboard,
+.dashboardContent,
+.charts,
+.card {
+	transition: all 0.3s ease;
+}
+
+/* Add these utility classes for chart responsiveness */
+.chartWrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.chartContainer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+/* Prevent text overflow in cards and headers */
+@media screen and (max-width: 1024px) {
+	.cardInfo h3,
+	.goalTitle,
+	.sectionHeader h3 {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	/* Ensure charts maintain aspect ratio */
+	.chart > div {
+		width: 100% !important;
+		height: 100% !important;
+	}
+}
+
+/* Add specific iPad Pro media query */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+	.dashboard {
+		height: 100%;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+	}
+	.dashboardContent {
+		padding: 80px 24px 24px;
+		height: 100vh;
+		width: 100%;
+		overflow-y: auto;
+		background: var(--bg-secondary);
+	}
+
+	.charts {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 24px;
+		padding-bottom: 24px; /* Add padding to prevent cut-off */
+		width: 100%;
+	}
+
+	/* Ensure charts have fixed heights and proper width */
+	.chart,
+	.fullWidthChart,
+	.pieChart,
+	.lineChart {
+		height: 350px !important;
+		min-height: 350px !important;
+		max-height: 350px !important;
+		width: 100% !important;
+		margin: 0;
+	}
+
+	/* Adjust goals section */
+	.goals {
+		height: auto;
+		width: 100%;
+		margin: 0;
+	}
+
+	.chartWrapper {
+		height: 100%;
+		width: 100%;
+		position: relative;
+		overflow: hidden; /* Prevent overflow */
+	}
+
+	.chartContainer {
+		position: relative; /* Changed from absolute */
+		height: 100%;
+		width: 100%;
+	}
+
+	/* Fix the white bar issue */
+	.dashboard {
+		width: 100vw;
+		overflow-x: hidden;
+		background: var(--bg-secondary);
+	}
+
+	/* Ensure proper container sizing */
+	#root {
+		width: 100vw;
+		overflow-x: hidden;
+	}
+
+	/* Add proper spacing for last chart */
+	.charts > *:last-child {
+		margin-bottom: 24px;
+	}
 }

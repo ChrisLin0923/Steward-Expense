@@ -19,13 +19,15 @@ body {
 	background: var(--card-bg);
 	backdrop-filter: blur(10px);
 	border-radius: var(--card-radius);
-	padding: var(--card-padding);
+	padding: 1rem;
 	width: 100%;
 	border: 1px solid var(--card-border);
 	transition: all 0.3s ease;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	overflow: visible !important; /* Allow animations to overflow */
+	position: relative; /* Establish stacking context */
 }
 
 .card:hover {
@@ -46,7 +48,14 @@ body {
 .chartContainer {
 	width: 100%;
 	height: 100%;
-	padding: var(--chart-padding);
+	overflow: visible !important; /* Allow animations to overflow */
+	position: relative; /* Establish stacking context */
+	background: linear-gradient(
+		180deg,
+		rgba(255, 255, 255, 0.05) 0%,
+		rgba(255, 255, 255, 0.02) 100%
+	);
+	border-radius: var(--card-radius);
 }
 
 /* Key metrics styles */
@@ -68,7 +77,7 @@ body {
 	.container {
 		grid-template-columns: 1fr;
 	}
-	
+
 	.card {
 		padding: calc(var(--card-padding) * 0.625); /* 15px equivalent */
 	}
@@ -79,4 +88,128 @@ h2,
 h3,
 h4 {
 	color: var(--text-primary);
+}
+
+/* Bar Chart Animations */
+.barCell {
+	animation: growUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+	transform-origin: bottom;
+	animation-fill-mode: both;
+}
+
+/* Adjust delay for each bar */
+.barCell:nth-child(1) {
+	animation-delay: 0s;
+}
+.barCell:nth-child(2) {
+	animation-delay: 0.1s;
+}
+.barCell:nth-child(3) {
+	animation-delay: 0.2s;
+}
+.barCell:nth-child(4) {
+	animation-delay: 0.3s;
+}
+.barCell:nth-child(5) {
+	animation-delay: 0.4s;
+}
+.barCell:nth-child(6) {
+	animation-delay: 0.5s;
+}
+
+@keyframes growUp {
+	0% {
+		transform: scaleY(0);
+		opacity: 0;
+	}
+	20% {
+		opacity: 0.7;
+	}
+	100% {
+		transform: scaleY(1);
+		opacity: 1;
+	}
+}
+
+/* Line Chart Animations */
+.lineChartPath {
+	stroke-dasharray: 2000;
+	stroke-dashoffset: 2000;
+	animation: drawLine 3s ease-out forwards;
+	will-change: stroke-dashoffset;
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Target the specific Recharts line curve */
+.lineChartPath .recharts-line-curve {
+	stroke-dasharray: 2000;
+	stroke-dashoffset: 2000;
+	animation: drawLine 2.5s ease-out forwards;
+	will-change: stroke-dashoffset;
+}
+
+.areaPath {
+	animation: fadeInArea 3s ease-out forwards;
+	animation-delay: 0.8s;
+	opacity: 0;
+	will-change: opacity, transform;
+	transform-origin: bottom;
+}
+
+@keyframes drawLine {
+	0% {
+		stroke-dashoffset: 2000;
+		opacity: 0;
+	}
+	30% {
+		opacity: 1;
+	}
+	100% {
+		stroke-dashoffset: 0;
+		opacity: 1;
+	}
+}
+
+@keyframes fadeInArea {
+	0% {
+		opacity: 0;
+		transform: scaleY(0);
+	}
+	100% {
+		opacity: 0.3;
+		transform: scaleY(1);
+	}
+}
+
+/* Enhanced Active Dot Animation */
+.recharts-active-dot {
+	animation: pulseActiveDot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseActiveDot {
+	0% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1.3);
+		opacity: 0.7;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+/* Tooltip Animation */
+.recharts-tooltip-wrapper {
+	transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Enhance grid lines */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+	stroke: var(--chart-grid);
+	stroke-opacity: 0.2;
+	stroke-dasharray: 3 3;
 }

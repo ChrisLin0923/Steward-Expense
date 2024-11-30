@@ -6,7 +6,7 @@
 	width: 100vw; /* Full viewport width */
 	background-color: var(--bg-primary);
 	background: url("../Dashboard/assets/hero-image.png") center/cover no-repeat,
-		var(--bg-primary);
+		var(--bg-primary-transparent);
 	background-blend-mode: overlay;
 	background-size: 200% 200%;
 	animation: gradientAnimation 40s ease infinite; /* Slow down the movement */
@@ -30,10 +30,8 @@
 	}
 }
 
-
-
 .modalContent {
-	background-color: var(--bg-primary);
+	background-color: var(--bg-login);
 	border: none; /* Remove the border */
 	padding: 40px; /* Increased padding for a more spacious feel */
 	width: 400px; /* Wider modal for a better layout */
@@ -51,22 +49,24 @@
 .modalWrapper {
 	position: relative;
 	width: fit-content;
-	padding: 2px; /* Reduced from 3px for thinner border */
+	padding: 0.5px; /* Reduced from 3px for thinner border */
 	border-radius: 10px;
 	background: var(--bg-primary);
 }
 
 /* Update the beam effect */
 .modalWrapper::before {
-	content: '';
+	content: "";
 	position: absolute;
 	inset: 0;
 	padding: 2px; /* Reduced padding for thinner border */
-	background: linear-gradient(45deg, 
-		rgba(133, 198, 239, 0.817),    /* Soft blue */
-		rgba(142, 155, 254, 0.368),   /* Muted purple */
-		rgba(186, 185, 255, 0.706),   /* Soft lavender */
-		rgba(74, 185, 255, 0.3));   /* Back to soft blue */
+	background: linear-gradient(
+		45deg,
+		rgba(133, 198, 239, 0.817),
+		/* Soft blue */ rgba(142, 155, 254, 0.368),
+		/* Muted purple */ rgba(186, 185, 255, 0.706),
+		/* Soft lavender */ rgba(74, 185, 255, 0.3)
+	); /* Back to soft blue */
 	border-radius: 10px;
 	z-index: 0;
 	animation: glowing 6s linear infinite; /* Slower animation */
@@ -90,7 +90,7 @@
 	margin-bottom: 20px; /* Add some space below the heading */
 }
 
-input {
+.modalContent input {
 	width: 100%;
 	padding: 8px; /* Increased padding for input fields */
 	margin: 10px 0;
@@ -101,11 +101,11 @@ input {
 	transition: border-color 0.3s ease; /* Smooth transition for input border */
 }
 
-input::placeholder {
+.modalContent input::placeholder {
 	color: var(--text-light);
 }
 
-label, .password {
+.modalContent label {
 	color: var(--text-white);
 }
 

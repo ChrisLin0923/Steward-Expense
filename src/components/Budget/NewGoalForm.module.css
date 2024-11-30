@@ -1,4 +1,4 @@
-.modalOverlay {
+.overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -9,26 +9,58 @@
 	justify-content: center;
 	align-items: center;
 	z-index: 1000;
+	backdrop-filter: blur(0px);
+	animation: fadeInBackdrop 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.modalContent {
+.container {
+	display: flex;
+	flex-direction: column;
 	background-color: var(--bg-white);
 	padding: 2rem;
 	border-radius: 1rem;
 	width: 90%;
 	max-width: 500px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	position: relative;
+	z-index: 1001;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	transform: scale(0.95) translateY(20px);
+	opacity: 0;
+	animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+	animation-delay: 0.1s;
 }
 
-.modalContent h2 {
+.formContent {
+	opacity: 0;
+	transform: translateY(10px);
+	animation: fadeInContent 0.4s ease forwards;
+	animation-delay: 0.3s;
+}
+
+.closeButton {
+	display: flex;
+	align-self: flex-end;
+	color: var(--text-primary);
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.header h2 {
 	margin-bottom: 1.5rem;
 	color: var(--text-primary);
 	font-size: 1.5rem;
-	font-weight: 500;
+	font-weight: 600;
 }
 
 .formGroup {
 	margin-bottom: 1.5rem;
+}
+
+.formGroup input[type="number"]::-webkit-outer-spin-button,
+.formGroup input[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
 }
 
 .formGroup label {
@@ -42,9 +74,11 @@
 	width: 100%;
 	padding: 0.75rem;
 	border: 1px solid var(--border-light);
-	border-radius: 0.5rem;
-	background-color: rgba(255, 255, 255, 0.997);
+	border-radius: 0.25rem;
+	background-color: var(--bg-input);
+	color: var(--text-primary);
 	font-size: 1rem;
+	transition: border-color 0.2s ease;
 }
 
 .formGroup input:hover {
@@ -67,27 +101,158 @@
 .cancelBtn {
 	padding: 0.5rem 1rem;
 	border: 1px solid var(--border-light);
-	border-radius: 0.5rem;
-	background-color: var(--bg-white);
+	border-radius: 0.25rem;
+	background-color: transparent;
 	color: var(--text-primary);
 	cursor: pointer;
-	transition: all 0.2s ease;
+	transition: background-color 0.2s ease;
 }
 
 .cancelBtn:hover {
-	background-color: var(--btn-danger-hover);
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
 .submitBtn {
 	padding: 0.5rem 1rem;
 	border: none;
-	border-radius: 0.5rem;
+	border-radius: 0.25rem;
 	background-color: var(--btn-primary);
-	color: var(--text-white);
+	color: var(--btn-text);
 	cursor: pointer;
-	transition: all 0.2s ease;
+	transition: background-color 0.2s ease;
 }
 
 .submitBtn:hover {
 	background-color: var(--btn-primary-hover);
+}
+
+/* Exit animations */
+.overlay.closing {
+	animation: fadeOutBackdrop 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.container.closing {
+	animation: popOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeInBackdrop {
+	0% {
+		background-color: rgba(0, 0, 0, 0);
+		backdrop-filter: blur(0px);
+	}
+	100% {
+		background-color: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(4px);
+	}
+}
+
+@keyframes popIn {
+	0% {
+		transform: scale(0.95) translateY(20px);
+		opacity: 0;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+	}
+	100% {
+		transform: scale(1) translateY(0);
+		opacity: 1;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+	}
+}
+
+@keyframes fadeInContent {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeOutBackdrop {
+	from {
+		background-color: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(4px);
+	}
+	to {
+		background-color: rgba(0, 0, 0, 0);
+		backdrop-filter: blur(0px);
+	}
+}
+
+@keyframes popOut {
+	from {
+		transform: scale(1);
+		opacity: 1;
+	}
+	to {
+		transform: scale(0.95) translateY(20px);
+		opacity: 0;
+	}
+}
+
+/* Add these new styles */
+.intervalGroup {
+	display: flex;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.intervalSelect {
+	flex: 1;
+	padding: 0.75rem;
+	border: 1px solid var(--border-light);
+	border-radius: 0.5rem;
+	background-color: rgba(255, 255, 255, 0.9);
+	font-size: 1rem;
+	transition: all 0.2s ease;
+	cursor: pointer;
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 0.75rem center;
+	background-size: 1em;
+	padding-right: 2.5rem;
+}
+
+.intervalSelect:hover {
+	border-color: var(--border-focus);
+}
+
+.intervalSelect:focus {
+	outline: none;
+	border-color: var(--btn-primary);
+	box-shadow: 0 0 0 4px rgba(116, 185, 255, 0.1);
+}
+
+.dateInputs {
+	margin-top: 1rem;
+}
+
+.dateInput {
+	width: 100%;
+	padding: 0.75rem;
+	border: 1px solid var(--border-light);
+	border-radius: 0.5rem;
+	background-color: var(--bg-input);
+	color: var(--bg-input);
+	font-size: 1rem;
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+
+.dateInput::-webkit-calendar-picker-indicator {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
+	cursor: pointer;
+}
+
+.dateInput:hover {
+	border-color: var(--border-focus);
+}
+
+.dateInput:focus {
+	outline: none;
+	border-color: var(--btn-primary);
+	box-shadow: 0 0 0 4px rgba(116, 185, 255, 0.1);
 }

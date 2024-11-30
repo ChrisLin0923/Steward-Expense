@@ -1,148 +1,96 @@
-nav ul {
-	height: 100%;
-	list-style-type: none; /* Remove bullet points */
-	padding: 0; /* Remove default padding */
-	margin: 0; /* Remove default margin */
+.nav {
+	width: 100%;
+	position: relative;
+	box-sizing: border-box;
 }
 
-nav li {
-	height: fit-content;
-	margin-right: 20px; /* Spacing between items */
+.nav ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	gap: 16px;
+	box-sizing: border-box;
+	position: relative;
 }
 
-nav a {
-	color: var(--text-white);
-	text-decoration: none; /* Remove underline */
-	font-weight: bold; /* Make text bold */
-	padding: 8px 16px; /* Add padding for better click area */
-	border-radius: 4px; /* Rounded corners */
-	transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+.nav li {
+	width: 100%;
+	height: auto;
+	box-sizing: border-box;
+	position: relative;
 }
 
-nav a:hover {
-	color: var(--btn-primary);
+.nav a {
+	display: flex;
+	align-items: center;
+	padding: 12px 16px;
+	width: 100%;
+	color: var(--text-secondary);
+	text-decoration: none;
+	border-radius: 12px;
+	transition: all 0.3s ease;
+	gap: 12px;
+	justify-content: flex-start;
+	font-size: 14px;
+	border: 1px solid transparent;
+	box-sizing: border-box;
+	white-space: nowrap;
+	position: relative;
+	left: 0;
+	transform: translateX(0);
+	background: transparent;
+}
+
+.nav a svg {
+	min-width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+}
+
+.nav a:hover:not(.active) {
+	color: var(--text-primary);
+	background: var(--bg-secondary);
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .active {
-	background-color: var(--bg-input);
+	background: var(--gradient-bg);
+	font-weight: 800;
+	border: 1px solid var(--border-focus) !important;
+	position: relative;
+	left: 0;
+	transform: translateX(0);
+	width: 100%;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+	backdrop-filter: blur(8px);
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.active:hover {
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+	transform: translateY(-1px);
+	filter: brightness(1.05);
+}
+
+.active svg {
 	color: var(--btn-primary);
-	font-weight: bold;
-	padding: 10px 20px;
-	border-radius: 4px;
-	transition: background-color 0.3s ease, color 0.3s ease, padding 0.3s ease; /* Smooth transitions */
+	transform: scale(1.1);
+	transition: transform 0.3s ease;
 }
 
-/* Styling for elements in sidebar BELOW: */
-
-.sidebar {
-	background-color: var(--bg-primary);
-	padding: 20px;
-	display: flex;
-	flex-direction: column;
-	justify-items: center;
-	align-items: center;
-	justify-content: space-between;
-	height: 100vh;
-}
-.navigation {
-	align-self: center;
-	height: 200px;
-}
-
-.navigation ul li {
-	text-align: center;
-	font-weight: 500;
-	color: var(--text-white);
-}
-.stewardlogo {
-	height: 2rem; /* Adjust size as needed */
-}
-
-.logo {
-	width: fit-content;
-	font-weight: bold;
-	color: var(--text-white);
-	display: flex;
-	align-items: center;
-	justify-self: center;
-}
-
-.navigation ul {
-	list-style-type: none;
-	padding: 0;
-}
-
-.navigation ul li {
-	margin: 20px 0;
-	font-size: 16px;
-}
-
-.userInfo {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	color: var(--text-white);
-}
-
-.userInfo img {
-	height: 3.5rem;
-	border-radius: 60%;
-	margin-bottom: 10px;
-}
-
-/*Styling for elements in sidebar ^^^ */
-
-.menuButton {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--text-white);
-    cursor: pointer;
-    padding: 10px;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-@media screen and (max-width: 768px) {
-    .menuButton {
-        display: block;
-    }
-
-    .nav {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 70%;
-        height: 100vh;
-        background-color: var(--bg-primary);
-        transition: left 0.3s ease;
-        z-index: 999;
-    }
-
-    .nav.open {
-        left: 0;
-    }
-
-    .sidebar {
-        display: none;
-    }
-
-    nav ul {
-        flex-direction: column;
-        padding-top: 80px;
-    }
-
-    nav li {
-        margin: 15px 0;
-        text-align: center;
-    }
-
-    .userInfo {
-        position: absolute;
-        bottom: 20px;
-        width: 100%;
-        text-align: center;
-    }
+.active span {
+	background: linear-gradient(
+		135deg,
+		var(--btn-primary) 0%,
+		var(--btn-primary-hover) 100%
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-weight: 800;
 }

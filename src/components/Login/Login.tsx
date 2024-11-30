@@ -57,7 +57,7 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 			await handleRegister();
 		} else {
 			//
-			await handleSignIn(); //If we aren't in the creating account form, that means we are signing in, so directly call handleSignIn when form is submitted.
+			await handleLogin(e); //If we aren't in the creating account form, that means we are signing in, so directly call handleLogin when form is submitted.
 		}
 	};
 
@@ -74,6 +74,9 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 				return;
 			}
 
+			// Log the registration method
+			console.log("Registering with email/password");
+
 			const userCredential = await createUserWithEmailAndPassword(
 				auth,
 				email,
@@ -81,13 +84,16 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 			);
 			const user = userCredential.user;
 
+			// Log the user's provider data after creation
+			console.log("New user provider data:", user.providerData);
+
 			try {
 				// Save user data to Firestore
 				await FirestoreService.saveUserData(user.uid, {
 					email: email,
 					firstName: firstName,
 					lastName: lastName,
-					last_login: Date.now()
+					last_login: Date.now(),
 				});
 			} catch (firestoreError) {
 				// If Firestore save fails, delete the auth user
@@ -96,33 +102,48 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 			}
 
 			await sendEmailVerification(user);
-			alert("Registration successful! Please check your email for verification.");
+			alert(
+				"Registration successful! Please check your email for verification."
+			);
 			navigate("/dashboard");
 			onClose();
 		} catch (error: any) {
 			console.error("Error during registration:", error);
 			switch (error.code) {
-				case 'auth/email-already-in-use':
-					alert("This email is already registered. Please try logging in instead.");
+				case "auth/email-already-in-use":
+					alert(
+						"This email is already registered. Please try logging in instead."
+					);
 					break;
-				case 'auth/invalid-email':
+				case "auth/invalid-email":
 					alert("Please enter a valid email address.");
 					break;
-				case 'auth/weak-password':
+				case "auth/weak-password":
 					alert("Password should be at least 6 characters long.");
 					break;
 				default:
-					alert(error.message || "An error occurred during registration");
+					alert(
+						error.message || "An error occurred during registration"
+					);
 			}
 		}
 	};
 
-	const handleSignIn = async () => {
+	const handleLogin = async (e: React.FormEvent) => {
+		e.preventDefault();
 		try {
-			await signInWithEmailAndPassword(auth, email, password);
-			navigate("/dashboard");
+			const userCredential = await signInWithEmailAndPassword(
+				auth,
+				email,
+				password
+			);
+
+			// Sync email after successful login
+			await FirestoreService.handleUserLogin(userCredential.user);
+
 			console.log("Signed In Successfully!");
-		} catch (error) {
+			navigate("/dashboard");
+		} catch (error: any) {
 			console.error("Error signing in:", error);
 			alert(error);
 		}
@@ -201,7 +222,7 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 				firstName: firstName || "",
 				lastName: lastName || "",
 				email: email || "",
-				last_login: Date.now()
+				last_login: Date.now(),
 			});
 			console.log("User data saved successfully!");
 		} catch (error) {

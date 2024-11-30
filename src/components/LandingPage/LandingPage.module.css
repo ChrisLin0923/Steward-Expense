@@ -1,12 +1,11 @@
 /* General page layout */
 
-
 .landingPage {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	min-height: 100vh;
-	background-color: var(--btn-primary);
+	background-color: var(--bg-landing);
 	text-align: center;
 	color: var(--text-white);
 }
@@ -15,10 +14,10 @@
 	display: flex; /* Use flexbox for layout */
 	justify-content: space-between; /* Space items evenly */
 	align-items: center; /* Center items vertically */
-	padding: 2px; /* Add some padding */
+	padding: 16px 24px; /* Add some padding */
 	position: absolute; /* Position at the top */
 	width: 100%; /* Full width */
-	background-color: var(--bg-primary); /* Semi-transparent background */
+	background-color: var(--bg-landing); /* Semi-transparent background */
 	z-index: 10; /* Ensure it appears above other elements */
 }
 
@@ -52,7 +51,9 @@
 
 .logInBtn:hover,
 .signInBtn:hover {
-	border-color: var(--text-white); /* Highlight the border in white on hover */
+	border-color: var(
+		--text-white
+	); /* Highlight the border in white on hover */
 	transform: scale(1.05); /* Slightly enlarge the button */
 }
 
@@ -63,9 +64,9 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 50px;
+	padding: 120px 50px 50px; /* Increased top padding to account for navbar */
 	background: url("src/assets/hero-image.png") no-repeat center center/cover,
-		linear-gradient(to bottom right, var(--bg-primary), var(--bg-input));
+		linear-gradient(to bottom right, var(--bg-landing), var(--bg-input));
 
 	background-size: 200% 200%;
 	animation: gradientAnimation 40s ease infinite; /* Slow down the movement */
@@ -110,6 +111,8 @@
 
 .heroSection h1 {
 	font-size: 4rem;
+	margin-bottom: 1.5rem;
+	line-height: 1.2;
 }
 
 .heroSection h1,
@@ -125,13 +128,16 @@
 .featuresSection {
 	display: flex;
 	justify-content: space-around;
-	padding: 50px;
-	background-color: var(--bg-primary); /* Dark background */
+	padding: 50px 24px;
+	gap: 24px;
+	flex-wrap: wrap;
+	background-color: var(--bg-landing); /* Dark background */
 }
 
 .feature {
 	flex: 1;
-	padding: 20px;
+	min-width: 250px;
+	padding: 24px;
 	opacity: 0; /* Start hidden */
 	transform: translateY(20px); /* Slightly move down */
 	animation: slideUp 0.5s forwards; /* Trigger slide-up animation */
@@ -157,8 +163,6 @@
 	}
 }
 
-
-
 .feature h3 {
 	font-size: 1.5rem;
 	margin-bottom: 10px;
@@ -172,7 +176,7 @@
 
 /* Footer */
 .footer {
-	background-color: var(--bg-footer);
+	background-color: var(--bg-landing-transparent);
 	padding: 10px;
 }
 
@@ -193,4 +197,181 @@
 
 .footerLinks a:hover {
 	text-decoration: underline;
+}
+
+/* Tablet Styles */
+@media screen and (max-width: 1024px) {
+	.heroSection h1 {
+		font-size: 3rem;
+	}
+
+	.heroSection p {
+		font-size: 1.1rem;
+		padding: 0 20px;
+	}
+
+	.featuresSection {
+		padding: 40px 20px;
+	}
+
+	.feature {
+		min-width: 200px;
+	}
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+	.navbar {
+		padding: 12px 16px;
+	}
+
+	.logo {
+		margin-left: 0;
+	}
+
+	.stewardlogo {
+		height: 1.5rem;
+	}
+
+	.heroSection {
+		padding: 100px 20px 40px;
+	}
+
+	.heroSection h1 {
+		font-size: 2rem;
+		padding: 0 10px;
+	}
+
+	.heroSection p {
+		font-size: 1rem;
+		padding: 0 15px;
+	}
+
+	.featuresSection {
+		flex-direction: column;
+		padding: 30px 20px;
+	}
+
+	.feature {
+		width: 100%;
+		padding: 20px;
+		min-width: unset;
+	}
+
+	.feature h3 {
+		font-size: 1.25rem;
+	}
+
+	.feature p {
+		font-size: 0.9rem;
+	}
+
+	.footerLinks {
+		flex-direction: row;
+		gap: 10px;
+	}
+
+	.footerLinks a {
+		margin: 5px 0;
+	}
+}
+
+/* Small Mobile Styles */
+@media screen and (max-width: 480px) {
+	.heroSection h1 {
+		font-size: 1.75rem;
+	}
+
+	.logInBtn,
+	.signInBtn {
+		padding: 6px 12px;
+		font-size: 0.9rem;
+	}
+
+	.feature {
+		padding: 15px;
+	}
+}
+
+/* Maintain animations */
+@keyframes slideUp {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeIn {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes gradientAnimation {
+	0% {
+		background-position: 0% 0%;
+	}
+	25% {
+		background-position: 50% 0%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	75% {
+		background-position: 50% 100%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+/* Add smooth transitions */
+.logInBtn,
+.signInBtn,
+.feature,
+.heroSection h1,
+.heroSection p {
+	transition: all 0.3s ease-in-out;
+}
+
+/* Mobile menu styles */
+.mobileMenuBtn {
+	display: none;
+	background: none;
+	border: none;
+	color: var(--text-white);
+	cursor: pointer;
+	padding: 8px;
+}
+
+.mobileNav {
+	display: none;
+}
+
+@media screen and (max-width: 768px) {
+	.desktopNav {
+		display: none;
+	}
+
+	.mobileMenuBtn {
+		display: block;
+	}
+
+	.mobileNav {
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		background-color: var(--bg-primary);
+		padding: 20px;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+
+	.mobileNav .logInBtn {
+		width: 100%;
+		margin: 10px 0;
+	}
 }

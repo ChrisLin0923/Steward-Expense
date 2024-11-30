@@ -1,71 +1,471 @@
 :root {
-    height: 100vh; /* Ensure the root container takes full height */
-    /* Background Colors */
-    --bg-primary: #121212;        /* Login page, Modal background */
-    --bg-secondary: #F8F9FA;      /* Dashboard, Transaction list background */
-    --bg-white: #ffffff;          /* Cards, Buttons background */
-    --bg-input: #222;             /* Input fields background */
-    --bg-footer: #999898;          /* Footer background */
-    
-    /* Text Colors */
-    --text-primary: #17191a;      /* Headers, Main text */
-    --text-secondary: #636e72;    /* Secondary text, Filter buttons */
-    --text-light: #b2bec3;        /* Payment method, Dates */
-    --text-white: #ffffff;        /* Button text, Modal text */
-    
-    /* Border & Input Colors */
-    --border-light: #e0e0e0;      /* Input borders, Card borders */
-    --border-focus: #74b9ff;      /* Input focus, Button hover */
-    --border-dark: #444;          /* Dark input borders */
-    
-    /* Status Colors */
-    --income: #00b894;            /* Income amounts */
-    --expense: #ff7675;           /* Expense amounts, Delete button */
-    
-    /* Button & Interactive Colors */
-    --btn-primary: #74B9FF;       /* Primary buttons, Edit button */
-    --btn-primary-hover: #4d94ff; /* Button hover states */
-    --btn-danger: #ff7675;        /* Delete button */
-    --btn-danger-hover: #ff4d4d;  /* Delete button hover */
-    
-    /* Chart & UI Colors */
-    --chart-blue: #3498db;        /* Progress bars, Charts */
-    --skeleton-start: #ececec;     /* Skeleton loader start color */
-    --skeleton-middle: #f5f5f5;    /* Skeleton loader middle color */
-    --skeleton-end: #ececec;       /* Skeleton loader end color */
-    
-    /* Chart & Visualization Colors */
-    --chart-gradient-1: #61DAFB;
-    --chart-gradient-2: #764ABC;
-    --chart-gradient-3: #2ECC71;
-    --chart-gradient-4: #E74C3C;
-    
-    /* Card & Container Styles */
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --card-border: rgba(255, 255, 255, 0.2);
-    --card-border-hover: rgba(97, 218, 251, 0.5);
-    --card-shadow: rgba(0, 0, 0, 0.1);
-    --card-radius: 16px;
-    
-    /* Chart Grid & Axis */
-    --chart-grid: #eee;
-    --chart-text: #666;
-    --chart-tooltip-bg: rgba(255, 255, 255, 0.8);
-    --chart-tooltip-shadow: rgba(0, 0, 0, 0.1);
-    
-    /* Spacing & Layout */
-    --grid-gap: 10px;
-    --card-padding: 24px;
-    --chart-padding: 10px;
+	height: 100vh; /* Ensure the root container takes 
+	full height */
+	--border-radius: 1rem;
+	/* Background Colors */
+	--bg-primary: #000000e0; /* Login page, Modal background */
+	--bg-landing: #000000e0;
+	--bg-landing-transparent: rgba(0, 0, 0, 0.2);
+	--bg-primary-transparent: rgba(
+		0,
+		0,
+		0,
+		0.482
+	); /* Login page, Modal background */
+	--bg-login: #000000f4; /* Login page background */
+	--bg-secondary: #f8f9fa; /* Dashboard, Transaction list background */
+	--bg-white: #ffffff; /* Cards, Buttons background */
+	--bg-input: #8584841e; /* Input fields background */
+	--bg-footer: #999898; /* Footer background */
+	--bg-navbar: #fafafa5d; /* Navbar background */
+
+	--dropdown-bg: #e8e9ed; /* Dropdown background */
+
+	--logo-filter: brightness(0) saturate(100%); /* Black for light mode */
+	/* Text Colors */
+	--text-primary: #17191a; /* Headers, Main text */
+	--text-secondary: #636e72; /* Secondary text, Filter buttons */
+	--text-light: #b2bec3; /* Payment method, Dates */
+	--text-white: #ffffff; /* Button text, Modal text */
+
+	/* Border & Input Colors */
+	--border-light: #e0e0e0; /* Input borders, Card borders */
+	--border-focus: #6ba3be; /* Input focus, Button hover */
+	--border-dark: #444; /* Dark input borders */
+
+	/* Status Colors */
+	--income: #00b894; /* Income amounts */
+	--expense: #ff7675; /* Expense amounts, Delete button */
+
+	/* Button & Interactive Colors */
+	--btn-primary: #0a7075; /* Primary buttons, Edit button */
+	--btn-primary-hover: #0c969c; /* Button hover states */
+	--btn-danger: #ff7675; /* Delete button */
+	--btn-danger-hover: #ff4d4d; /* Delete button hover */
+
+	--btn-text: #ffffff;
+	--btn-text-secondary: #17191a;
+
+	/* Chart & UI Colors */
+	--chart-blue: #6ba3be; /* Progress bars, Charts */
+	--skeleton-start: #ececec; /* Skeleton loader start color */
+	--skeleton-middle: #f5f5f5; /* Skeleton loader middle color */
+	--skeleton-end: #ececec; /* Skeleton loader end color */
+
+	/* Chart & Visualization Colors */
+	--chart-gradient-1: #0a7075; /* Medium teal */
+	--chart-gradient-2: #14a8b0; /* Bright teal/turquoise */
+	--chart-gradient-5: #6ba3be; /* Light blue-gray */
+	--chart-gradient-4: #274d60; /* Dark slate blue */
+	--chart-gradient-3: #818cf8; /* Indigo - soft purple */
+	--chart-gradient-6: #34d399; /* Emerald - matches your btn-primary */
+	--chart-gradient-7: #60a5fa; /* Sky blue */
+	--chart-gradient-8: #f472b6; /* Pink */
+	--chart-gradient-9: #957ce2; /* Purple */
+
+	/* Card & Container Styles */
+	--card-bg: rgba(255, 255, 255, 0.9);
+	--card-border: rgba(255, 255, 255, 0.2);
+	--card-border-hover: rgba(97, 218, 251, 0.5);
+	--card-shadow: rgba(0, 0, 0, 0.1);
+	--card-radius: 16px;
+
+	/* Chart Grid & Axis */
+	--chart-grid: #eee;
+	--chart-text: #666;
+	--chart-tooltip-bg: rgba(255, 255, 255, 0.8);
+	--chart-tooltip-shadow: rgba(0, 0, 0, 0.1);
+
+	/* Spacing & Layout */
+	--grid-gap: 10px;
+	--card-padding: 24px;
+	--chart-padding: 10px;
+
+	/* Gradients */
+	--gradient-blue: linear-gradient(90deg, #3b82f6, #2563eb);
+	--gradient-green: linear-gradient(90deg, #10b981, #059669);
+	--gradient-orange: linear-gradient(90deg, #f59e0b, #d97706);
+	--gradient-bg: linear-gradient(145deg, #ffffff, #f8fafc);
+	--border-light: rgba(226, 232, 240, 0.8);
+	--shadow-sm: 0 2px 4px rgba(148, 163, 184, 0.05);
+	--shadow-md: 0 4px 6px rgba(148, 163, 184, 0.1);
 }
 
-/* Dark theme example (you can add this later) */
-[data-theme='dark'] {
-    --card-bg: rgba(30, 30, 30, 0.9);
-    --card-border: rgba(0, 0, 0, 0.2);
-    --card-border-hover: rgba(97, 218, 251, 0.492);
-    --chart-grid: #333;
-    --chart-text: #999;
-    --chart-tooltip-bg: rgba(30, 30, 30, 0.8);
+:root[data-theme="dark"] {
+	/* Background Colors - Rich blacks with subtle warmth */
+	--border-radius: 1rem;
+	--bg-primary: #161618; /* Deep charcoal */
+	--bg-landing: #000000e0;
+	--bg-landing-transparent: rgba(0, 0, 0, 0.2);
+	--bg-secondary: #1c1c1f; /* Slightly lighter charcoal */
+	--bg-white: #27272a; /* Dark gray for cards */
+	--bg-input: #2d2d30; /* Input background */
+	--bg-footer: #161618;
+	--bg-navbar: rgba(22, 22, 24, 0.97);
+
+	--logo-filter: brightness(0) saturate(100%) invert(100%);
+
+	/* Text Colors - Clean and sharp */
+	--text-primary: #fafafa; /* Crisp white */
+	--text-secondary: #a1a1aa; /* Neutral gray */
+	--text-light: #d4d4d8; /* Light gray */
+	--text-white: #ffffff;
+
+	--dropdown-bg: #1c1c1f;
+
+	/* Border & Input Colors - Refined */
+	--border-light: rgba(255, 255, 255, 0.108);
+	--border-focus: #4ade80; /* Emerald green */
+	--border-dark: #27272a;
+
+	/* Status Colors - Natural and balanced */
+	--income: #10b981; /* Teal green - matches your UI */
+	--expense: #d35400;
+
+	/* Button & Interactive Colors */
+	--btn-primary: #4ade80;
+	--btn-primary-hover: #34d399;
+	--btn-danger: #f87171;
+	--btn-danger-hover: #ef4444;
+
+	--btn-text: #17191a;
+	--btn-text-secondary: #ffffff;
+
+	/* Chart & UI Colors */
+	--chart-blue: #4ade80;
+	--skeleton-start: #27272a;
+	--skeleton-middle: #3f3f46;
+	--skeleton-end: #27272a;
+
+	/* Chart & Visualization Colors - Monochromatic with green accent */
+	--chart-gradient-1: #3ab767; /* Primary green */
+	--chart-gradient-2: #acd4c2; /* Color with nice contrast */
+	--chart-gradient-3: #3ab5a5; /* Teal accent */
+	--chart-gradient-4: #22d3ee; /* Cyan accent */
+
+	/* New colors that complement the existing palette */
+	--chart-gradient-5: #818cf8; /* Indigo - soft purple */
+	--chart-gradient-6: #34d399; /* Emerald - matches your btn-primary */
+	--chart-gradient-7: #60a5fa; /* Sky blue */
+	--chart-gradient-8: #f472b6; /* Pink */
+	--chart-gradient-9: #a78bfa; /* Purple */
+
+	/* Card & Container Styles */
+	--card-bg: rgba(39, 39, 42, 0.98);
+	--card-border: rgba(255, 255, 255, 0.03);
+	--card-border-hover: rgba(74, 222, 128, 0.2);
+	--card-shadow: rgba(0, 0, 0, 0.3);
+	--card-radius: 16px;
+
+	/* Chart Grid & Axis */
+	--chart-grid: rgba(255, 255, 255, 0.06);
+	--chart-text: #a1a1aa;
+	--chart-tooltip-bg: rgba(64, 64, 67, 0.98);
+	--chart-tooltip-shadow: rgba(0, 0, 0, 0.2);
+
+	/* Spacing & Layout */
+	--grid-gap: 12px;
+	--card-padding: 24px;
+	--chart-padding: 12px;
+
+	/* Gradients - Subtle and professional */
+	--gradient-blue: linear-gradient(135deg, #4ade80, #34d399);
+	--gradient-green: linear-gradient(135deg, #34d399, #2dd4bf);
+	--gradient-orange: linear-gradient(135deg, #f87171, #fb923c);
+	--gradient-bg: linear-gradient(145deg, #27272a, #1c1c1f);
+
+	/* Shadows - Deeper for more depth */
+	--shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+	--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+
+	--chart-shadow: rgba(0, 0, 0, 0.3);
+	--chart-hover-opacity: 0.8;
+
+	--chart-glow-opacity: 0.3;
+	--chart-highlight-opacity: 0.5;
+	--chart-glow-color: rgba(255, 255, 255, 0.3);
+	--chart-shadow-blur: 3px;
+	--chart-transition-duration: 300ms;
 }
 
+:root[data-theme="Sunset"] {
+	/* Background Colors - Warm gradients */
+	--border-radius: 1rem;
+	--bg-primary: #2d1b2d; /* Deep purple-brown */
+	--bg-secondary: #1f1418; /* Dark burgundy */
+	--bg-landing: #000000e0;
+	--bg-white: #2a1f23; /* Warm dark gray */
+	--bg-input: #382830; /* Muted purple */
+	--bg-footer: #2d1b2d;
+	--bg-navbar: rgba(45, 27, 45, 0.97);
+
+	--logo-filter: brightness(0) saturate(100%) invert(100%);
+
+	/* Text Colors - Warm whites and accents */
+	--text-primary: #fff6f6; /* Warm white */
+	--text-secondary: #d4bfbf; /* Muted pink */
+	--text-light: #e6d5d5; /* Light warm gray */
+	--text-white: #ffffff;
+
+	--dropdown-bg: #2a1f23;
+
+	/* Border & Input Colors */
+	--border-light: rgba(255, 255, 255, 0.12);
+	--border-focus: #ff9776; /* Coral */
+	--border-dark: #382830;
+
+	/* Status Colors - Warm tones */
+	--income: #ffa45c; /* Warm orange */
+	--expense: #ff6b6b; /* Coral red */
+
+	/* Button & Interactive Colors */
+	--btn-primary: #ff9776; /* Coral */
+	--btn-primary-hover: #ffb199;
+	--btn-danger: #ff6b6b;
+	--btn-danger-hover: #ff4757;
+
+	--btn-text: #1f1418;
+	--btn-text-secondary: #ffffff;
+
+	/* Chart & UI Colors */
+	--chart-blue: #ff9776;
+	--skeleton-start: #2a1f23;
+	--skeleton-middle: #382830;
+	--skeleton-end: #2a1f23;
+
+	/* Chart & Visualization Colors - Warm palette */
+	--chart-gradient-1: #ff8c42; /* Vibrant orange */
+	--chart-gradient-2: #ff6b6b; /* Deep coral */
+	--chart-gradient-3: #ff7f50; /* Bright coral */
+	--chart-gradient-4: #ff9999; /* Soft pink */
+	--chart-gradient-5: #ff9776; /* Coral */
+	--chart-gradient-6: #ffa45c; /* Warm orange */
+	--chart-gradient-7: #ffd460; /* Rich gold */
+	--chart-gradient-8: #ff4d4d; /* Deep red */
+	--chart-gradient-9: #ff69b4; /* Pastel pink */
+
+	/* Card & Container Styles */
+	--card-bg: rgba(42, 31, 35, 0.98);
+	--card-border: rgba(255, 255, 255, 0.05);
+	--card-border-hover: rgba(255, 151, 118, 0.2);
+	--card-shadow: rgba(0, 0, 0, 0.3);
+	--card-radius: 16px;
+
+	/* Chart Grid & Axis */
+	--chart-grid: rgba(255, 255, 255, 0.08);
+	--chart-text: #d4bfbf;
+	--chart-tooltip-bg: rgba(42, 31, 35, 0.98);
+	--chart-tooltip-shadow: rgba(0, 0, 0, 0.2);
+
+	/* Spacing & Layout */
+	--grid-gap: 12px;
+	--card-padding: 24px;
+	--chart-padding: 12px;
+
+	/* Gradients - Warm tones */
+	--gradient-blue: linear-gradient(135deg, #ff9776, #ffb199);
+	--gradient-green: linear-gradient(135deg, #ffa45c, #ffd460);
+	--gradient-orange: linear-gradient(135deg, #ff6b6b, #ff8c42);
+	--gradient-bg: linear-gradient(145deg, #2a1f23, #1f1418);
+
+	/* Shadows - Deeper for more depth */
+	--shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+	--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+
+	--chart-shadow: rgba(0, 0, 0, 0.3);
+	--chart-hover-opacity: 0.8;
+
+	--chart-glow-opacity: 0.3;
+	--chart-highlight-opacity: 0.5;
+	--chart-glow-color: rgba(255, 151, 118, 0.3);
+	--chart-shadow-blur: 3px;
+	--chart-transition-duration: 300ms;
+}
+
+:root[data-theme="Ocean"] {
+	/* Background Colors - Deep ocean tones */
+	--border-radius: 1rem;
+	--bg-primary: #1a2634; /* Deep ocean blue */
+	--bg-landing: #000000e0;
+	--bg-landing-transparent: rgba(0, 0, 0, 0.2);
+	--bg-secondary: #15202b; /* Dark navy */
+	--bg-white: #1e2a35; /* Steel blue-gray */
+	--bg-input: #263545; /* Lighter navy */
+	--bg-footer: #1a2634;
+	--bg-navbar: rgba(26, 38, 52, 0.97);
+
+	--logo-filter: brightness(0) saturate(100%) invert(100%);
+
+	/* Text Colors - Ocean inspired */
+	--text-primary: #e6f1ff; /* Ice blue */
+	--text-secondary: #8ba1b7; /* Muted blue-gray */
+	--text-light: #c2d1e0; /* Light blue-gray */
+	--text-white: #ffffff;
+
+	--dropdown-bg: #1e2a35;
+
+	/* Border & Input Colors */
+	--border-light: rgba(255, 255, 255, 0.12);
+	--border-focus: #64dfdf; /* Bright cyan */
+	--border-dark: #263545;
+
+	/* Status Colors - Ocean tones */
+	--income: #48cae4; /* Bright blue */
+	--expense: #ff6b8b; /* Coral pink */
+
+	/* Button & Interactive Colors */
+	--btn-primary: #64dfdf; /* Cyan */
+	--btn-primary-hover: #80ffff;
+	--btn-danger: #ff6b8b;
+	--btn-danger-hover: #ff8fa3;
+
+	--btn-text: #15202b;
+	--btn-text-secondary: #ffffff;
+
+	/* Chart & UI Colors */
+	--chart-blue: #64dfdf;
+	--skeleton-start: #1e2a35;
+	--skeleton-middle: #263545;
+	--skeleton-end: #1e2a35;
+
+	/* Chart & Visualization Colors - Ocean palette */
+	--chart-gradient-1: #4dd6f5; /* Vibrant cyan */
+	--chart-gradient-2: #3aacf2; /* Bright blue */
+	--chart-gradient-3: #a3acf2; /* Soft blue */
+	--chart-gradient-4: #007bff; /* Deep navy blue */
+	--chart-gradient-5: #0056b3; /* Rich ocean blue */
+	--chart-gradient-6: #003049; /* Darker navy blue */
+	--chart-gradient-7: #3aacf2; /* Clear sky blue */
+	--chart-gradient-8: #b3acf2; /* Pastel blue */
+	--chart-gradient-9: #d3e8f8; /* Light ice blue */
+
+	/* Card & Container Styles */
+	--card-bg: rgba(30, 42, 53, 0.98);
+	--card-border: rgba(255, 255, 255, 0.05);
+	--card-border-hover: rgba(100, 223, 223, 0.2);
+	--card-shadow: rgba(0, 0, 0, 0.3);
+	--card-radius: 16px;
+
+	/* Chart Grid & Axis */
+	--chart-grid: rgba(255, 255, 255, 0.08);
+	--chart-text: #8ba1b7;
+	--chart-tooltip-bg: rgba(30, 42, 53, 0.98);
+	--chart-tooltip-shadow: rgba(0, 0, 0, 0.2);
+
+	/* Spacing & Layout */
+	--grid-gap: 12px;
+	--card-padding: 24px;
+	--chart-padding: 12px;
+
+	/* Gradients - Ocean tones */
+	--gradient-blue: linear-gradient(135deg, #64dfdf, #48cae4);
+	--gradient-green: linear-gradient(135deg, #48cae4, #0096c7);
+	--gradient-orange: linear-gradient(135deg, #0077b6, #023e8a);
+	--gradient-bg: linear-gradient(145deg, #1e2a35, #15202b);
+
+	/* Shadows - Deep ocean depth */
+	--shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+	--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+
+	--chart-shadow: rgba(0, 0, 0, 0.3);
+	--chart-hover-opacity: 0.8;
+
+	--chart-glow-opacity: 0.3;
+	--chart-highlight-opacity: 0.5;
+	--chart-glow-color: rgba(100, 223, 223, 0.3);
+	--chart-shadow-blur: 3px;
+	--chart-transition-duration: 300ms;
+}
+
+:root[data-theme="Olivia"] {
+	/* Background Colors - Deep blacks with pink accents */
+	--border-radius: 1rem;
+	--bg-primary: #1c1b1b; /* Deep black */
+	--bg-secondary: #242323; /* Slightly lighter black */
+	--bg-white: #2c2b2b; /* Dark gray */
+	--bg-input: #333232; /* Input background */
+	--bg-footer: #1c1b1b;
+	--bg-navbar: rgba(28, 27, 27, 0.97);
+
+	--logo-filter: brightness(0) saturate(100%) invert(100%);
+
+	/* Text Colors - Soft whites and pinks */
+	--text-primary: #fff1f3; /* Soft pink-white */
+	--text-secondary: #e2c1c7; /* Muted pink */
+	--text-light: #dabdc2; /* Light pink-gray */
+	--text-white: #ffffff;
+
+	--dropdown-bg: #2c2b2b;
+
+	/* Border & Input Colors */
+	--border-light: rgba(255, 255, 255, 0.12);
+	--border-focus: #ff8ba7; /* Soft pink */
+	--border-dark: #333232;
+
+	/* Status Colors - Pink tones */
+	--income: #ff8ba7; /* Soft pink */
+	--expense: #ff4d6d; /* Deep pink */
+
+	/* Button & Interactive Colors */
+	--btn-primary: #ff8ba7; /* Soft pink */
+	--btn-primary-hover: #ffb3c6;
+	--btn-danger: #ff4d6d;
+	--btn-danger-hover: #ff758d;
+
+	--btn-text: #1c1b1b;
+	--btn-text-secondary: #ffffff;
+
+	/* Chart & UI Colors */
+	--chart-blue: #ff8ba7;
+	--skeleton-start: #2c2b2b;
+	--skeleton-middle: #333232;
+	--skeleton-end: #2c2b2b;
+
+	/* Chart & Visualization Colors - Pink palette */
+	--chart-gradient-1: #ff99cc; /* Vibrant pink */
+	--chart-gradient-2: #ffccff; /* Pastel pink */
+	--chart-gradient-3: #ffe6e6; /* Soft blush */
+	--chart-gradient-4: #ff0066; /* Bright magenta */
+	--chart-gradient-5: #ff66cc; /* Fuchsia */
+	--chart-gradient-6: #ff9999; /* Coral pink */
+	--chart-gradient-7: #ffcccc; /* Light coral */
+	--chart-gradient-8: #ffe0e0; /* Pale peach */
+	--chart-gradient-9: #fff3f3; /* Soft peach */
+
+	/* Card & Container Styles */
+	--card-bg: rgba(44, 43, 43, 0.98);
+	--card-border: rgba(255, 255, 255, 0.05);
+	--card-border-hover: rgba(255, 139, 167, 0.2);
+	--card-shadow: rgba(0, 0, 0, 0.3);
+	--card-radius: 16px;
+
+	/* Chart Grid & Axis */
+	--chart-grid: rgba(255, 255, 255, 0.08);
+	--chart-text: #e2c1c7;
+	--chart-tooltip-bg: rgba(44, 43, 43, 0.98);
+	--chart-tooltip-shadow: rgba(0, 0, 0, 0.2);
+
+	/* Spacing & Layout */
+	--grid-gap: 12px;
+	--card-padding: 24px;
+	--chart-padding: 12px;
+
+	/* Gradients - Pink tones */
+	--gradient-blue: linear-gradient(135deg, #ff8ba7, #ffb3c6);
+	--gradient-green: linear-gradient(135deg, #ffb3c6, #ffc2d1);
+	--gradient-orange: linear-gradient(135deg, #ff4d6d, #ff758d);
+	--gradient-bg: linear-gradient(145deg, #2c2b2b, #242323);
+
+	/* Shadows - Deep blacks */
+	--shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+	--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+
+	--chart-shadow: rgba(0, 0, 0, 0.3);
+	--chart-hover-opacity: 0.8;
+
+	--chart-glow-opacity: 0.3;
+	--chart-highlight-opacity: 0.5;
+	--chart-glow-color: rgba(255, 139, 167, 0.3);
+	--chart-shadow-blur: 3px;
+	--chart-transition-duration: 300ms;
+}

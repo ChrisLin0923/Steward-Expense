@@ -1,0 +1,749 @@
+.settings {
+	display: grid;
+	grid-template-columns: 230px 1fr;
+	min-height: 100vh;
+	background-color: var(--bg-secondary);
+}
+
+.settingsContent {
+	padding: 2rem;
+	height: 100vh;
+	background: var(--bg-secondary);
+	overflow-y: auto;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2rem;
+}
+
+.settingsContent h1 {
+	font-size: 2rem;
+	color: var(--text-primary);
+	margin-bottom: 2rem;
+}
+
+.settingsSections {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.settingsSection {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	background: var(--bg-secondary);
+	border-radius: 16px;
+	padding: 1.5rem;
+	backdrop-filter: blur(10px);
+	border: 1px solid var(--border-light);
+}
+
+.settingsSection h2 {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: var(--text-primary);
+	font-size: 1.25rem;
+}
+
+.sectionIcon {
+	color: var(--text-secondary);
+}
+
+.settingCards {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.settingCard {
+	display: flex;
+	flex-direction: column;
+	padding: 1.5rem;
+	background: var(--card-bg);
+	border: 1px solid var(--card-border);
+	border-radius: var(--card-radius);
+	transition: all 0.2s ease;
+}
+
+.settingCard:hover {
+	border-color: var(--card-border-hover);
+	box-shadow: var(--shadow-sm);
+}
+
+.settingInfo {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.settingIcon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	background: var(--bg-secondary);
+	border-radius: 10px;
+	color: var(--text-secondary);
+}
+
+.settingCard h3 {
+	color: var(--text-primary);
+	font-size: 1rem;
+	margin: 0;
+}
+
+.settingCard p {
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+	margin: 0.25rem 0 0 0;
+}
+
+.arrowIcon {
+	color: var(--text-secondary);
+	opacity: 0.5;
+	transition: opacity 0.2s ease;
+}
+
+.settingCard:hover .arrowIcon {
+	opacity: 1;
+}
+
+.themeToggle {
+	display: flex;
+	align-items: center;
+}
+
+.themeButton {
+	padding: 0.5rem 1rem;
+	border-radius: 8px;
+	border: 1px solid var(--border-light);
+	background: var(--bg-white);
+	color: var(--text-primary);
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.themeButton:hover {
+	background: var(--bg-secondary);
+}
+
+/* Loading state styles */
+.skeleton {
+	background: var(--skeleton-start);
+	background: linear-gradient(
+		110deg,
+		var(--skeleton-start) 8%,
+		var(--skeleton-middle) 18%,
+		var(--skeleton-end) 33%
+	);
+	background-size: 200% 100%;
+	animation: 1.5s shine linear infinite;
+	border-radius: 4px;
+}
+
+@keyframes shine {
+	to {
+		background-position-x: -200%;
+	}
+}
+
+/* Theme Selector Styles */
+.themeSelector {
+	margin-bottom: 2rem;
+}
+
+.themeDescription {
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+	margin-bottom: 1rem;
+}
+
+.themeOptions {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.75rem;
+}
+
+.themeCard {
+	display: flex;
+	align-items: center;
+	padding: 1rem;
+	background: var(--gradient-bg);
+	border: 2px solid var(--border-light);
+	border-radius: 12px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.themeCard:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.themeCard.selected {
+	border-color: var(--btn-primary);
+	background: var(--bg-white);
+}
+
+.themeIconWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	background: var(--bg-secondary);
+	border-radius: 10px;
+	color: var(--text-secondary);
+	margin-right: 1rem;
+}
+
+.themeInfo {
+	flex: 1;
+}
+
+.themeInfo h4 {
+	color: var(--text-primary);
+	margin: 0;
+	font-size: 1rem;
+}
+
+.themeInfo p {
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+	margin: 0.25rem 0 0 0;
+}
+
+/* Radio Button Styles */
+.radioOuter {
+	width: 20px;
+	height: 20px;
+	border: 2px solid var(--border-light);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
+}
+
+.radioInner {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: transparent;
+	transition: all 0.2s ease;
+}
+
+.radioSelected {
+	background: var(--btn-primary);
+}
+
+/* Color Scheme Styles */
+.colorSchemes {
+	margin-top: 2rem;
+}
+
+.colorOptions {
+	display: flex;
+	gap: 1rem;
+	margin-top: 1rem;
+}
+
+.colorOption {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 2px solid var(--border-light);
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.colorOption:hover {
+	transform: scale(1.1);
+}
+
+.colorOption.selected {
+	border-color: var(--btn-primary);
+}
+
+/* Account Form Styles */
+.accountForm {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.avatarSection {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 2rem;
+}
+
+.avatarWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+}
+
+.avatar {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid var(--border-light);
+}
+
+.avatarPlaceholder {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background: var(--bg-secondary);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-secondary);
+	border: 2px solid var(--border-light);
+}
+
+.changeAvatarButton {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 1rem;
+	border-radius: 8px;
+	border: 1px solid var(--border-light);
+	background: var(--bg-white);
+	color: var(--text-primary);
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.changeAvatarButton:hover {
+	background: var(--bg-secondary);
+}
+
+.hiddenInput {
+	display: none;
+}
+
+.formGroup {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	gap: 1rem;
+}
+
+.formGroup h3 {
+	color: var(--text-primary);
+	font-size: 1rem;
+	margin: 0;
+}
+
+.formRow {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+}
+
+.formField {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.formField label {
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+}
+
+.formField input {
+	padding: 0.75rem;
+	border-radius: 8px;
+	border: 1px solid var(--border-light);
+	background: var(--bg-secondary);
+	color: var(--text-primary);
+	font-size: 0.875rem;
+	transition: all 0.2s ease;
+}
+
+.formField input:focus {
+	outline: none;
+	border-color: var(--btn-primary);
+	box-shadow: 0 0 0 2px rgba(var(--btn-primary-rgb), 0.1);
+}
+
+.formActions {
+	margin-top: 1.5rem;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.saveButton {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1.5rem;
+	background: var(--btn-primary);
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.saveButton:hover {
+	opacity: 0.9;
+}
+
+.saveButton:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.spinner {
+	width: 16px;
+	height: 16px;
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-top-color: white;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.presetAvatars {
+	display: flex;
+	gap: 1rem;
+	margin: 1rem 0;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.presetAvatar {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	border: 2px solid var(--border-light);
+	overflow: hidden;
+	padding: 0;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.presetAvatar:hover {
+	transform: scale(1.1);
+}
+
+.presetAvatar img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.selectedAvatar {
+	border-color: var(--btn-primary);
+	box-shadow: 0 0 0 2px rgba(var(--btn-primary-rgb), 0.1);
+}
+
+.uploadSection {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+
+.uploadButton {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1.5rem;
+	border-radius: 8px;
+	border: 1px solid var(--border-light);
+	background: var(--bg-white);
+	color: var(--text-primary);
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.uploadButton:hover {
+	background: var(--bg-secondary);
+}
+
+.uploadHint {
+	font-size: 0.75rem;
+	color: var(--text-secondary);
+	margin: 0;
+}
+
+.providerNote {
+	color: #666;
+	font-size: 0.9em;
+	font-style: italic;
+	margin-top: 4px;
+}
+
+/* Add these new styles */
+.settingForm {
+	width: 100%;
+	background: transparent;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.settingForm input {
+	width: 100%;
+	padding: 0.875rem 1rem;
+	background: var(--bg-secondary);
+	border: 1px solid var(--border-light);
+	border-radius: 8px;
+	color: var(--text-primary);
+	font-size: 0.9375rem;
+	margin-bottom: 1rem;
+}
+
+.settingForm input:focus {
+	outline: none;
+	border-color: var(--border-focus);
+	background: var(--bg-input);
+}
+
+.settingForm button,
+.saveButton {
+	width: fit-content;
+	min-width: 140px;
+	padding: 0.875rem 2rem;
+	background: var(--btn-primary);
+	color: var(--btn-text);
+	border: none;
+	border-radius: 8px;
+	font-weight: 500;
+	font-size: 0.9375rem;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: 0.5rem;
+	margin-left: auto;
+}
+
+.settingForm button:hover,
+.saveButton:hover {
+	background: var(--btn-primary-hover);
+	transform: translateY(-1px);
+	box-shadow: var(--shadow-md);
+}
+
+.settingForm button:disabled,
+.saveButton:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	transform: none;
+	box-shadow: none;
+}
+
+.errorMessage {
+	color: var(--error-color);
+	font-size: 0.875rem;
+	margin-top: 0.5rem;
+}
+
+/* Left Column - Account Settings */
+.accountColumn {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+/* Right Column - Theme and Support */
+.customizationColumn {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.sectionTitle {
+	display: flex;
+	align-items: center;
+	color: var(--text-primary);
+	font-size: 1.25rem;
+	font-weight: 500;
+}
+
+.supportCard {
+	display: flex;
+	align-items: center;
+	padding: 1rem;
+	background: var(--gradient-bg);
+	border: 2px solid var(--border-light);
+	border-radius: 12px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	margin-bottom: 0.75rem;
+	justify-content: space-between;
+}
+
+.supportCard:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	border-color: var(--btn-primary);
+	background: var(--bg-white);
+}
+
+.supportCard .settingInfo {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-bottom: 0;
+}
+
+.supportCard .settingIcon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	background: var(--bg-secondary);
+	border-radius: 10px;
+	color: var(--text-secondary);
+}
+
+.supportCard h3 {
+	color: var(--text-primary);
+	margin: 0;
+	font-size: 1rem;
+}
+
+.supportCard .arrowIcon {
+	color: var(--text-secondary);
+	opacity: 0.5;
+	transition: opacity 0.2s ease;
+}
+
+.supportCard:hover .arrowIcon {
+	opacity: 1;
+	transform: translateX(2px);
+}
+
+/* Update form actions container */
+.formActions {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-top: 1rem;
+}
+
+.developerContact {
+	font-size: 0.875rem;
+	margin: 0;
+}
+
+.developerContact a {
+	color: var(--text-secondary);
+	text-decoration: none;
+	margin: 0;
+}
+
+/* Tablet styles */
+@media screen and (max-width: 1024px) {
+	.settings {
+		grid-template-columns: 1fr;
+		height: 100vh;
+		overflow: hidden;
+	}
+
+	.settingsContent {
+		padding: 1.5rem;
+		padding-top: 60px;
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+		height: calc(100vh - 60px);
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.accountColumn,
+	.customizationColumn {
+		gap: 1rem;
+	}
+
+	.settingCard {
+		padding: 1.25rem;
+	}
+
+	.themeOptions {
+		gap: 0.5rem;
+	}
+}
+
+/* Mobile styles */
+@media screen and (max-width: 480px) {
+	.settings {
+		height: 100vh;
+		overflow: hidden;
+	}
+
+	.settingsContent {
+		padding: 1rem;
+		padding-top: 60px;
+		height: calc(100vh - 60px);
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.settingsSection {
+		padding: 1rem;
+		background: var(--bg-white);
+		border: 1px solid var(--border-light);
+		border-radius: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	/* Make cards more compact */
+	.settingCard {
+		padding: 1rem;
+		margin-bottom: 0.5rem;
+	}
+
+	/* Ensure form elements are properly spaced */
+	.settingForm {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	/* Theme cards adjustments */
+	.themeOptions {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.themeCard {
+		padding: 0.75rem;
+	}
+
+	/* Support section adjustments */
+	.supportCard {
+		margin-bottom: 2rem;
+	}
+
+	/* Ensure last items have bottom margin */
+	.settingsContent > *:last-child {
+		margin-bottom: 2rem;
+	}
+}

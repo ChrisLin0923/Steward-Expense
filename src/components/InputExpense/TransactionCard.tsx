@@ -62,16 +62,9 @@ export default function TransactionCard({
 
 			currentDateTime.setHours(0, 0, 0, 0);
 
-			const utcDate = new Date(
-				Date.UTC(
-					currentDateTime.getFullYear(),
-					currentDateTime.getMonth(),
-					currentDateTime.getDate(),
-					0,
-					0,
-					0,
-					0
-				)
+			const localDate = new Date(
+				currentDateTime.getTime() +
+					new Date().getTimezoneOffset() * 60000
 			);
 
 			await FirestoreService.addTransaction(auth.currentUser.uid, {
@@ -84,7 +77,7 @@ export default function TransactionCard({
 					.map((tag) => tag.trim())
 					.filter((tag) => tag !== ""),
 				paymentMethod: formData.paymentMethod,
-				date: utcDate,
+				date: localDate,
 				currency: "USD",
 				status: "completed" as "completed" | "pending",
 				metadata: {

@@ -1,52 +1,68 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Navbar.module.css";
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
+import { LayoutDashboard, Receipt, Target, Settings } from "lucide-react";
 
 const Navbar: React.FC = () => {
 	const location = useLocation();
-	const [isOpen, setIsOpen] = useState(false);
-
-	const toggleMenu = () => {
-		setIsOpen(!isOpen);
-	};
 
 	return (
-		<>
-			<button className={styles.menuButton} onClick={toggleMenu}>
-				{isOpen ? <CloseIcon /> : <MenuIcon />}
-			</button>
-			
-			<nav className={`${styles.nav} ${isOpen ? styles.open : ''}`}>
-				<ul>
-					<li>
-						<Link
-							to='/dashboard'
-							className={location.pathname === "/dashboard" ? styles.active : ""}
-							onClick={() => setIsOpen(false)}
-						>
-							Dashboard
-						</Link>
-					</li>
-					<li>
-						<Link
-							to='/transaction'
-							className={location.pathname === "/transaction" ? styles.active : ""}
-							onClick={() => setIsOpen(false)}
-						>
-							Transactions
-						</Link>
-					</li>
-					<li>
-						<Link to='/budget' className={location.pathname === "/budget" ? styles.active : ""} onClick={() => setIsOpen(false)}>Budget</Link>
-					</li>
-					<li>
-						<Link to='/savings-goals' className={location.pathname === "/savings-goals" ? styles.active : ""} onClick={() => setIsOpen(false)}>Savings Goals</Link>
-					</li>
-				</ul>
-			</nav>
-		</>
+		<nav className={styles.nav}>
+			<ul>
+				<li>
+					<Link
+						to='/dashboard'
+						className={
+							location.pathname === "/dashboard"
+								? styles.active
+								: ""
+						}
+					>
+						<LayoutDashboard size={20} />
+						<span>Dashboard</span>
+					</Link>
+				</li>
+				<li>
+					<Link
+						to='/transaction'
+						className={
+							location.pathname === "/transaction"
+								? styles.active
+								: ""
+						}
+					>
+						<Receipt size={20} />
+						<span>Transactions</span>
+					</Link>
+				</li>
+				<li>
+					<Link
+						to='/GoalsTracker'
+						className={
+							location.pathname === "/GoalsTracker"
+								? styles.active
+								: ""
+						}
+					>
+						<Target size={20} />
+						<span>Goals Tracker</span>
+					</Link>
+				</li>
+				<li>
+					<Link
+						to='/settings'
+						className={
+							location.pathname === "/settings"
+								? styles.active
+								: ""
+						}
+					>
+						<Settings size={20} />
+						<span>Settings</span>
+					</Link>
+				</li>
+			</ul>
+		</nav>
 	);
 };
 

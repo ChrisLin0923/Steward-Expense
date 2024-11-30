@@ -55,29 +55,33 @@ const Transaction: React.FC = () => {
 		}[]
 	>([
 		{
-			startDate: new Date(
-				new Date().toLocaleString("en-US", {
-					timeZone: "America/New_York",
-				})
-			),
-			endDate: new Date(
-				new Date().toLocaleString("en-US", {
-					timeZone: "America/New_York",
-				})
-			),
+			startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)), // 1 months ago
+			endDate: new Date(), // Today
 			key: "selection",
 		},
 	]);
-
-	// Then set the hours separately
-	dateRange[0].startDate.setHours(0, 0, 0, 0);
-	dateRange[0].endDate.setHours(23, 59, 59, 999);
 
 	// Toggle visibility of date picker
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	// Add this near your other state declarations
 	const [error, setError] = useState<string | null>(null);
 	const datePickerRef = useRef<HTMLDivElement>(null);
+
+	// Add this ref at the top of your component with other state declarations
+	const inputButtonRef = useRef<HTMLDivElement>(null);
+
+	// Add this state to track screen width
+	const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
+
+	// Add this useEffect to handle window resizing
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth <= 480);
+		};
+
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -88,6 +92,25 @@ const Transaction: React.FC = () => {
 				setShowDatePicker(false);
 			}
 		};
+		document.addEventListener("mousedown", handleClickOutside);
+		return () =>
+			document.removeEventListener("mousedown", handleClickOutside);
+	}, []);
+
+	const [showDropdown, setShowDropdown] = useState(false);
+	// Add this useEffect to handle clicks outside
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				inputButtonRef.current &&
+				!inputButtonRef.current.contains(event.target as Node)
+			) {
+				// Call the close dropdown function from InputButton
+				// You'll need to pass this as a prop to InputButton
+				setShowDropdown(false);
+			}
+		};
+
 		document.addEventListener("mousedown", handleClickOutside);
 		return () =>
 			document.removeEventListener("mousedown", handleClickOutside);
@@ -127,7 +150,10 @@ const Transaction: React.FC = () => {
 							userId: user.uid,
 							currency: t.currency || "USD",
 							status: t.status || "completed",
-							date: t.date.toDate(),
+							date: new Date(
+								t.date.toDate().getTime() +
+									new Date().getTimezoneOffset() * 60000
+							),
 							tags: t.tags || [],
 						})) as TransactionType[]
 					);
@@ -151,7 +177,10 @@ const Transaction: React.FC = () => {
 				userId: userId,
 				currency: t.currency || "USD",
 				status: t.status || "completed",
-				date: t.date.toDate(),
+				date: new Date(
+					t.date.toDate().getTime() +
+						new Date().getTimezoneOffset() * 60000
+				),
 			})) as TransactionType[];
 		} catch (error) {
 			console.error("Error fetching transactions:", error);
@@ -296,7 +325,75 @@ const Transaction: React.FC = () => {
 	};
 
 	const formatLocalDate = (date: Date) => {
-		return new Date(date).toLocaleDateString();
+		// Create a new date object and adjust for timezone
+		const localDate = new Date(
+			date.getTime() - date.getTimezoneOffset() * 60000
+		);
+		return localDate.toLocaleDateString();
+	};
+
+	// Update the DatePickerMobile component
+	const DatePickerMobile = () => {
+		return (
+			<div className={styles.mobileDatePicker}>
+				<div className={styles.datePickerHeader}>
+					<h3>Select Date Range</h3>
+					<button
+						className={styles.closeButton}
+						onClick={() => setShowDatePicker(false)}
+					>
+						✕
+					</button>
+				</div>
+				<div className={styles.dateInputGroup}>
+					<label>Start Date</label>
+					<input
+						type='date'
+						value={
+							dateRange[0].startDate.toISOString().split("T")[0]
+						}
+						max={dateRange[0].endDate.toISOString().split("T")[0]}
+						onChange={(e) => {
+							const start = new Date(e.target.value);
+							start.setHours(0, 0, 0, 0);
+							setDateRange([
+								{
+									...dateRange[0],
+									startDate: start,
+									key: "selection",
+								},
+							]);
+						}}
+					/>
+				</div>
+				<div className={styles.dateInputGroup}>
+					<label>End Date</label>
+					<input
+						type='date'
+						value={dateRange[0].endDate.toISOString().split("T")[0]}
+						min={dateRange[0].startDate.toISOString().split("T")[0]}
+						max={new Date().toISOString().split("T")[0]}
+						onChange={(e) => {
+							const end = new Date(e.target.value);
+							end.setHours(23, 59, 59, 999);
+							setDateRange([
+								{
+									...dateRange[0],
+									endDate: end,
+									key: "selection",
+								},
+							]);
+						}}
+					/>
+				</div>
+				<button
+					className={styles.applyDateBtn}
+					onClick={() => setShowDatePicker(false)}
+				>
+					Apply
+				</button>
+			</div>
+		);
 	};
 
 	// Component Render
@@ -337,51 +434,92 @@ const Transaction: React.FC = () => {
 								Date Range
 							</button>
 							{showDatePicker && (
-								<div
-									ref={datePickerRef}
-									className={styles.datePickerContainer}
-								>
-									<DateRangePicker
-										ranges={dateRange}
-										onChange={(item: any) => {
-											if (
-												item.selection.startDate &&
-												item.selection.endDate
-											) {
-												// Set start date to beginning of day in local timezone
-												const start = new Date(
-													item.selection.startDate
-												);
-												start.setHours(0, 0, 0, 0);
-
-												// Set end date to end of day in local timezone
-												const end = new Date(
-													item.selection.endDate
-												);
-												end.setHours(23, 59, 59, 999);
-
-												setDateRange([
-													{
-														startDate: start,
-														endDate: end,
-														key: "selection",
-													},
-												]);
-												setShowDatePicker(false);
+								<>
+									{isMobile ? (
+										// Mobile version
+										<>
+											<div
+												className={`${styles.overlay} ${
+													showDatePicker
+														? styles.visible
+														: ""
+												}`}
+												onClick={() =>
+													setShowDatePicker(false)
+												}
+											/>
+											<div
+												ref={datePickerRef}
+												className={
+													styles.datePickerContainer
+												}
+											>
+												<DatePickerMobile />
+											</div>
+										</>
+									) : (
+										// Desktop/Tablet version
+										<div
+											ref={datePickerRef}
+											className={
+												styles.datePickerContainer
 											}
-										}}
-										months={2}
-										direction='vertical' // Changed to horizontal for better desktop layout
-										editableDateInputs={true}
-										rangeColors={["#0052cc"]} // Custom primary color
-										showPreview={true}
-										moveRangeOnFirstSelection={false}
-										showMonthAndYearPickers={true}
-										showDateDisplay={true}
-										minDate={new Date(2020, 0, 1)} // Prevent selecting dates too far in the past
-										maxDate={new Date()} // Prevent selecting future dates
-									/>
-								</div>
+										>
+											<DateRangePicker
+												ranges={dateRange}
+												onChange={(item: any) => {
+													if (
+														item.selection
+															.startDate &&
+														item.selection.endDate
+													) {
+														const start = new Date(
+															item.selection.startDate
+														);
+														start.setHours(
+															0,
+															0,
+															0,
+															0
+														);
+														const end = new Date(
+															item.selection.endDate
+														);
+														end.setHours(
+															23,
+															59,
+															59,
+															999
+														);
+														setDateRange([
+															{
+																startDate:
+																	start,
+																endDate: end,
+																key: "selection",
+															},
+														]);
+														setShowDatePicker(
+															false
+														);
+													}
+												}}
+												months={2}
+												direction='vertical'
+												editableDateInputs={true}
+												rangeColors={["#0052cc"]}
+												showPreview={true}
+												moveRangeOnFirstSelection={
+													false
+												}
+												showMonthAndYearPickers={true}
+												showDateDisplay={true}
+												minDate={new Date(2020, 0, 1)}
+												maxDate={new Date()}
+											/>
+										</div>
+									)}
+								</>
 							)}
 							<button
 								className={`${styles.filterBtn} ${
@@ -399,10 +537,14 @@ const Transaction: React.FC = () => {
 							>
 								Expenses
 							</button>
-							<InputButton
-								setTransactions={setTransactions}
-								onTransactionAdded={refreshTransactions}
-							/>
+							<div ref={inputButtonRef}>
+								<InputButton
+									setTransactions={setTransactions}
+									onTransactionAdded={refreshTransactions}
+									showDropdown={showDropdown}
+									setShowDropdown={setShowDropdown}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>

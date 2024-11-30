@@ -1,7 +1,7 @@
 export interface Transaction {
   tags: never[];
   id: string;
-  userId: string;
+  userId?: string;
   type: 'expense' | 'income' | 'transfer';
   amount: number;
   currency: string;

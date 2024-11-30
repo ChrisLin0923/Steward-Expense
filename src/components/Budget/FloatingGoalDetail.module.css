@@ -1,0 +1,615 @@
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	backdrop-filter: blur(2px);
+}
+
+.container {
+	background: var(--gradient-bg);
+	border: 1px solid var(--border-light);
+	padding: 2rem;
+	border-radius: 1.5rem;
+	width: 90%;
+	max-width: 800px;
+	max-height: 85vh;
+	position: relative;
+	z-index: 1001;
+	box-shadow: var(--shadow-md);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.content {
+	flex: 1;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	padding-right: 1rem;
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 2rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid var(--border-light);
+}
+
+.header h2 {
+	font-size: 1.75rem;
+	font-weight: 600;
+	color: var(--text-primary);
+	margin: 0;
+}
+
+.closeButton {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	background: transparent;
+	border: none;
+	padding: 0.5rem;
+	cursor: pointer;
+	border-radius: 50%;
+	transition: all 0.3s ease;
+	z-index: 1002;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.closeButton:hover {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.summary {
+	background: var(--gradient-bg);
+	border: 1px solid var(--border-light);
+	padding: 1.5rem;
+	border-radius: 1rem;
+	margin-bottom: 2rem;
+	box-shadow: var(--shadow-sm);
+	flex-shrink: 0;
+}
+
+.summaryStats {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.statItem {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 1rem;
+	background: var(--card-bg);
+	border-radius: 0.75rem;
+	border: 1px solid var(--border-light);
+	box-shadow: var(--shadow-sm);
+}
+
+.statLabel {
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+}
+
+.statValue {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--text-primary);
+	background: linear-gradient(90deg, #3b82f6, #2563eb);
+	-webkit-text-fill-color: transparent;
+}
+
+.amounts {
+	display: flex;
+	align-items: baseline;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+}
+
+.current {
+	font-size: 2rem;
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.separator {
+	color: var(--text-secondary);
+	font-size: 1.5rem;
+}
+
+.target {
+	color: var(--text-secondary);
+	font-size: 1.5rem;
+}
+
+.recurring {
+	color: var(--text-secondary);
+	font-size: 1.5rem;
+}
+
+.progress {
+	margin-top: 1rem;
+}
+
+.transactionsList {
+	flex: 1;
+	overflow-y: auto;
+	padding: 1rem;
+	background: var(--gradient-bg);
+	border: 1px solid var(--border-light);
+	border-radius: 1rem;
+	margin-top: 1rem;
+	box-shadow: var(--shadow-sm);
+}
+
+.transactionsList h3 {
+	margin: 0 0 1rem 0;
+	color: var(--text-primary);
+	font-size: 1.25rem;
+}
+
+.transactionItem {
+	padding: 1.25rem;
+	border-bottom: 1px solid var(--border-light);
+	transition: background-color 0.2s ease;
+}
+
+.transactionItem:hover {
+	background-color: var(--bg-secondary);
+}
+
+.transactionMain {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 1rem;
+}
+
+.transactionInfo {
+	flex: 1;
+}
+
+.description {
+	font-weight: 500;
+	color: var(--text-secondary);
+	margin-bottom: 0.25rem;
+	display: block;
+}
+
+.amount {
+	color: var(--text-primary);
+	font-weight: 600;
+	font-size: 1.125rem;
+}
+
+.date {
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+}
+
+.tags {
+	display: flex;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+	flex-wrap: wrap;
+}
+
+.tag {
+	background-color: var(--bg-secondary);
+	padding: 0.25rem 0.75rem;
+	border-radius: 1rem;
+	font-size: 0.75rem;
+	color: var(--text-secondary);
+	font-weight: 500;
+}
+
+.noTransactions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 300px;
+	color: var(--text-secondary);
+	text-align: center;
+	padding: 2rem;
+}
+
+.noTransactions p {
+	margin: 0;
+	font-size: 1rem;
+}
+
+@keyframes fadeInBackdrop {
+	0% {
+		background-color: rgba(0, 0, 0, 0);
+		backdrop-filter: blur(0px);
+	}
+	100% {
+		background-color: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(4px);
+	}
+}
+
+@keyframes popIn {
+	0% {
+		transform: scale(0.95) translateY(20px);
+		opacity: 0;
+		box-shadow: var(--shadow-sm);
+	}
+	100% {
+		transform: scale(1) translateY(0);
+		opacity: 1;
+		box-shadow: var(--shadow-md);
+	}
+}
+
+@keyframes fadeInContent {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeOutBackdrop {
+	from {
+		background-color: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(4px);
+	}
+	to {
+		background-color: rgba(0, 0, 0, 0);
+		backdrop-filter: blur(0px);
+	}
+}
+
+@keyframes popOut {
+	from {
+		transform: scale(1);
+		opacity: 1;
+	}
+	to {
+		transform: scale(0.95) translateY(20px);
+		opacity: 0;
+	}
+}
+
+/* Custom scrollbar for the container */
+.container::-webkit-scrollbar {
+	width: 8px;
+}
+
+.container::-webkit-scrollbar-track {
+	background: var(--gradient-bg);
+	border-radius: 4px;
+}
+
+.container::-webkit-scrollbar-thumb {
+	background: var(--gradient-blue);
+	border-radius: 4px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+	background: var(--gradient-green);
+	background: var(--text-secondary);
+}
+
+.contributionsList {
+	background: var(--gradient-bg);
+	border: 1px solid var(--border-light);
+	border-radius: 1rem;
+	padding: 1.5rem;
+	box-shadow: var(--shadow-sm);
+}
+
+.contributionsHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1.5rem;
+}
+
+.contributionsHeader h3 {
+	font-size: 1.25rem;
+	color: var(--text-primary);
+	margin: 0;
+}
+
+.totalContributions {
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+}
+
+.positive {
+	background-color: var(--gradient-green);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.negative {
+	background-color: var(--gradient-orange);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.contributionsTableHeader {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	padding: 0.75rem 1rem;
+	background: var(--gradient-bg);
+	border-radius: 0.5rem;
+	font-size: 0.875rem;
+	color: var(--text-secondary);
+	font-weight: 500;
+	margin-bottom: 0.5rem;
+}
+
+.contributionItem {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	padding: 1rem;
+	border-bottom: 1px solid var(--border-light);
+	transition: background-color 0.2s ease;
+}
+
+.contributionItem:hover {
+	background: var(--gradient-bg);
+	border-radius: 0.5rem;
+}
+
+.contributionAmount {
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-weight: 600;
+}
+.contributionAmount.positive {
+	background: var(--income);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.contributionAmount.negative {
+	background: var(--expense);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.contributionDate {
+	color: var(--text-secondary);
+}
+
+.contributionProgress {
+	color: var(--text-primary);
+	font-weight: 500;
+}
+
+.noContributions {
+	text-align: center;
+	padding: 3rem 1rem;
+	color: var(--text-secondary);
+}
+
+.noContributionsSubtext {
+	font-size: 0.875rem;
+	margin-top: 0.5rem;
+	color: var(--text-tertiary);
+}
+
+.overlay.closing {
+	animation: fadeOutBackdrop 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.container.closing {
+	animation: popOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Different gradients for different stats */
+.statItem:nth-child(1) .statValue {
+	background-color: var(--gradient-blue);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.statItem:nth-child(2) .statValue {
+	background: var(--gradient-orange);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.statItem:nth-child(3) .statValue {
+	background: var(--gradient-green);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+/* Custom scrollbar for transactions list */
+.transactionsList::-webkit-scrollbar {
+	width: 8px;
+}
+
+.transactionsList::-webkit-scrollbar-track {
+	background: var(--gradient-bg);
+	border-radius: 4px;
+}
+
+.transactionsList::-webkit-scrollbar-thumb {
+	background: var(--gradient-blue);
+	border-radius: 4px;
+}
+
+.transactionsList::-webkit-scrollbar-thumb:hover {
+	background: var(--gradient-green);
+}
+
+/* Same for contributions list */
+.contributionsList {
+	flex: 1;
+	overflow-y: auto;
+}
+
+.contributionsList::-webkit-scrollbar {
+	width: 8px;
+}
+
+.contributionsList::-webkit-scrollbar-track {
+	background: var(--gradient-bg);
+	border-radius: 4px;
+}
+
+.contributionsList::-webkit-scrollbar-thumb {
+	background: var(--gradient-blue);
+	border-radius: 4px;
+}
+
+.contributionsList::-webkit-scrollbar-thumb:hover {
+	background: var(--gradient-green);
+}
+
+/* Tablet styles */
+@media screen and (max-width: 1024px) {
+	.container {
+		width: 95%;
+		max-height: 80vh;
+		padding: 1.5rem;
+	}
+
+	.summaryStats {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+	}
+
+	.statItem {
+		padding: 0.75rem;
+	}
+
+	.amounts {
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.current {
+		font-size: 1.75rem;
+	}
+
+	.target,
+	.recurring {
+		font-size: 1.25rem;
+	}
+}
+
+/* Mobile styles */
+@media screen and (max-width: 480px) {
+	.overlay {
+		padding: 0.5rem;
+	}
+
+	.container {
+		width: 95%;
+		max-height: 80vh;
+		padding: 1rem;
+		margin: 0;
+	}
+
+	.content {
+		padding-right: 0.5rem;
+	}
+
+	.summary {
+		padding: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	/* Improve scrolling containers */
+	.transactionsList,
+	.contributionsList {
+		max-height: none;
+		overflow-y: visible;
+	}
+
+	/* Make sure content is properly spaced */
+	.summaryStats {
+		margin-bottom: 1rem;
+	}
+
+	/* Ensure last items are visible */
+	.contributionsList {
+		padding-bottom: 1rem;
+	}
+
+	.header {
+		padding-right: 2.5rem;
+	}
+
+	.closeButton {
+		top: 0.75rem;
+		right: 0.75rem;
+	}
+
+	/* Rest of your mobile styles... */
+}
+
+/* Animations */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slideUp {
+	from {
+		transform: translateY(20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.overlay {
+	animation: fadeIn 0.3s ease-out;
+}
+
+.container {
+	animation: slideUp 0.3s ease-out;
+}
+
+/* Scrollbar styling */
+.content::-webkit-scrollbar {
+	width: 4px;
+}
+
+.content::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+	background: var(--text-secondary);
+	border-radius: 2px;
+}
