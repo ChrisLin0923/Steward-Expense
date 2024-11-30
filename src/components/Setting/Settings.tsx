@@ -21,10 +21,10 @@ import {
 	Flower,
 } from "lucide-react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import Avatar1 from "../../assets/Avatars/avatar1.png";
-import Avatar2 from "../../assets/Avatars/avatar2.png";
-import Avatar3 from "../../assets/Avatars/avatar3.png";
-import Avatar4 from "../../assets/Avatars/Avatar4.png";
+import Avatar1 from "@/assets/avatars/avatar1.png";
+import Avatar2 from "@/assets/avatars/avatar2.png";
+import Avatar3 from "@/assets/avatars/avatar3.png";
+import Avatar4 from "@/assets/avatars/avatar4.png";
 import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 interface ThemeOption {
