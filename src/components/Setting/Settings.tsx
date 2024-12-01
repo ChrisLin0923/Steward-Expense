@@ -21,10 +21,6 @@ import {
 	Flower,
 } from "lucide-react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import avatar1 from "@assets/avatars/avatar1.png";
-import avatar2 from "@assets/avatars/avatar2.png";
-import avatar3 from "@assets/avatars/avatar3.png";
-import avatar4 from "@assets/avatars/avatar4.png";
 import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 interface ThemeOption {
@@ -106,10 +102,26 @@ const Settings: React.FC = () => {
 	];
 
 	const presetAvatars: PresetAvatar[] = [
-		{ id: "avatar1", url: avatar1, alt: "Default Avatar 1" },
-		{ id: "avatar2", url: avatar2, alt: "Default Avatar 2" },
-		{ id: "avatar3", url: avatar3, alt: "Default Avatar 3" },
-		{ id: "avatar4", url: avatar4, alt: "Default Avatar 4" },
+		{
+			id: "avatar1",
+			url: new URL("../assets/avatars/avatar1.png", import.meta.url).href,
+			alt: "Default Avatar 1",
+		},
+		{
+			id: "avatar2",
+			url: new URL("../assets/avatars/avatar2.png", import.meta.url).href,
+			alt: "Default Avatar 2",
+		},
+		{
+			id: "avatar3",
+			url: new URL("../assets/avatars/avatar3.png", import.meta.url).href,
+			alt: "Default Avatar 3",
+		},
+		{
+			id: "avatar4",
+			url: new URL("../assets/avatars/avatar4.png", import.meta.url).href,
+			alt: "Default Avatar 4",
+		},
 	];
 
 	const handleThemeChange = async (newTheme: ThemeType) => {
