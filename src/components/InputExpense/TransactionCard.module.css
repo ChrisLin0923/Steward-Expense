@@ -189,7 +189,7 @@ h2 {
 @media screen and (max-width: 520px) {
 	.cardform {
 		width: 90%;
-		height: 80%;
+		height: fit-content;
 		padding: 0.5rem;
 	}
 
