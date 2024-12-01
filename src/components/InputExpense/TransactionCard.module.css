@@ -190,10 +190,11 @@ h2 {
 	.cardform {
 		width: 90%;
 		height: auto;
-		max-height: 85vh;
+		max-height: 78vh;
 		padding: 0.5rem;
 		border-radius: 16px;
 		transform: none;
+		top: 52%;
 		overflow-y: auto;
 	}
 
@@ -215,7 +216,7 @@ h2 {
 	}
 
 	.formActions {
-		margin-top: 24px;
+		margin-top: 12px;
 		padding-bottom: env(safe-area-inset-bottom);
 	}
 }
