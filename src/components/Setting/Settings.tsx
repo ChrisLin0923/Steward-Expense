@@ -70,6 +70,7 @@ const Settings: React.FC = () => {
 	const [emailCurrentPassword, setEmailCurrentPassword] = useState("");
 	const [passwordCurrentPassword, setPasswordCurrentPassword] = useState("");
 	const [authProvider, setAuthProvider] = useState<string>("");
+	const [selectedAvatar, setSelectedAvatar] = useState("");
 
 	const themeOptions: ThemeOption[] = [
 		{
@@ -344,6 +345,44 @@ const Settings: React.FC = () => {
 	useEffect(() => {
 		setSelectedTheme(theme);
 	}, [theme]);
+
+	const handleAvatarChange = async (selectedAvatar: PresetAvatar) => {
+		try {
+			if (!auth.currentUser?.uid) {
+				throw new Error("No authenticated user found");
+			}
+
+			await FirestoreService.saveUserSetting(auth.currentUser.uid, {
+				avatar: selectedAvatar.url,
+			});
+
+			setSelectedAvatar(selectedAvatar.url);
+			alert("Avatar updated successfully!");
+		} catch (error) {
+			console.error("Error updating avatar:", error);
+			alert("Failed to update avatar. Please try again.");
+		}
+	};
+
+	const fetchCurrentAvatar = async () => {
+		try {
+			if (!auth.currentUser?.uid) return;
+
+			const userSettings = await FirestoreService.getUserSetting(
+				auth.currentUser.uid
+			);
+
+			if (userSettings?.avatar) {
+				setSelectedAvatar(userSettings.avatar);
+			}
+		} catch (error) {
+			console.error("Error fetching avatar:", error);
+		}
+	};
+
+	useEffect(() => {
+		fetchCurrentAvatar();
+	}, []);
 
 	return (
 		<div className={styles.settings}>
