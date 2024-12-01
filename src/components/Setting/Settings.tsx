@@ -21,10 +21,10 @@ import {
 	Flower,
 } from "lucide-react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import Avatar1 from "../../assets/avatars/avatar1.png";
-import Avatar2 from "../../assets/avatars/avatar2.png";
-import Avatar3 from "../../assets/avatars/avatar3.png";
-import Avatar4 from "../../assets/avatars/avatar4.png";
+import avatar1 from "@assets/avatars/avatar1.png";
+import avatar2 from "@assets/avatars/avatar2.png";
+import avatar3 from "@assets/avatars/avatar3.png";
+import avatar4 from "@assets/avatars/avatar4.png";
 import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 interface ThemeOption {
@@ -106,10 +106,10 @@ const Settings: React.FC = () => {
 	];
 
 	const presetAvatars: PresetAvatar[] = [
-		{ id: "avatar1", url: Avatar1, alt: "Default Avatar 1" },
-		{ id: "avatar2", url: Avatar2, alt: "Default Avatar 2" },
-		{ id: "avatar3", url: Avatar3, alt: "Default Avatar 3" },
-		{ id: "avatar4", url: Avatar4, alt: "Default Avatar 4" },
+		{ id: "avatar1", url: avatar1, alt: "Default Avatar 1" },
+		{ id: "avatar2", url: avatar2, alt: "Default Avatar 2" },
+		{ id: "avatar3", url: avatar3, alt: "Default Avatar 3" },
+		{ id: "avatar4", url: avatar4, alt: "Default Avatar 4" },
 	];
 
 	const handleThemeChange = async (newTheme: ThemeType) => {
@@ -345,44 +345,6 @@ const Settings: React.FC = () => {
 	useEffect(() => {
 		setSelectedTheme(theme);
 	}, [theme]);
-
-	const handleAvatarChange = async (selectedAvatar: PresetAvatar) => {
-		try {
-			if (!auth.currentUser?.uid) {
-				throw new Error("No authenticated user found");
-			}
-
-			await FirestoreService.saveUserSetting(auth.currentUser.uid, {
-				avatar: selectedAvatar.url,
-			});
-
-			setSelectedAvatar(selectedAvatar.url);
-			alert("Avatar updated successfully!");
-		} catch (error) {
-			console.error("Error updating avatar:", error);
-			alert("Failed to update avatar. Please try again.");
-		}
-	};
-
-	const fetchCurrentAvatar = async () => {
-		try {
-			if (!auth.currentUser?.uid) return;
-
-			const userSettings = await FirestoreService.getUserSetting(
-				auth.currentUser.uid
-			);
-
-			if (userSettings?.avatar) {
-				setSelectedAvatar(userSettings.avatar);
-			}
-		} catch (error) {
-			console.error("Error fetching avatar:", error);
-		}
-	};
-
-	useEffect(() => {
-		fetchCurrentAvatar();
-	}, []);
 
 	return (
 		<div className={styles.settings}>
