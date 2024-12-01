@@ -5,6 +5,7 @@ import { FirestoreService } from "../../../Backend/config/firestoreService";
 import { auth } from "../../../Backend/config/firebaseConfig";
 import { ThemeType, useTheme } from "../../contexts/ThemeContext";
 import { Moon, Sun, Menu } from "lucide-react"; // Import icons
+import stewardLogo from "@/assets/steward_logo.png";
 
 const Sidebar: React.FC = () => {
 	const [userData, setUserData] = useState<any>(null);
@@ -78,7 +79,7 @@ const Sidebar: React.FC = () => {
 							</button>
 							<div className={styles.logo}>
 								<img
-									src='src/assets/steward_logo.png'
+									src={stewardLogo}
 									alt='Steward Logo'
 									className={styles.stewardlogo}
 								/>
@@ -105,7 +106,7 @@ const Sidebar: React.FC = () => {
 				{!isMobileOrTablet && (
 					<div className={styles.logo}>
 						<img
-							src='src/assets/steward_logo.png'
+							src={stewardLogo}
 							alt='Steward Logo'
 							className={styles.stewardlogo}
 						/>

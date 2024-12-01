@@ -5,7 +5,7 @@
 	height: 100vh; /* Full viewport height */
 	width: 100vw; /* Full viewport width */
 	background-color: var(--bg-primary);
-	background: url("../Dashboard/assets/hero-image.png") center/cover no-repeat,
+	background: url("@/assets/hero-image.png") center/cover no-repeat,
 		var(--bg-primary-transparent);
 	background-blend-mode: overlay;
 	background-size: 200% 200%;
