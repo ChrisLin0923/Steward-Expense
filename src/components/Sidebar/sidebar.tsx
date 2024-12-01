@@ -17,7 +17,7 @@ const Sidebar: React.FC = () => {
 		const userSettings = await FirestoreService.getUserSetting(
 			auth.currentUser?.uid || ""
 		);
-		// setAvatar(userSettings?.avatar || "");
+		setAvatar(userSettings?.avatar || "");
 	};
 
 	fetchAvatarData();
