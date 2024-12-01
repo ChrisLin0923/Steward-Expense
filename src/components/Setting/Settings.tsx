@@ -22,10 +22,10 @@ import {
 } from "lucide-react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
-import avatar1 from "@/assets/avatars/Avatar1.png";
-import avatar2 from "@/assets/avatars/Avatar2.png";
-import avatar3 from "@/assets/avatars/Avatar3.png";
-import avatar4 from "@/assets/avatars/Avatar4.png";
+import avatar1 from "@/assets/avatars/avatar1.png";
+import avatar2 from "@/assets/avatars/avatar2.png";
+import avatar3 from "@/assets/avatars/avatar3.png";
+import avatar4 from "@/assets/avatars/avatar4.png";
 
 interface ThemeOption {
 	id: ThemeType;

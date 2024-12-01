@@ -65,7 +65,7 @@
 	justify-content: center;
 	align-items: center;
 	padding: 120px 50px 50px; /* Increased top padding to account for navbar */
-	background: url("src/assets/hero-image.png") no-repeat center center/cover,
+	background: url("@/assets/hero-image.png") no-repeat center center/cover,
 		linear-gradient(to bottom right, var(--bg-landing), var(--bg-input));
 
 	background-size: 200% 200%;

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import styles from "./LandingPage.module.css"; // Importing the CSS module
+import stewardLogo from "@/assets/steward_logo.png";
 
 const LandingPage: React.FC = () => {
 	const navigate = useNavigate(); // Initialize useNavigate
@@ -15,7 +16,7 @@ const LandingPage: React.FC = () => {
 			<nav className={styles.navbar}>
 				<div className={styles.logo}>
 					<img
-						src='src/assets/steward_logo.png'
+						src={stewardLogo}
 						alt='Steward Logo'
 						className={styles.stewardlogo}
 					/>
