@@ -1,210 +1,214 @@
 .overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s ease-in-out;
-  z-index: 100;
-  pointer-events: none;
+	position: fixed;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.2s ease-in-out;
+	z-index: 100;
+	pointer-events: none;
 }
 
 .cardform {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.95);
-  width: 440px;
-  background-color: var(--bg-white);
-  border-radius: 24px;
-  padding: 32px 40px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  opacity: 0;
-  animation: formAppear 0.2s ease forwards;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) scale(0.95);
+	width: 440px;
+	background-color: var(--bg-white);
+	border-radius: 24px;
+	padding: 32px 40px;
+	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	opacity: 0;
+	animation: formAppear 0.2s ease forwards;
 }
 
 @keyframes formAppear {
-  from {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.95);
-  }
-  to {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
 }
 
 h2 {
-  color: var(--text-primary);
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 32px;
-  text-align: center;
-  letter-spacing: -0.5px;
+	color: var(--text-primary);
+	font-size: 1.75rem;
+	font-weight: 700;
+	margin-bottom: 32px;
+	text-align: center;
+	letter-spacing: -0.5px;
 }
 
 .formGroup {
-  margin-bottom: 28px;
-  position: relative;
+	margin-bottom: 28px;
+	position: relative;
 }
 
 .formGroup label {
-  display: block;
-  margin-bottom: 10px;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: color 0.2s;
+	display: block;
+	margin-bottom: 10px;
+	color: var(--text-secondary);
+	font-size: 0.9rem;
+	font-weight: 600;
+	transition: color 0.2s;
 }
 
 .formGroup input,
 .formGroup select {
-  width: 100%;
-  padding: 14px 18px;
-  border: 2px solid var(--border-light);
-  border-radius: 14px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background-color: var(--bg-white);
-  color: var(--text-primary);
+	width: 100%;
+	padding: 14px 18px;
+	border: 2px solid var(--border-light);
+	border-radius: 14px;
+	font-size: 1rem;
+	transition: all 0.3s ease;
+	background-color: var(--bg-white);
+	color: var(--text-primary);
 }
 
 .formGroup input:hover,
 .formGroup select:hover {
-  border-color: var(--border-focus);
-  background-color: rgba(116, 185, 255, 0.03);
+	border-color: var(--border-focus);
+	background-color: rgba(116, 185, 255, 0.03);
 }
 
 .formGroup input:focus,
 .formGroup select:focus {
-  outline: none;
-  border-color: var(--btn-primary);
-  box-shadow: 0 0 0 4px rgba(116, 185, 255, 0.1);
-  background-color: var(--bg-white);
+	outline: none;
+	border-color: var(--btn-primary);
+	box-shadow: 0 0 0 4px rgba(116, 185, 255, 0.1);
+	background-color: var(--bg-white);
 }
 
 /* Style the select dropdown arrow */
 .formGroup select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23636e72' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 18px center;
-  padding-right: 48px;
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23636e72' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 18px center;
+	padding-right: 48px;
 }
 
 .formActions {
-  display: flex;
-  gap: 16px;
-  margin-top: 36px;
+	display: flex;
+	gap: 16px;
+	margin-top: 36px;
 }
 
 .submitBtn,
 .cancelBtn {
-  flex: 1;
-  padding: 14px;
-  border: none;
-  border-radius: 14px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
+	flex: 1;
+	padding: 14px;
+	border: none;
+	border-radius: 14px;
+	font-weight: 600;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
 .submitBtn {
-  background-color: var(--btn-primary);
-  color: var(--text-white);
-  box-shadow: 0 4px 12px rgba(116, 185, 255, 0.2);
+	background-color: var(--btn-primary);
+	color: var(--text-white);
+	box-shadow: 0 4px 12px rgba(116, 185, 255, 0.2);
 }
 
 .submitBtn:hover {
-  background-color: var(--btn-primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(116, 185, 255, 0.3);
+	background-color: var(--btn-primary-hover);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 16px rgba(116, 185, 255, 0.3);
 }
 
 .submitBtn:active {
-  transform: translateY(0);
+	transform: translateY(0);
 }
 
 .cancelBtn {
-  background-color: var(--bg-secondary);
-  color: var(--text-secondary);
-  border: 2px solid transparent;
+	background-color: var(--bg-secondary);
+	color: var(--text-secondary);
+	border: 2px solid transparent;
 }
 
 .cancelBtn:hover {
-  background-color: var(--bg-white);
-  color: var(--text-primary);
-  border-color: var(--border-light);
+	background-color: var(--bg-white);
+	color: var(--text-primary);
+	border-color: var(--border-light);
 }
 
 .visible {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
 }
 
 .hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
 }
 
 @keyframes fadeIn {
-  from {
-      opacity: 0;
-      transform: translate(-50%, -48%) scale(0.95);
-  }
-  to {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: translate(-50%, -48%) scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
 }
 
 @keyframes fadeOut {
-  from {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-  }
-  to {
-      opacity: 0;
-      transform: translate(-50%, -48%) scale(0.95);
-  }
+	from {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: translate(-50%, -48%) scale(0.95);
+	}
 }
 
 @keyframes fadeBackdrop {
-  from {
-      opacity: 0;
-  }
-  to {
-      opacity: 1;
-  }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 /* Responsive adjustments */
 @media screen and (max-width: 520px) {
-  .cardform {
-      width: 90%;
-      padding: 24px;
-  }
+	.cardform {
+		width: 90%;
+		height: 80%;
+		padding: 0.5rem;
+	}
 
-  h2 {
-      font-size: 1.5rem;
-      margin-bottom: 24px;
-  }
+	h2 {
+		font-size: 1.5rem;
+		margin-bottom: 24px;
+	}
 
-  .formGroup input,
-  .formGroup select,
-  .submitBtn,
-  .cancelBtn {
-      padding: 12px;
-  }
+	.formGroup input,
+	.formGroup select,
+	.submitBtn,
+	.cancelBtn {
+		padding: 0.5rem;
+	}
 }
 
 /* Add styles for the edit form container */
 .editFormContainer {
-  position: fixed;
-  z-index: 101;
-  /* ... other styles ... */
+	position: fixed;
+	z-index: 101;
+	/* ... other styles ... */
 }
