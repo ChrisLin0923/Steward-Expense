@@ -11,6 +11,7 @@ import PieChart from "../Visualizer/PieChart";
 import Sidebar from "../Sidebar/sidebar";
 import LineChart from "../Visualizer/LineChart";
 import BarChart from "../Visualizer/BarChart";
+import { useTheme, ThemeType } from "../../contexts/ThemeContext";
 
 // Add this interface at the top of your file
 interface SavingsGoal {
@@ -45,6 +46,7 @@ const Dashboard: React.FC = () => {
 	const [savingsGoals, setSavingsGoals] = useState<SavingsGoal[]>([]);
 	const navigate = useNavigate(); //Used this to redirect user if not signed in.
 	const [budgetGoals, setBudgetGoals] = useState<BudgetGoalData[]>([]);
+	const { theme, setTheme } = useTheme();
 
 	/**
 	 * Checks if user is logged in
@@ -71,52 +73,44 @@ const Dashboard: React.FC = () => {
 		const loadData = async () => {
 			if (auth.currentUser) {
 				try {
-					// Load user data, transactions, and budget goals simultaneously
-					const [
-						userDataResult,
-						transactions,
-						budgetGoals,
-						savingsGoals,
-					] = await Promise.all([
-						FirestoreService.getUserData(auth.currentUser.uid),
-						FirestoreService.getTransactions(auth.currentUser.uid),
-						FirestoreService.getBudgetGoals(auth.currentUser.uid),
-						FirestoreService.getSavingsGoals(auth.currentUser.uid),
-					]);
+					// Get user data first
+					const userDataResult = await FirestoreService.getUserData(
+						auth.currentUser.uid
+					);
 
-					// Set user data
-					if (userDataResult) {
-						setUserData(userDataResult);
+					// Set theme immediately if it exists
+					if (userDataResult?.theme) {
+						document.documentElement.setAttribute(
+							"data-theme",
+							userDataResult.theme
+						);
+						setTheme(userDataResult.theme);
 					}
 
-					// Set budget goals
-					setBudgetGoals(budgetGoals as BudgetGoalData[]);
+					setUserData(userDataResult);
 
-					// Set savings goals
+					// Load other data in parallel after theme is set
+					const [transactions, budgetGoals, savingsGoals] =
+						await Promise.all([
+							FirestoreService.getTransactions(
+								auth.currentUser.uid
+							),
+							FirestoreService.getBudgetGoals(
+								auth.currentUser.uid
+							),
+							FirestoreService.getSavingsGoals(
+								auth.currentUser.uid
+							),
+						]);
+
+					// Set the rest of your data...
+					setBudgetGoals(budgetGoals as BudgetGoalData[]);
 					setSavingsGoals(
 						savingsGoals.map((sg) => ({
 							...sg,
 							createdAt: sg.createdAt.toDate(),
 						})) as SavingsGoal[]
 					);
-
-					// Set transactions
-					setTransactions(
-						transactions.map((t) => ({
-							...t,
-							userId: auth.currentUser!.uid,
-							currency: t.currency || "USD",
-							status: t.status || "completed",
-							date: t.date.toDate(),
-						})) as TransactionType[]
-					);
-
-					// Calculate and set total savings
-					const totalSavingsAmount = savingsGoals.reduce(
-						(sum, saving) => sum + (saving.amountSaved || 0),
-						0
-					);
-					setTotalSavingsAmount(totalSavingsAmount);
 				} catch (error) {
 					console.error("Error loading data:", error);
 				} finally {

@@ -9,72 +9,110 @@ interface ThemeContextType {
 	setTheme: (theme: ThemeType) => Promise<void>;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+// Create context with a default value
+const ThemeContext = createContext<ThemeContextType>({
+	theme: "light",
+	setTheme: async () => {},
+});
+
+// Helper function to validate theme
+const isValidTheme = (theme: string): theme is ThemeType => {
+	return ["light", "dark", "Sunset", "Ocean", "Olivia"].includes(theme);
+};
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
+	// Initialize with default theme
 	const [theme, setThemeState] = useState<ThemeType>("light");
 	const [isLoading, setIsLoading] = useState(true);
 
-	// Load theme when auth state changes or component mounts
+	// Initialize theme from localStorage or default
 	useEffect(() => {
+		const savedTheme = localStorage.getItem("theme");
+		if (savedTheme && isValidTheme(savedTheme)) {
+			document.documentElement.setAttribute("data-theme", savedTheme);
+			setThemeState(savedTheme);
+		} else {
+			document.documentElement.setAttribute("data-theme", "light");
+		}
+	}, []);
+
+	// Load theme from Firebase when auth state changes
+	useEffect(() => {
+		let isMounted = true;
+
 		const unsubscribe = auth.onAuthStateChanged(async (user) => {
-			if (user) {
+			if (user && isMounted) {
 				try {
-					// Get user settings from Firestore
 					const userSettings = await FirestoreService.getUserSettings(
 						user.uid
 					);
-					if (userSettings?.theme) {
-						setThemeState(userSettings.theme as ThemeType);
+					if (
+						userSettings?.theme &&
+						isValidTheme(userSettings.theme)
+					) {
 						document.documentElement.setAttribute(
 							"data-theme",
 							userSettings.theme
 						);
+						setThemeState(userSettings.theme);
+						localStorage.setItem("theme", userSettings.theme);
 					}
 				} catch (error) {
 					console.error("Error loading theme:", error);
 				}
 			}
-			setIsLoading(false);
+			if (isMounted) {
+				setIsLoading(false);
+			}
 		});
 
-		return () => unsubscribe();
+		return () => {
+			isMounted = false;
+			unsubscribe();
+		};
 	}, []);
 
 	const setTheme = async (newTheme: ThemeType) => {
+		if (!isValidTheme(newTheme)) {
+			throw new Error("Invalid theme type");
+		}
+
+		document.documentElement.setAttribute("data-theme", newTheme);
+		setThemeState(newTheme);
+		localStorage.setItem("theme", newTheme);
+
 		try {
 			const user = auth.currentUser;
 			if (user) {
-				// Save to Firestore
 				await FirestoreService.saveUserSetting(user.uid, {
 					theme: newTheme,
 				});
 			}
-			// Update local state and DOM
-			setThemeState(newTheme);
-			document.documentElement.setAttribute("data-theme", newTheme);
 		} catch (error) {
 			console.error("Error saving theme:", error);
 			throw error;
 		}
 	};
 
+	const value = {
+		theme,
+		setTheme,
+	};
+
 	if (isLoading) {
-		return null; // Or a loading spinner
+		return null;
 	}
 
 	return (
-		<ThemeContext.Provider value={{ theme, setTheme }}>
-			{children}
-		</ThemeContext.Provider>
+		<ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 	);
 };
 
 export const useTheme = () => {
 	const context = useContext(ThemeContext);
-	if (context === undefined) {
+	if (!context) {
 		throw new Error("useTheme must be used within a ThemeProvider");
 	}
 	return context;
