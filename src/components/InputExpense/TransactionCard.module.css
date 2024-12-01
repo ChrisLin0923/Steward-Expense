@@ -186,23 +186,37 @@ h2 {
 }
 
 /* Responsive adjustments */
-@media screen and (max-width: 520px) {
+@media screen and (max-width: 480px) {
 	.cardform {
 		width: 90%;
-		height: fit-content;
+		height: auto;
+		max-height: 85vh;
 		padding: 0.5rem;
+		border-radius: 16px;
+		transform: none;
+		overflow-y: auto;
 	}
 
 	h2 {
-		font-size: 1.5rem;
-		margin-bottom: 24px;
+		font-size: 1.25rem;
+		margin-bottom: 16px;
+	}
+
+	.formGroup {
+		margin-bottom: 16px;
 	}
 
 	.formGroup input,
 	.formGroup select,
 	.submitBtn,
 	.cancelBtn {
-		padding: 0.5rem;
+		padding: 12px;
+		font-size: 16px;
+	}
+
+	.formActions {
+		margin-top: 24px;
+		padding-bottom: env(safe-area-inset-bottom);
 	}
 }
 
