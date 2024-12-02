@@ -279,7 +279,7 @@
 
 	.userInfo {
 		position: fixed;
-		bottom: max(env(safe-area-inset-bottom) + 16px, 24px);
+		bottom: max(env(safe-area-inset-bottom) + 8px, 24px);
 		width: 65%;
 		background: var(--bg-white);
 		padding: 16px;
