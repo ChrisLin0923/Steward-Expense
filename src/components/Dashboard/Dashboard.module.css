@@ -63,13 +63,16 @@ body {
 	pointer-events: none;
 }
 
-.card:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
+/* Apply hover effects only for devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+	.card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	}
 
-.card:hover::after {
-	opacity: 1;
+	.card:hover::after {
+		opacity: 1;
+	}
 }
 
 .fullWidthChart {
@@ -312,35 +315,6 @@ body {
 @keyframes shine {
 	to {
 		background-position-x: -200%;
-	}
-}
-
-/* Add these media queries at the end of the file */
-@media screen and (max-width: 768px) {
-	.dashboard {
-		grid-template-columns: 1fr;
-		height: 100vh; /* Ensure full height on mobile */
-		overflow: scroll;
-	}
-
-	.dashboardContent {
-		width: 100%;
-		padding: 60px 15px 15px 15px;
-		overflow-y: auto;
-		max-height: 100vh; /* Limit height to viewport */
-		overflow: scroll;
-	}
-
-	.topCards {
-		grid-template-columns: 1fr;
-	}
-
-	.charts {
-		grid-template-columns: 1fr;
-	}
-
-	.fullWidthChart {
-		grid-column: auto;
 	}
 }
 
@@ -614,7 +588,7 @@ body {
 	}
 
 	.topCards {
-		grid-template-columns: 1fr; /* Single column for mobile */
+		grid-template-columns: 1fr;
 		gap: 12px;
 	}
 

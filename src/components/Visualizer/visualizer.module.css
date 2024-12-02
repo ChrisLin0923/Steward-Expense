@@ -213,3 +213,14 @@ h4 {
 	stroke-opacity: 0.2;
 	stroke-dasharray: 3 3;
 }
+
+@media (hover: hover) and (pointer: fine) {
+	.card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	}
+
+	.card:hover::after {
+		opacity: 1;
+	}
+}
