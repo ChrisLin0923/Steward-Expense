@@ -22,18 +22,26 @@ body {
 	padding: 1rem;
 	width: 100%;
 	border: 1px solid var(--card-border);
-	transition: all 0.3s ease;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 	overflow: visible !important; /* Allow animations to overflow */
 	position: relative; /* Establish stacking context */
+	transform: none;
+	box-shadow: none;
 }
 
-.card:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 12px 24px var(--card-shadow);
-	border: 1px solid var(--card-border-hover);
+/* Apply hover effects only for devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+	.card {
+		transition: all 0.3s ease;
+	}
+
+	.card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 12px 24px var(--card-shadow);
+		border: 1px solid var(--card-border-hover);
+	}
 }
 
 /* Chart title */
