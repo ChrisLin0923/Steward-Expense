@@ -1,8 +1,11 @@
 html,
 body {
 	height: 100vh;
+	height: -webkit-fill-available; /* For iOS Safari */
 	margin: 0;
 	padding: 0;
+	padding-top: env(safe-area-inset-top);
+	padding-bottom: env(safe-area-inset-bottom);
 	box-sizing: border-box; /* Ensure all elements use border-box sizing */
 	color: var(--text-primary);
 	overflow: hidden;
@@ -17,18 +20,20 @@ body {
 	height: 100%;
 	width: 100%;
 	position: relative;
-	/* overflow: hidden; */
+	padding-top: env(safe-area-inset-top);
+	min-height: -webkit-fill-available;
 }
 
 /* Main content area */
 .dashboardContent {
 	background-color: var(--bg-secondary);
 	padding: 20px;
+	padding-top: max(20px, env(safe-area-inset-top));
 	display: grid;
 	grid-template-rows: auto 1fr; /* Make rows adjust to content */
 	gap: 20px;
 	height: 100vh;
-	/* overflow: hidden; */
+	height: -webkit-fill-available;
 	width: 100%; /* Ensure full width */
 }
 
