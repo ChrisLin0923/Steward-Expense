@@ -667,7 +667,22 @@ const Settings: React.FC = () => {
 								<h3>Contact Developer</h3>
 								<p className={styles.developerContact}>
 									Email:
-									<a href='mailto:chrislinflhs@gmail.com'>
+									<a
+										href='https://mail.google.com/mail/?view=cm&fs=1&to=chrislinflhs@gmail.com&su=Steward%20Expense%20Inquiry&body=Hello%20Chris,'
+										onClick={(e) => {
+											// If Gmail app/web fails, fall back to mailto
+											if (
+												!window.open(
+													e.currentTarget.href,
+													"_blank"
+												)
+											) {
+												window.location.href =
+													"mailto:chrislinflhs@gmail.com";
+											}
+											e.preventDefault();
+										}}
+									>
 										chrislinflhs@gmail.com
 									</a>
 								</p>
