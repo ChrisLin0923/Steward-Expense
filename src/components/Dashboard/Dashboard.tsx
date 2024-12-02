@@ -103,6 +103,9 @@ const Dashboard: React.FC = () => {
 							),
 						]);
 
+					// Add this line to set the transactions
+					setTransactions(transactions);
+
 					// Set the rest of your data...
 					setBudgetGoals(budgetGoals as BudgetGoalData[]);
 					setSavingsGoals(
