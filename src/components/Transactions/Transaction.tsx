@@ -537,7 +537,10 @@ const Transaction: React.FC = () => {
 							>
 								Expenses
 							</button>
-							<div ref={inputButtonRef}>
+							<div
+								className={styles.inputButtonContainer}
+								ref={inputButtonRef}
+							>
 								<InputButton
 									setTransactions={setTransactions}
 									onTransactionAdded={refreshTransactions}

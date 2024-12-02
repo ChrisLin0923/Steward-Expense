@@ -394,6 +394,15 @@ body {
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	}
 
+	/* More specific selector to target the last button */
+	.filterButtons > *:last-child,
+	.filterButtons > *:last-child:focus,
+	.filterButtons > *:last-child:active {
+		box-shadow: none !important;
+		-webkit-tap-highlight-color: transparent;
+		outline: none;
+	}
+
 	/* Ensure the main content doesn't hide dropdowns */
 	.mainContent {
 		overflow: visible !important;
