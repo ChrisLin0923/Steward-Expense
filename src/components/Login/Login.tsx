@@ -6,6 +6,7 @@ import {
 	signInWithEmailAndPassword,
 	signInWithPopup,
 	fetchSignInMethodsForEmail,
+	sendPasswordResetEmail,
 } from "firebase/auth";
 
 /**getDatabase() returns a reference to the firebase realtime database, we use it to establish a connection with the database.
@@ -55,9 +56,22 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 			}
 			//If password & confrimPassword matches, we can call handle register. Since we are under the creating account form.
 			await handleRegister();
+		} else if (showForgotPassword) {
+			await handleForgotPassword(e);
 		} else {
 			//
 			await handleLogin(e); //If we aren't in the creating account form, that means we are signing in, so directly call handleLogin when form is submitted.
+		}
+	};
+
+	const handleForgotPassword = async (e: React.FormEvent) => {
+		e.preventDefault();
+		try {
+			await sendPasswordResetEmail(auth, email);
+			alert("Password reset email sent!");
+			navigate("/login");
+		} catch (error) {
+			console.error("Error sending password reset email:", error);
 		}
 	};
 
@@ -234,11 +248,23 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 		setIsCreatingAccount(!isCreatingAccount);
 	};
 
+	const [showForgotPassword, setShowForgotPassword] = useState(false);
+
+	const toggleForgotPassword = () => {
+		setShowForgotPassword(!showForgotPassword);
+	};
+
 	return (
 		<div className={styles["login-page"]}>
 			<div className={styles.modalWrapper}>
 				<div className={styles.modalContent}>
-					<h2>{isCreatingAccount ? "Create Account" : "Login"}</h2>
+					{showForgotPassword ? (
+						<h2>Forgot Password</h2>
+					) : (
+						<h2>
+							{isCreatingAccount ? "Create Account" : "Login"}
+						</h2>
+					)}
 					<form onSubmit={handleSubmit}>
 						<div>
 							<label>Email</label>
@@ -250,13 +276,19 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 							/>
 						</div>
 						<div>
-							<label>Password</label>
-							<input
-								type='password'
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								required
-							/>
+							{!showForgotPassword && (
+								<>
+									<label>Password</label>
+									<input
+										type='password'
+										value={password}
+										onChange={(e) =>
+											setPassword(e.target.value)
+										}
+										required
+									/>
+								</>
+							)}
 						</div>
 						{isCreatingAccount && (
 							<div>
@@ -289,19 +321,36 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 								/>
 							</div>
 						)}
+
 						<button className={styles.btn} type='submit'>
-							{isCreatingAccount ? "Create Account" : "Sign In"}
+							{isCreatingAccount
+								? "Create Account"
+								: showForgotPassword
+								? "Reset Password"
+								: "Sign In"}
 						</button>
 					</form>
-
-					<button
-						className={styles.btn}
-						onClick={toggleCreateAccount}
-					>
-						{isCreatingAccount
-							? "Already have an account? Sign In"
-							: "Don't have an account? Create one"}
-					</button>
+					{!isCreatingAccount && (
+						<button
+							className={styles.btn}
+							type='button'
+							onClick={toggleForgotPassword}
+						>
+							{showForgotPassword
+								? "Back to Login"
+								: "Forgot Password?"}
+						</button>
+					)}
+					{!showForgotPassword && (
+						<button
+							className={styles.btn}
+							onClick={toggleCreateAccount}
+						>
+							{isCreatingAccount
+								? "Already have an account? Sign In"
+								: "Don't have an account? Create one"}
+						</button>
+					)}
 
 					{/* Add Google Sign In Button */}
 					<button className={styles.btn} onClick={handleGoogleSignIn}>

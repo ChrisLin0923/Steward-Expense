@@ -348,6 +348,7 @@ const Transaction: React.FC = () => {
 				<div className={styles.dateInputGroup}>
 					<label>Start Date</label>
 					<input
+						style={{ width: "100%" }}
 						type='date'
 						value={
 							dateRange[0].startDate.toISOString().split("T")[0]
@@ -369,6 +370,7 @@ const Transaction: React.FC = () => {
 				<div className={styles.dateInputGroup}>
 					<label>End Date</label>
 					<input
+						style={{ width: "100%" }}
 						type='date'
 						value={dateRange[0].endDate.toISOString().split("T")[0]}
 						min={dateRange[0].startDate.toISOString().split("T")[0]}
@@ -388,7 +390,9 @@ const Transaction: React.FC = () => {
 				</div>
 				<button
 					className={styles.applyDateBtn}
-					onClick={() => setShowDatePicker(false)}
+					onClick={() => {
+						setShowDatePicker(false);
+					}}
 				>
 					Apply
 				</button>
