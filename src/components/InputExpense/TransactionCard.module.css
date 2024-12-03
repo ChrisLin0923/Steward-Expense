@@ -2,39 +2,163 @@
 	position: fixed;
 	inset: 0;
 	background-color: rgba(0, 0, 0, 0.5);
-	opacity: 0;
-	visibility: hidden;
-	transition: all 0.2s ease-in-out;
-	z-index: 100;
-	pointer-events: none;
+	backdrop-filter: blur(4px);
+	z-index: 1000;
+	opacity: 1;
+	visibility: visible;
+	animation: fadeInBackdrop 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.overlay.closing {
+	animation: fadeOutBackdrop 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeInBackdrop {
+	0% {
+		background-color: rgba(0, 0, 0, 0);
+		backdrop-filter: blur(0px);
+		opacity: 0;
+	}
+	100% {
+		background-color: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(4px);
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOutBackdrop {
+	from {
+		background-color: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(4px);
+		opacity: 1;
+	}
+	to {
+		background-color: rgba(0, 0, 0, 0);
+		backdrop-filter: blur(0px);
+		opacity: 0;
+	}
 }
 
 .cardform {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	background-color: var(--bg-white);
+	padding: 32px 40px;
+	border-radius: 24px;
+	width: 90%;
+	max-width: 440px;
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, -50%) scale(0.95);
-	width: 440px;
-	background-color: var(--bg-white);
-	border-radius: 24px;
-	padding: 32px 40px;
-	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-	z-index: 1000;
-	opacity: 0;
-	animation: formAppear 0.2s ease forwards;
+	transform: translate(-50%, -50%);
+	z-index: 1001;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-@keyframes formAppear {
+/* Initial state for form elements */
+.cardform form > * {
+	opacity: 0;
+	transform: translateY(20px);
+}
+
+/* Opening animations */
+.cardform.visible form > * {
+	animation: floatIn 0.4s ease forwards;
+}
+
+.cardform.visible form > *:nth-child(1) {
+	animation-delay: 0.1s;
+}
+.cardform.visible form > *:nth-child(2) {
+	animation-delay: 0.15s;
+}
+.cardform.visible form > *:nth-child(3) {
+	animation-delay: 0.2s;
+}
+.cardform.visible form > *:nth-child(4) {
+	animation-delay: 0.25s;
+}
+.cardform.visible form > *:nth-child(5) {
+	animation-delay: 0.3s;
+}
+.cardform.visible form > *:nth-child(6) {
+	animation-delay: 0.35s;
+}
+
+/* Closing animations */
+.cardform.closing {
+	animation: popOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.cardform.closing form > * {
+	animation: floatOut 0.2s ease forwards;
+}
+
+.cardform.closing form > *:nth-child(1) {
+	animation-delay: 0s;
+}
+.cardform.closing form > *:nth-child(2) {
+	animation-delay: 0.03s;
+}
+.cardform.closing form > *:nth-child(3) {
+	animation-delay: 0.06s;
+}
+.cardform.closing form > *:nth-child(4) {
+	animation-delay: 0.09s;
+}
+.cardform.closing form > *:nth-child(5) {
+	animation-delay: 0.12s;
+}
+.cardform.closing form > *:nth-child(6) {
+	animation-delay: 0.15s;
+}
+
+@keyframes floatIn {
 	from {
 		opacity: 0;
-		transform: translate(-50%, -50%) scale(0.95);
+		transform: translateY(20px);
 	}
 	to {
 		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes floatOut {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+}
+
+@keyframes popIn {
+	0% {
+		transform: translate(-50%, -50%) scale(0.95);
+		opacity: 0;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+	}
+	100% {
 		transform: translate(-50%, -50%) scale(1);
+		opacity: 1;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+	}
+}
+
+@keyframes popOut {
+	from {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 1;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+	}
+	to {
+		transform: translate(-50%, -60%) scale(0.95);
+		opacity: 0;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 	}
 }
 
@@ -152,28 +276,6 @@ h2 {
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
-}
-
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-		transform: translate(-50%, -48%) scale(0.95);
-	}
-	to {
-		opacity: 1;
-		transform: translate(-50%, -50%) scale(1);
-	}
-}
-
-@keyframes fadeOut {
-	from {
-		opacity: 1;
-		transform: translate(-50%, -50%) scale(1);
-	}
-	to {
-		opacity: 0;
-		transform: translate(-50%, -48%) scale(0.95);
-	}
 }
 
 @keyframes fadeBackdrop {

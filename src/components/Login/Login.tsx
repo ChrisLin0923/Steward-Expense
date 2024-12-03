@@ -70,6 +70,8 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 			await sendPasswordResetEmail(auth, email);
 			alert("Password reset email sent!");
 			navigate("/login");
+			setIsCreatingAccount(false);
+			setShowForgotPassword(false);
 		} catch (error) {
 			console.error("Error sending password reset email:", error);
 		}
@@ -221,7 +223,6 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 			navigate("/dashboard");
 		} catch (error) {
 			console.error("Error signing in with Google:", error);
-			alert("Google Sign-In failed!");
 		}
 	};
 
