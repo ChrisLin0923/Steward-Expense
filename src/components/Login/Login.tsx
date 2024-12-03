@@ -181,43 +181,56 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 				photoURL: The user's profile picture (if available).
 				emailVerified: A boolean indicating whether the email has been verified.
 			 */
-			const user = result.user;
+			const userData = await FirestoreService.getUserData(
+				result.user.uid
+			);
+			//if userData haven't been set already, then we will set email, firstName, lastName in the database.
+			if (
+				userData &&
+				userData.firstName === "" &&
+				userData.lastName === ""
+			) {
+				const user = result.user;
 
-			const userEmail = user.email; // User's email
-			const userRef = ref(database, "users/" + user.uid);
+				const userEmail = user.email; // User's email
+				const userRef = ref(database, "users/" + user.uid);
 
-			// Get userName and check for null
-			const userName = user.displayName;
+				// Get userName and check for null
+				const userName = user.displayName;
 
-			// Initialize first and last name variables
-			let firstName = "";
-			let lastName = "";
+				// Initialize first and last name variables
+				let firstName = "";
+				let lastName = "";
 
-			if (userName) {
-				//If userName is not empty, we will proceed to split the first and last name to be saved in the database.
-				// Split the display name into first and last names
-				const nameParts = userName.split(" ");
-				firstName = nameParts[0]; // First name
-				lastName =
-					nameParts.length > 1 ? nameParts.slice(1).join(" ") : ""; // Last name (if exists)
-			} else {
-				//Otherwise if it is empty, we will just fill-in default data for the name. User should later be able to change it.
-				// Handle the case where userName is null
-				firstName = "User"; // Default first name or any fallback logic
-				lastName = ""; // You can leave last name empty or set a default value
+				if (userName) {
+					//If userName is not empty, we will proceed to split the first and last name to be saved in the database.
+					// Split the display name into first and last names
+					const nameParts = userName.split(" ");
+					firstName = nameParts[0]; // First name
+					lastName =
+						nameParts.length > 1
+							? nameParts.slice(1).join(" ")
+							: ""; // Last name (if exists)
+				} else {
+					//Otherwise if it is empty, we will just fill-in default data for the name. User should later be able to change it.
+					// Handle the case where userName is null
+					firstName = "User"; // Default first name or any fallback logic
+					lastName = ""; // You can leave last name empty or set a default value
+				}
+
+				// // Save user data to the Realtime Database
+				// await set(userRef, {
+				// 	//userRef is the exact location in the database in which we will write our data. (Think of index)
+				// 	email: userEmail,
+				// 	firstName: firstName,
+				// 	lastName: lastName,
+				// 	last_login: Date.now(), // Store the timestamp of the last login
+				// });
+
+				// Optionally save user data separately, if needed
+				saveUserToDatabase(user.uid, firstName, lastName, userEmail);
 			}
-
-			// // Save user data to the Realtime Database
-			// await set(userRef, {
-			// 	//userRef is the exact location in the database in which we will write our data. (Think of index)
-			// 	email: userEmail,
-			// 	firstName: firstName,
-			// 	lastName: lastName,
-			// 	last_login: Date.now(), // Store the timestamp of the last login
-			// });
-
-			// Optionally save user data separately, if needed
-			saveUserToDatabase(user.uid, firstName, lastName, userEmail);
+			//If userData has been set already, then we will not reset any email, firstName, lastName in the database.
 
 			// Navigate to the dashboard after successful login
 			navigate("/dashboard");

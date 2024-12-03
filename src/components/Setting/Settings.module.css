@@ -59,7 +59,7 @@
 .settingCard {
 	display: flex;
 	flex-direction: column;
-	padding: 1.5rem;
+	padding: 1rem;
 	background: var(--card-bg);
 	border: 1px solid var(--card-border);
 	border-radius: var(--card-radius);
@@ -285,30 +285,23 @@
 }
 
 .avatarWrapper {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 1rem;
-}
-
-.avatar {
+	position: relative;
 	width: 100px;
 	height: 100px;
 	border-radius: 50%;
-	object-fit: cover;
-	border: 2px solid var(--border-light);
+	overflow: hidden;
+	cursor: pointer;
 }
 
+.avatar,
 .avatarPlaceholder {
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
-	background: var(--bg-secondary);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: var(--text-secondary);
-	border: 2px solid var(--border-light);
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.uploadOverlay:hover {
+	background: rgba(0, 0, 0, 0.7);
 }
 
 .changeAvatarButton {
@@ -326,10 +319,6 @@
 
 .changeAvatarButton:hover {
 	background: var(--bg-secondary);
-}
-
-.hiddenInput {
-	display: none;
 }
 
 .formGroup {
@@ -423,11 +412,10 @@
 }
 
 .presetAvatars {
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
 	gap: 1rem;
-	margin: 1rem 0;
-	justify-content: center;
-	flex-wrap: wrap;
+	margin-top: 1rem;
 }
 
 .presetAvatar {
@@ -435,14 +423,21 @@
 	height: 60px;
 	border-radius: 50%;
 	border: 2px solid var(--border-light);
-	overflow: hidden;
 	padding: 0;
+	overflow: hidden;
 	cursor: pointer;
 	transition: all 0.2s ease;
+	background: var(--bg-secondary);
 }
 
 .presetAvatar:hover {
 	transform: scale(1.1);
+	border-color: var(--btn-primary);
+}
+
+.presetAvatar.selectedAvatar {
+	border-color: var(--btn-primary);
+	box-shadow: 0 0 0 2px var(--btn-primary-rgb);
 }
 
 .presetAvatar img {
@@ -693,14 +688,14 @@
 /* Mobile styles */
 @media screen and (max-width: 480px) {
 	.settings {
-		height: 100vh;
-		overflow: hidden;
+		height: 100%;
+		overflow: scroll;
 	}
 
 	.settingsContent {
 		padding: 1rem;
 		padding-top: 60px;
-		height: calc(100vh - 60px);
+		height: 100%;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
 	}
@@ -746,4 +741,36 @@
 	.settingsContent > *:last-child {
 		margin-bottom: 2rem;
 	}
+}
+
+.avatarControls {
+	display: flex;
+	justify-content: center;
+	margin: 1rem 0;
+}
+
+.shuffleButton {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 1rem;
+	border-radius: 8px;
+	border: 1px solid var(--border-light);
+	background: var(--bg-white);
+	color: var(--text-primary);
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.shuffleButton:hover {
+	background: var(--bg-secondary);
+	transform: scale(1.05);
+}
+
+.shuffleButton svg {
+	transition: transform 0.3s ease;
+}
+
+.shuffleButton:hover svg {
+	transform: rotate(180deg);
 }

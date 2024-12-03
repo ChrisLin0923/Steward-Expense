@@ -10,8 +10,7 @@ import {
 	Key,
 	Palette,
 	LifeBuoy,
-	AlertCircle,
-	Camera,
+	Shuffle,
 	ChevronRight,
 	Sun,
 	Monitor,
@@ -20,7 +19,6 @@ import {
 	Waves,
 	Flower,
 } from "lucide-react";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 interface ThemeOption {
@@ -62,11 +60,29 @@ const Settings: React.FC = () => {
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [isSaving, setIsSaving] = useState(false);
-	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [emailCurrentPassword, setEmailCurrentPassword] = useState("");
 	const [passwordCurrentPassword, setPasswordCurrentPassword] = useState("");
 	const [authProvider, setAuthProvider] = useState<string>("");
-	const [selectedAvatar, setSelectedAvatar] = useState("");
+	const [avatarSeeds, setAvatarSeeds] = useState({
+		adventurer: "felix",
+		bottts: "bella",
+		lorelei: "luna",
+		pixelArt: "oliver",
+		thumbs: "milo",
+		funEmoji: "leo",
+	});
+
+	const shuffleAvatars = () => {
+		const newSeeds = {
+			adventurer: Math.random().toString(36).substring(7),
+			bottts: Math.random().toString(36).substring(7),
+			lorelei: Math.random().toString(36).substring(7),
+			pixelArt: Math.random().toString(36).substring(7),
+			thumbs: Math.random().toString(36).substring(7),
+			funEmoji: Math.random().toString(36).substring(7),
+		};
+		setAvatarSeeds(newSeeds);
+	};
 
 	const themeOptions: ThemeOption[] = [
 		{
@@ -104,31 +120,35 @@ const Settings: React.FC = () => {
 	const presetAvatars: PresetAvatar[] = [
 		{
 			id: "avatar1",
-			url: "/images/avatars/Avatar1.png",
-			alt: "Default Avatar 1",
+			url: `https://api.dicebear.com/7.x/adventurer/svg?seed=${avatarSeeds.adventurer}&backgroundColor=b6e3f4,c0aede,d1d4f9&radius=50`,
+			alt: "Adventurer Style",
 		},
 		{
 			id: "avatar2",
-			url: "/images/avatars/Avatar2.png",
-			alt: "Default Avatar 2",
+			url: `https://api.dicebear.com/7.x/bottts/svg?seed=${avatarSeeds.bottts}&backgroundColor=b6e3f4,c0aede,d1d4f9&radius=50`,
+			alt: "Robot Style",
 		},
 		{
 			id: "avatar3",
-			url: "/images/avatars/Avatar3.png",
-			alt: "Default Avatar 3",
+			url: `https://api.dicebear.com/7.x/lorelei/svg?seed=${avatarSeeds.lorelei}&backgroundColor=b6e3f4,c0aede,d1d4f9&radius=50`,
+			alt: "Lorelei Style",
 		},
 		{
 			id: "avatar4",
-			url: "/images/avatars/Avatar4.png",
-			alt: "Default Avatar 4",
+			url: `https://api.dicebear.com/7.x/pixel-art/svg?seed=${avatarSeeds.pixelArt}&backgroundColor=b6e3f4,c0aede,d1d4f9&radius=50`,
+			alt: "Pixel Art Style",
+		},
+		{
+			id: "avatar5",
+			url: `https://api.dicebear.com/7.x/thumbs/svg?seed=${avatarSeeds.thumbs}&backgroundColor=b6e3f4,c0aede,d1d4f9&radius=50`,
+			alt: "Thumbs Style",
+		},
+		{
+			id: "avatar6",
+			url: `https://api.dicebear.com/7.x/fun-emoji/svg?seed=${avatarSeeds.funEmoji}&backgroundColor=b6e3f4,c0aede,d1d4f9&radius=50`,
+			alt: "Fun Emoji Style",
 		},
 	];
-
-	console.log(
-		"Avatar paths:",
-		presetAvatars.map((a) => a.url)
-	);
-
 	const handleThemeChange = async (newTheme: ThemeType) => {
 		try {
 			setSelectedTheme(newTheme);
@@ -406,6 +426,16 @@ const Settings: React.FC = () => {
 												<User size={40} />
 											</div>
 										)}
+									</div>
+									<div className={styles.avatarControls}>
+										<button
+											className={styles.shuffleButton}
+											onClick={shuffleAvatars}
+											title='Generate new avatars'
+										>
+											<Shuffle size={20} />
+											Shuffle Avatars
+										</button>
 									</div>
 									<div className={styles.presetAvatars}>
 										{presetAvatars.map((avatar) => (
