@@ -57,6 +57,12 @@
 	padding: 0;
 }
 
+.userInfo:hover {
+	cursor: pointer;
+	background: rgba(255, 255, 255, 0.1);
+	scale: 1.01;
+}
+
 .userInfo .avatar {
 	width: 36px;
 	height: 36px;
@@ -267,6 +273,7 @@
 		height: calc(100vh - env(safe-area-inset-bottom));
 		display: flex;
 		flex-direction: column;
+		overflow-y: auto !important;
 	}
 
 	.navigation {
@@ -284,6 +291,17 @@
 		padding: 16px;
 		border-top: 1px solid var(--border-light);
 		z-index: 1003;
+	}
+}
+
+@media screen and (orientation: landscape) and (max-width: 1000px) {
+	.sidebar {
+		margin-top: 0;
+		padding-top: 2rem;
+	}
+
+	.userInfo {
+		bottom: max(env(safe-area-inset-bottom) + 16px, 50px);
 	}
 }
 

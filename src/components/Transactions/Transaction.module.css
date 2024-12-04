@@ -83,7 +83,7 @@ body {
 
 .filterBtn.active {
 	background-color: var(--btn-primary);
-	color: var(--text-white);
+	color: var(--btn-text);
 }
 
 .transactionList {
@@ -285,7 +285,7 @@ body {
 
 .tag {
 	background-color: var(--btn-primary);
-	color: var(--text-white);
+	color: var(--btn-text);
 	border-radius: 1rem;
 	padding: 0.2rem 0.5rem;
 	font-weight: 500;
@@ -293,9 +293,8 @@ body {
 
 .transactionCard.expense .tag {
 	background-color: var(--btn-primary);
-	color: var(--text-white);
+	color: var(--btn-text);
 }
-
 /* Add these media queries at the end of the file */
 @media screen and (max-width: 768px) {
 	.transaction {
@@ -492,6 +491,338 @@ body {
 		background: rgba(0, 0, 0, 0.5);
 		backdrop-filter: blur(2px);
 	}
+	/* Container for mobile */
+	.datePickerContainer {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -40%);
+		opacity: 0;
+		width: 90%;
+		max-width: 340px;
+		margin: 0;
+		background: var(--bg-white);
+		border-radius: 16px;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+		padding: 20px;
+		z-index: 1001;
+		animation: slideInFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	}
+
+	@keyframes slideInFade {
+		0% {
+			opacity: 0;
+			transform: translate(-50%, -40%);
+		}
+		100% {
+			opacity: 1;
+			transform: translate(-50%, -50%);
+		}
+	}
+}
+
+/* Style improvements for the mobile picker */
+.mobileDatePicker {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.datePickerHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.datePickerHeader h3 {
+	font-size: 18px;
+	font-weight: 600;
+	color: var(--text-primary);
+	margin: 0;
+}
+
+.closeButton {
+	background: none;
+	border: none;
+	color: var(--text-secondary);
+	padding: 8px;
+	cursor: pointer;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+	background: var(--border-light);
+}
+
+.dateInputGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.dateInputGroup label {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-secondary);
+}
+
+.dateInputGroup input {
+	padding: 14px;
+	border: 1px solid var(--border-light);
+	border-radius: 12px;
+	font-size: 16px;
+	width: 100%;
+	background: var(--bg-white);
+	color: var(--text-primary);
+	transition: all 0.2s ease;
+}
+
+@media screen and (max-width: 480px) {
+	.controls {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		padding: 0.5rem;
+		width: 100%;
+	}
+
+	/* Search bar styling */
+	.searchBar {
+		width: 100%;
+		margin-bottom: 0.5rem;
+	}
+
+	.searchBar input {
+		width: 100%;
+		padding: 0.75rem;
+		border-radius: 12px;
+		background-color: var(--bg-input);
+		border: 1px solid var(--border-light);
+		color: var(--text-primary);
+	}
+
+	/* Filter buttons container */
+	.filterButtons {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	/* Individual filter buttons */
+	.filterBtn {
+		font-size: 0.9rem;
+		padding: 0.75rem;
+		width: 100%;
+		text-align: center;
+		border-radius: 12px;
+		background-color: var(--bg-input);
+		color: var(--text-primary);
+		border: 1px solid var(--border-light);
+	}
+
+	/* Make Date Range and Add Transaction span full width */
+	.filterBtn.dateRange,
+	.addButton {
+		grid-column: 1 / -1;
+	}
+
+	/* Active state for filter buttons */
+	.filterBtn.active {
+		background-color: var(--btn-primary);
+		color: var(--btn-text);
+		border-color: var(--btn-primary);
+	}
+
+	/* Transaction list styling */
+	.transactionList {
+		margin-top: 1rem;
+		padding: 0 0.5rem;
+	}
+
+	.transactionCard {
+		margin-bottom: 0.5rem;
+		padding: 1rem;
+		border-radius: 12px;
+	}
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+
+.transaction:hover .actions {
+	opacity: 1;
+}
+
+.datePickerContainer :global(.rdrStaticRange) {
+	border-radius: 6px;
+	background: transparent;
+	padding: 5px 8px;
+	margin: 4px 8px;
+	transition: all 0.2s ease;
+}
+
+.datePickerContainer :global(.rdrStaticRange:hover) {
+	background: #f0f5ff;
+	color: #0052cc;
+}
+
+.datePickerContainer :global(.rdrStaticRangeLabel) {
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.datePickerContainer :global(.rdrStaticRangeSelected) {
+	background: #e6effd;
+	color: #0052cc;
+	border-left: 3px solid #0052cc;
+}
+
+/* tablet */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+	.transaction {
+		grid-template-columns: 1fr;
+	}
+	.mainContent {
+		width: 100%;
+		padding-top: 60px;
+	}
+
+	.controls {
+		flex-direction: column;
+	}
+}
+
+/* Landscape Mobile (481px - 768px) */
+@media screen and (orientation: landscape) and (max-width: 1200px) {
+	.transaction {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+		width: 100% !important;
+		height: auto;
+		padding: 1rem;
+		overflow-y: auto;
+	}
+
+	.mainContent {
+		flex: 1;
+		height: auto;
+		overflow: visible;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.header h1 {
+		font-size: 1.5rem;
+		margin-bottom: 1rem;
+	}
+
+	/* Controls section */
+	.controls {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-bottom: 1rem;
+	}
+	.searchBar {
+		width: 50%;
+	}
+
+	.searchBar input {
+		width: 100%;
+		padding: 0.5rem;
+		height: 36px;
+		font-size: 0.9rem;
+		border-radius: 6px;
+	}
+
+	.filterButtons {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.filterBtn {
+		padding: 0.5rem 1rem;
+		font-size: 0.9rem;
+		border-radius: 6px;
+	}
+
+	/* Transaction list */
+	.transactionList {
+		width: 100%;
+
+		min-height: min-content;
+		overflow: visible;
+	}
+
+	.transactionCard {
+		padding: 0.75rem;
+		margin-bottom: 0.5rem;
+		border-radius: 8px;
+		width: 100%;
+	}
+
+	.mobileDatePicker {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.dateInputGroup {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.dateInputGroup label {
+		font-size: 14px;
+		color: var(--text-secondary);
+	}
+
+	.dateInputGroup input {
+		padding: 12px;
+		border: 1px solid var(--border-light);
+		border-radius: 8px;
+		font-size: 16px; /* Better for mobile tapping */
+		width: 100%;
+	}
+
+	.applyDateBtn {
+		background: var(--btn-primary);
+		color: white;
+		border: none;
+		padding: 12px;
+		border-radius: 8px;
+		font-size: 16px;
+		font-weight: 500;
+		margin-top: 8px;
+	}
+
+	/* Overlay for mobile */
+	.overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0);
+		z-index: 1000;
+		backdrop-filter: blur(0px);
+		transition: all 0.3s ease-out;
+	}
+
+	.overlay.visible {
+		background: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(2px);
+	}
 
 	/* Container for mobile */
 	.datePickerContainer {
@@ -604,55 +935,5 @@ body {
 
 	.applyDateBtn:hover {
 		background: var(--btn-primary-hover);
-	}
-}
-
-.actions {
-	display: flex;
-	align-items: center;
-	opacity: 0;
-	transition: opacity 0.2s ease;
-}
-
-.transaction:hover .actions {
-	opacity: 1;
-}
-
-.datePickerContainer :global(.rdrStaticRange) {
-	border-radius: 6px;
-	background: transparent;
-	padding: 5px 8px;
-	margin: 4px 8px;
-	transition: all 0.2s ease;
-}
-
-.datePickerContainer :global(.rdrStaticRange:hover) {
-	background: #f0f5ff;
-	color: #0052cc;
-}
-
-.datePickerContainer :global(.rdrStaticRangeLabel) {
-	font-weight: 500;
-	font-size: 14px;
-}
-
-.datePickerContainer :global(.rdrStaticRangeSelected) {
-	background: #e6effd;
-	color: #0052cc;
-	border-left: 3px solid #0052cc;
-}
-
-/* tablet */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-	.transaction {
-		grid-template-columns: 1fr;
-	}
-	.mainContent {
-		width: 100%;
-		padding-top: 60px;
-	}
-
-	.controls {
-		flex-direction: column;
 	}
 }

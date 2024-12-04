@@ -243,6 +243,15 @@ export default function TransactionCard({
 							id='date'
 							name='date'
 							value={formData.date}
+							max={
+								new Date(
+									new Date().getFullYear(),
+									new Date().getMonth(),
+									new Date().getDate()
+								)
+									.toISOString()
+									.split("T")[0]
+							}
 							onChange={handleChange}
 							required
 						/>

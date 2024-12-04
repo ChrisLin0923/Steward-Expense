@@ -4,6 +4,12 @@ import { X } from "lucide-react";
 import BudgetProgressBar from "./ProgressBar";
 import SavingsProgressBar from "./ProgressBar";
 import { Timestamp } from "firebase/firestore";
+import {
+	toLocalDate,
+	formatDate,
+	startOfDay,
+	endOfDay,
+} from "../../utils/dateUtils";
 
 interface Transaction {
 	id: string;
@@ -107,78 +113,152 @@ const BudgetGoalDetail: React.FC<{
 	goal: BudgetGoal;
 	transactions?: Transaction[];
 }> = ({ goal, transactions }) => {
-	const percentageUsed = Math.round(
-		(goal.currentAmount / goal.targetAmount) * 100
-	);
-
+	// Helper function to check if a transaction falls within the current period
 	const isTransactionInCurrentPeriod = (
 		transactionDate: Date,
 		intervalType: string,
 		startDate: Date
-	): boolean => {
-		const normalizeDate = (date: Date) => {
-			const d = new Date(date);
-			d.setHours(0, 0, 0, 0);
-			return d;
-		};
+	) => {
+		const localNow = new Date();
+		const localTransactionDate = new Date(transactionDate);
+		const start = new Date(startDate);
 
-		const txDate = normalizeDate(transactionDate);
-		const start = normalizeDate(startDate);
-		const now = normalizeDate(new Date());
-
-		// Find the current period's start date based on today
-		const getCurrentPeriodStart = () => {
-			const currentDate = new Date(now);
-			switch (intervalType) {
-				case "daily":
-					return currentDate;
-				case "weekly":
-					currentDate.setDate(
-						currentDate.getDate() - currentDate.getDay()
-					);
-					return currentDate;
-				case "monthly":
-					currentDate.setDate(start.getDate());
-					if (currentDate > now) {
-						currentDate.setMonth(currentDate.getMonth() - 1);
-					}
-					return currentDate;
-				case "yearly":
-					currentDate.setMonth(start.getMonth());
-					currentDate.setDate(start.getDate());
-					if (currentDate > now) {
-						currentDate.setFullYear(currentDate.getFullYear() - 1);
-					}
-					return currentDate;
-				default:
-					return start;
-			}
-		};
-
-		const currentPeriodStart = getCurrentPeriodStart();
-		const currentPeriodEnd = new Date(currentPeriodStart);
-
-		switch (intervalType) {
-			case "daily":
-				currentPeriodEnd.setDate(currentPeriodEnd.getDate() + 1);
-				break;
-			case "weekly":
-				currentPeriodEnd.setDate(currentPeriodEnd.getDate() + 7);
-				break;
-			case "monthly":
-				currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1);
-				break;
-			case "yearly":
-				currentPeriodEnd.setFullYear(
-					currentPeriodEnd.getFullYear() + 1
+		// Calculate current period's start and end dates
+		const getCurrentPeriodBounds = () => {
+			if (intervalType.toLowerCase() === "daily") {
+				const todayStart = new Date(
+					localNow.getFullYear(),
+					localNow.getMonth(),
+					localNow.getDate(),
+					0,
+					0,
+					0
 				);
-				break;
-			case "once":
-				return txDate >= start;
-		}
+				const todayEnd = new Date(
+					localNow.getFullYear(),
+					localNow.getMonth(),
+					localNow.getDate(),
+					23,
+					59,
+					59,
+					999
+				);
 
-		return txDate >= currentPeriodStart && txDate < currentPeriodEnd;
+				console.log("Daily period bounds:", {
+					periodStart: todayStart.toLocaleString(),
+					periodEnd: todayEnd.toLocaleString(),
+					now: localNow.toLocaleString(),
+					transactionDate: localTransactionDate.toLocaleString(),
+				});
+
+				return { periodStart: todayStart, periodEnd: todayEnd };
+			}
+
+			let periodStart = new Date(start);
+			let periodEnd = new Date(start);
+
+			// Move end date to end of first period
+			switch (intervalType.toLowerCase()) {
+				case "weekly":
+					periodEnd.setDate(periodEnd.getDate() + 7);
+					periodEnd = endOfDay(periodEnd);
+					break;
+				case "monthly":
+					periodEnd.setMonth(periodEnd.getMonth() + 1);
+					periodEnd = endOfDay(periodEnd);
+					break;
+				case "yearly":
+					periodEnd.setFullYear(periodEnd.getFullYear() + 1);
+					periodEnd = endOfDay(periodEnd);
+					break;
+			}
+
+			// Keep moving both dates forward until we find the period containing now
+			while (localNow > periodEnd) {
+				periodStart = new Date(periodEnd);
+				switch (intervalType.toLowerCase()) {
+					case "weekly":
+						periodEnd.setDate(periodEnd.getDate() + 7);
+						break;
+					case "monthly":
+						periodEnd.setMonth(periodEnd.getMonth() + 1);
+						break;
+					case "yearly":
+						periodEnd.setFullYear(periodEnd.getFullYear() + 1);
+						break;
+				}
+				periodEnd = endOfDay(periodEnd);
+			}
+
+			return { periodStart, periodEnd };
+		};
+
+		switch (intervalType.toLowerCase()) {
+			case "daily":
+			case "weekly":
+			case "monthly":
+			case "yearly": {
+				const { periodStart, periodEnd } = getCurrentPeriodBounds();
+				const isInPeriod =
+					localTransactionDate >= periodStart &&
+					localTransactionDate <= periodEnd;
+				return isInPeriod;
+			}
+			case "once":
+				return localTransactionDate >= start;
+			default:
+				return false;
+		}
 	};
+
+	// Calculate current amount from related transactions
+	const currentAmount =
+		transactions
+			?.filter((transaction) => {
+				// Convert transaction date to local date
+				const localTransactionDate = new Date(
+					new Date(transaction.date).toLocaleString("en-US", {
+						timeZone:
+							Intl.DateTimeFormat().resolvedOptions().timeZone,
+					})
+				);
+
+				const isInPeriod = isTransactionInCurrentPeriod(
+					localTransactionDate,
+					goal.interval.type,
+					goal.interval.startDate
+				);
+
+				const hasMatchingTag = transaction.tags?.some((tag) =>
+					goal.tags.some((goalTag) =>
+						typeof goalTag === "string"
+							? goalTag === tag
+							: goalTag.name === tag
+					)
+				);
+
+				console.log("Transaction filter:", {
+					originalDate: transaction.date.toLocaleString(),
+					localDate: localTransactionDate.toLocaleString(),
+					isInPeriod,
+					hasMatchingTag,
+					amount: transaction.amount,
+					tags: transaction.tags,
+				});
+
+				return (
+					transaction.type === "expense" &&
+					hasMatchingTag &&
+					isInPeriod
+				);
+			})
+			.reduce((sum, transaction) => sum + transaction.amount, 0) || 0;
+
+	console.log("Current amount calculated:", currentAmount);
+
+	const percentageUsed = Math.round(
+		(currentAmount / goal.targetAmount) * 100
+	);
 
 	const relevantTransactions = transactions?.filter((transaction) => {
 		const isInPeriod = isTransactionInCurrentPeriod(
@@ -206,7 +286,7 @@ const BudgetGoalDetail: React.FC<{
 			<div className={styles.summary}>
 				<div className={styles.amounts}>
 					<span className={styles.current}>
-						${goal.currentAmount.toLocaleString()}
+						${currentAmount.toLocaleString()}
 					</span>
 					<span className={styles.separator}>/</span>
 					<span className={styles.target}>
@@ -379,21 +459,16 @@ const SavingsGoalDetail: React.FC<{ goal: SavingsGoalData }> = ({ goal }) => {
 										<span
 											className={styles.contributionDate}
 										>
-											{contribution.date instanceof
-											Timestamp
-												? contribution.date
-														.toDate()
-														.toLocaleDateString(
-															"en-US",
-															{
-																month: "short",
-																day: "numeric",
-																year: "numeric",
-															}
-														)
-												: new Date(
-														contribution.date
-												  ).toLocaleDateString()}
+											{new Date(
+												contribution.date
+											).toLocaleDateString("en-US", {
+												month: "short",
+												day: "numeric",
+												year: "numeric",
+												timeZone:
+													Intl.DateTimeFormat().resolvedOptions()
+														.timeZone,
+											})}
 										</span>
 										<span
 											className={

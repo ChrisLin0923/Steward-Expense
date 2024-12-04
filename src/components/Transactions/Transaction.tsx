@@ -24,6 +24,7 @@ import EditTransactionCard from "./EditTransactionCard";
 import MeatballMenu from "./MeatballMenu";
 import { Pencil, Trash2 } from "lucide-react";
 import InputButton from "../InputExpense/InputButton";
+import { startOfDay, endOfDay, toLocalDate } from "../../utils/dateUtils";
 
 const Transaction: React.FC = () => {
 	// State Management
@@ -53,13 +54,28 @@ const Transaction: React.FC = () => {
 			endDate: Date;
 			key: string;
 		}[]
-	>([
-		{
-			startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)), // 1 months ago
-			endDate: new Date(), // Today
-			key: "selection",
-		},
-	]);
+	>(() => {
+		const today = new Date();
+		const lastMonth = new Date(today);
+		lastMonth.setMonth(lastMonth.getMonth() - 1);
+
+		// Set to start of last month
+		const startDate = new Date(
+			lastMonth.getFullYear(),
+			lastMonth.getMonth(),
+			1
+		);
+		// Set to end of current day
+		const endDate = endOfDay(today);
+
+		return [
+			{
+				startDate,
+				endDate,
+				key: "selection",
+			},
+		];
+	});
 
 	// Toggle visibility of date picker
 	const [showDatePicker, setShowDatePicker] = useState(false);
@@ -71,12 +87,14 @@ const Transaction: React.FC = () => {
 	const inputButtonRef = useRef<HTMLDivElement>(null);
 
 	// Add this state to track screen width
-	const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
+	const [isMobile, setIsMobile] = useState(
+		window.innerWidth <= 768 || window.innerWidth <= 1000
+	);
 
 	// Add this useEffect to handle window resizing
 	useEffect(() => {
 		const handleResize = () => {
-			setIsMobile(window.innerWidth <= 480);
+			setIsMobile(window.innerWidth <= 768 || window.innerWidth <= 1000);
 		};
 
 		window.addEventListener("resize", handleResize);
@@ -178,8 +196,10 @@ const Transaction: React.FC = () => {
 				currency: t.currency || "USD",
 				status: t.status || "completed",
 				date: new Date(
-					t.date.toDate().getTime() +
-						new Date().getTimezoneOffset() * 60000
+					new Date(t.date.toDate()).toLocaleString("en-US", {
+						timeZone:
+							Intl.DateTimeFormat().resolvedOptions().timeZone,
+					})
 				),
 			})) as TransactionType[];
 		} catch (error) {
@@ -334,6 +354,8 @@ const Transaction: React.FC = () => {
 
 	// Update the DatePickerMobile component
 	const DatePickerMobile = () => {
+		const maxDate = startOfDay(new Date()); // Use startOfDay for consistent comparison
+
 		return (
 			<div className={styles.mobileDatePicker}>
 				<div className={styles.datePickerHeader}>
@@ -353,10 +375,9 @@ const Transaction: React.FC = () => {
 						value={
 							dateRange[0].startDate.toISOString().split("T")[0]
 						}
-						max={dateRange[0].endDate.toISOString().split("T")[0]}
+						max={maxDate.toISOString().split("T")[0]}
 						onChange={(e) => {
-							const start = new Date(e.target.value);
-							start.setHours(0, 0, 0, 0);
+							const start = startOfDay(new Date(e.target.value));
 							setDateRange([
 								{
 									...dateRange[0],
@@ -374,10 +395,9 @@ const Transaction: React.FC = () => {
 						type='date'
 						value={dateRange[0].endDate.toISOString().split("T")[0]}
 						min={dateRange[0].startDate.toISOString().split("T")[0]}
-						max={new Date().toISOString().split("T")[0]}
+						max={maxDate.toISOString().split("T")[0]}
 						onChange={(e) => {
-							const end = new Date(e.target.value);
-							end.setHours(23, 59, 59, 999);
+							const end = endOfDay(new Date(e.target.value));
 							setDateRange([
 								{
 									...dateRange[0],
@@ -390,9 +410,7 @@ const Transaction: React.FC = () => {
 				</div>
 				<button
 					className={styles.applyDateBtn}
-					onClick={() => {
-						setShowDatePicker(false);
-					}}
+					onClick={() => setShowDatePicker(false)}
 				>
 					Apply
 				</button>

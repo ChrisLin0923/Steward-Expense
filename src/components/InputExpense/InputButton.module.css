@@ -10,7 +10,8 @@
 	align-items: center;
 	gap: 8px;
 	background-color: var(--btn-primary);
-	color: white;
+	color: var(--btn-text);
+	font-weight: 800;
 	padding: 1rem 1.2rem;
 	border: none;
 	border-radius: 8px;

@@ -12,6 +12,12 @@ import Sidebar from "../Sidebar/sidebar";
 import LineChart from "../Visualizer/LineChart";
 import BarChart from "../Visualizer/BarChart";
 import { useTheme, ThemeType } from "../../contexts/ThemeContext";
+import {
+	formatDate,
+	toLocalDate,
+	startOfDay,
+	endOfDay,
+} from "../../utils/dateUtils";
 
 // Add this interface at the top of your file
 interface SavingsGoal {
@@ -187,14 +193,14 @@ const Dashboard: React.FC = () => {
 
 	const getTimeProgress = () => {
 		const today = new Date();
+		const lastDayOfMonth = new Date(
+			today.getFullYear(),
+			today.getMonth() + 1,
+			0
+		);
+		lastDayOfMonth.setHours(23, 59, 59, 999);
 		const monthProgress =
-			(today.getDate() /
-				new Date(
-					today.getFullYear(),
-					today.getMonth() + 1,
-					0
-				).getDate()) *
-			100;
+			(today.getTime() / lastDayOfMonth.getTime()) * 100;
 		return monthProgress;
 	};
 
@@ -246,8 +252,9 @@ const Dashboard: React.FC = () => {
 		intervalType: string,
 		startDate: Date
 	): boolean => {
-		const now = new Date();
-		const start = new Date(startDate);
+		const now = toLocalDate(new Date());
+		const start = toLocalDate(startDate);
+		const localTransactionDate = toLocalDate(transactionDate);
 
 		switch (intervalType) {
 			case "daily":
@@ -260,8 +267,8 @@ const Dashboard: React.FC = () => {
 				const currentPeriodEnd = new Date(currentPeriodStart);
 				currentPeriodEnd.setDate(currentPeriodStart.getDate() + 1);
 				return (
-					transactionDate >= currentPeriodStart &&
-					transactionDate < currentPeriodEnd
+					localTransactionDate >= currentPeriodStart &&
+					localTransactionDate < currentPeriodEnd
 				);
 
 			case "weekly":
@@ -275,8 +282,8 @@ const Dashboard: React.FC = () => {
 				const currentWeekEnd = new Date(currentWeekStart);
 				currentWeekEnd.setDate(currentWeekStart.getDate() + 7);
 				return (
-					transactionDate >= currentWeekStart &&
-					transactionDate < currentWeekEnd
+					localTransactionDate >= currentWeekStart &&
+					localTransactionDate < currentWeekEnd
 				);
 
 			case "monthly":
@@ -292,8 +299,8 @@ const Dashboard: React.FC = () => {
 					start.getDate()
 				);
 				return (
-					transactionDate >= currentMonthStart &&
-					transactionDate < currentMonthEnd
+					localTransactionDate >= currentMonthStart &&
+					localTransactionDate < currentMonthEnd
 				);
 
 			case "yearly":
@@ -309,12 +316,12 @@ const Dashboard: React.FC = () => {
 					start.getDate()
 				);
 				return (
-					transactionDate >= currentYearStart &&
-					transactionDate < currentYearEnd
+					localTransactionDate >= currentYearStart &&
+					localTransactionDate < currentYearEnd
 				);
 
 			case "once":
-				return transactionDate >= start;
+				return localTransactionDate >= start;
 
 			default:
 				return false;

@@ -10,6 +10,7 @@ import MeatballMenu from "../Transactions/MeatballMenu";
 import { Pencil, Trash2, Plus, Minus } from "lucide-react";
 import FloatingGoalDetail from "./FloatingGoalDetail";
 import ReactConfetti from "react-confetti";
+import { endOfDay, toLocalDate } from "../../utils/dateUtils";
 
 // Interfaces
 interface BudgetGoal {
@@ -98,77 +99,94 @@ const Budget: React.FC = () => {
 		transactionDate: Date,
 		intervalType: string,
 		startDate: Date
-	): boolean => {
-		const now = new Date();
+	) => {
+		const localNow = new Date();
+		const localTransactionDate = new Date(transactionDate);
 		const start = new Date(startDate);
 
-		switch (intervalType) {
+		// Calculate current period's start and end dates
+		const getCurrentPeriodBounds = () => {
+			if (intervalType.toLowerCase() === "daily") {
+				const todayStart = new Date(
+					localNow.getFullYear(),
+					localNow.getMonth(),
+					localNow.getDate(),
+					0,
+					0,
+					0
+				);
+				const todayEnd = new Date(
+					localNow.getFullYear(),
+					localNow.getMonth(),
+					localNow.getDate(),
+					23,
+					59,
+					59,
+					999
+				);
+
+				console.log("Daily period bounds:", {
+					periodStart: todayStart.toLocaleString(),
+					periodEnd: todayEnd.toLocaleString(),
+					now: localNow.toLocaleString(),
+					transactionDate: localTransactionDate.toLocaleString(),
+				});
+
+				return { periodStart: todayStart, periodEnd: todayEnd };
+			}
+
+			let periodStart = new Date(start);
+			let periodEnd = new Date(start);
+
+			// Move end date to end of first period
+			switch (intervalType.toLowerCase()) {
+				case "weekly":
+					periodEnd.setDate(periodEnd.getDate() + 7);
+					periodEnd = endOfDay(periodEnd);
+					break;
+				case "monthly":
+					periodEnd.setMonth(periodEnd.getMonth() + 1);
+					periodEnd = endOfDay(periodEnd);
+					break;
+				case "yearly":
+					periodEnd.setFullYear(periodEnd.getFullYear() + 1);
+					periodEnd = endOfDay(periodEnd);
+					break;
+			}
+
+			// Keep moving both dates forward until we find the period containing now
+			while (localNow > periodEnd) {
+				periodStart = new Date(periodEnd);
+				switch (intervalType.toLowerCase()) {
+					case "weekly":
+						periodEnd.setDate(periodEnd.getDate() + 7);
+						break;
+					case "monthly":
+						periodEnd.setMonth(periodEnd.getMonth() + 1);
+						break;
+					case "yearly":
+						periodEnd.setFullYear(periodEnd.getFullYear() + 1);
+						break;
+				}
+				periodEnd = endOfDay(periodEnd);
+			}
+
+			return { periodStart, periodEnd };
+		};
+
+		switch (intervalType.toLowerCase()) {
 			case "daily":
-				// Reset every 24 hours from start date
-				const daysSinceStart = Math.floor(
-					(now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
-				);
-				const currentPeriodStart = new Date(start);
-				currentPeriodStart.setDate(start.getDate() + daysSinceStart);
-				const currentPeriodEnd = new Date(currentPeriodStart);
-				currentPeriodEnd.setDate(currentPeriodStart.getDate() + 1);
-				return (
-					transactionDate >= currentPeriodStart &&
-					transactionDate < currentPeriodEnd
-				);
-
 			case "weekly":
-				// Reset every 7 days from start date
-				const weeksSinceStart = Math.floor(
-					(now.getTime() - start.getTime()) /
-						(1000 * 60 * 60 * 24 * 7)
-				);
-				const currentWeekStart = new Date(start);
-				currentWeekStart.setDate(start.getDate() + weeksSinceStart * 7);
-				const currentWeekEnd = new Date(currentWeekStart);
-				currentWeekEnd.setDate(currentWeekStart.getDate() + 7);
-				return (
-					transactionDate >= currentWeekStart &&
-					transactionDate < currentWeekEnd
-				);
-
 			case "monthly":
-				// Reset on same day each month
-				const currentMonthStart = new Date(
-					now.getFullYear(),
-					now.getMonth(),
-					start.getDate()
-				);
-				const currentMonthEnd = new Date(
-					now.getFullYear(),
-					now.getMonth() + 1,
-					start.getDate()
-				);
-				return (
-					transactionDate >= currentMonthStart &&
-					transactionDate < currentMonthEnd
-				);
-
-			case "yearly":
-				// Reset on same date each year
-				const currentYearStart = new Date(
-					now.getFullYear(),
-					start.getMonth(),
-					start.getDate()
-				);
-				const currentYearEnd = new Date(
-					now.getFullYear() + 1,
-					start.getMonth(),
-					start.getDate()
-				);
-				return (
-					transactionDate >= currentYearStart &&
-					transactionDate < currentYearEnd
-				);
-
+			case "yearly": {
+				const { periodStart, periodEnd } = getCurrentPeriodBounds();
+				const isInPeriod =
+					localTransactionDate >= periodStart &&
+					localTransactionDate <= periodEnd;
+				return isInPeriod;
+			}
 			case "once":
-				return transactionDate >= start;
-
+				return localTransactionDate >= start;
 			default:
 				return false;
 		}
@@ -1012,6 +1030,56 @@ const Budget: React.FC = () => {
 		if (progress >= 50) return "🌟 Halfway there! Keep going strong!";
 		if (progress >= 25) return "🚀 Great progress! You're on your way!";
 		return "✨ Every penny counts! Keep it up!";
+	};
+
+	// Calculate current amount from transactions
+	const calculateCurrentAmount = (
+		goal: BudgetGoal,
+		transactions: Transaction[]
+	) => {
+		return (
+			transactions
+				.filter((transaction) => {
+					// Convert transaction date to local date
+					const localTransactionDate = new Date(
+						new Date(transaction.date).toLocaleString("en-US", {
+							timeZone:
+								Intl.DateTimeFormat().resolvedOptions()
+									.timeZone,
+						})
+					);
+
+					const isInPeriod = isTransactionInCurrentPeriod(
+						localTransactionDate,
+						goal.interval.type,
+						goal.interval.startDate
+					);
+
+					const hasMatchingTag = transaction.tags?.some((tag) =>
+						goal.tags.some((goalTag) =>
+							typeof goalTag === "string"
+								? goalTag === tag
+								: goalTag.name === tag
+						)
+					);
+
+					console.log("Budget.tsx Transaction filter:", {
+						originalDate: transaction.date.toLocaleString(),
+						localDate: localTransactionDate.toLocaleString(),
+						isInPeriod,
+						hasMatchingTag,
+						amount: transaction.amount,
+						tags: transaction.tags,
+					});
+
+					return (
+						transaction.type === "expense" &&
+						hasMatchingTag &&
+						isInPeriod
+					);
+				})
+				.reduce((sum, transaction) => sum + transaction.amount, 0) || 0
+		);
 	};
 
 	// Render

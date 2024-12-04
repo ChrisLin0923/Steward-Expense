@@ -6,12 +6,14 @@ import { auth } from "../../../Backend/config/firebaseConfig";
 import { ThemeType, useTheme } from "../../contexts/ThemeContext";
 import { Moon, Sun, Menu } from "lucide-react"; // Import icons
 import stewardLogo from "@/assets/steward_logo.png";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar: React.FC = () => {
 	const [userData, setUserData] = useState<any>(null);
 	const [avatar, setAvatar] = useState<string>("");
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+	const navigate = useNavigate();
 
 	const fetchAvatarData = async () => {
 		const userSettings = await FirestoreService.getUserSetting(
@@ -60,8 +62,14 @@ const Sidebar: React.FC = () => {
 
 	const toggleSidebar = () => {
 		setIsSidebarOpen(!isSidebarOpen);
-		// Prevent body scroll when sidebar is open
-		document.body.style.overflow = !isSidebarOpen ? "hidden" : "auto";
+		// Target the main content instead of body
+		const mainContent = document.querySelector("main");
+		if (mainContent) {
+			mainContent.style.overflow = !isSidebarOpen ? "hidden" : "auto";
+		}
+	};
+	const handleUserInfoClick = () => {
+		navigate("/settings");
 	};
 
 	return (
@@ -117,7 +125,7 @@ const Sidebar: React.FC = () => {
 					<Navbar />
 				</div>
 
-				<div className={styles.userInfo}>
+				<div className={styles.userInfo} onClick={handleUserInfoClick}>
 					{userData ? (
 						<>
 							<div className={styles.avatar}>

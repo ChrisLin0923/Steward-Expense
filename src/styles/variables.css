@@ -1,6 +1,8 @@
 :root {
 	height: 100vh; /* Ensure the root container takes 
+	
 	full height */
+
 	--border-radius: 1rem;
 	/* Background Colors */
 	--bg-primary: #000000e0; /* Login page, Modal background */
@@ -89,6 +91,11 @@
 	--border-light: rgba(226, 232, 240, 0.8);
 	--shadow-sm: 0 2px 4px rgba(148, 163, 184, 0.05);
 	--shadow-md: 0 4px 6px rgba(148, 163, 184, 0.1);
+
+	/* Scrollbar Colors */
+	--scrollbar-track: #f1f1f1;
+	--scrollbar-thumb: #888;
+	--scrollbar-thumb-hover: #666;
 }
 
 :root[data-theme="dark"] {
@@ -129,7 +136,7 @@
 	--btn-danger-hover: #ef4444;
 
 	--btn-text: #17191a;
-	--btn-text-secondary: #ffffff;
+	--btn-text-secondary: #b9b5b5;
 
 	/* Chart & UI Colors */
 	--chart-blue: #4ade80;
@@ -186,6 +193,11 @@
 	--chart-glow-color: rgba(255, 255, 255, 0.3);
 	--chart-shadow-blur: 3px;
 	--chart-transition-duration: 300ms;
+
+	/* Scrollbar Colors */
+	--scrollbar-track: #1c1c1f;
+	--scrollbar-thumb: #4ade80;
+	--scrollbar-thumb-hover: #52525b;
 }
 
 :root[data-theme="Sunset"] {
@@ -280,6 +292,11 @@
 	--chart-glow-color: rgba(255, 151, 118, 0.3);
 	--chart-shadow-blur: 3px;
 	--chart-transition-duration: 300ms;
+
+	/* Scrollbar Colors */
+	--scrollbar-track: #2d1b2d;
+	--scrollbar-thumb: #ff9776;
+	--scrollbar-thumb-hover: #ffb199;
 }
 
 :root[data-theme="Ocean"] {
@@ -375,6 +392,11 @@
 	--chart-glow-color: rgba(100, 223, 223, 0.3);
 	--chart-shadow-blur: 3px;
 	--chart-transition-duration: 300ms;
+
+	/* Scrollbar Colors */
+	--scrollbar-track: #1a2634;
+	--scrollbar-thumb: #48cae4;
+	--scrollbar-thumb-hover: #64dfdf;
 }
 
 :root[data-theme="Olivia"] {
@@ -468,4 +490,33 @@
 	--chart-glow-color: rgba(255, 139, 167, 0.3);
 	--chart-shadow-blur: 3px;
 	--chart-transition-duration: 300ms;
+
+	/* Scrollbar Colors */
+	--scrollbar-track: #1c1b1b;
+	--scrollbar-thumb: #ff8ba7;
+	--scrollbar-thumb-hover: #ffb3c6;
+}
+
+/* Webkit scrollbar styles */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--scrollbar-thumb);
+	border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--scrollbar-thumb-hover);
+}
+
+/* Firefox scrollbar styles */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
