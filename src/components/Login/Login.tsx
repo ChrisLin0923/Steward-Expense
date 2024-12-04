@@ -90,9 +90,7 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 				return;
 			}
 
-			// Log the registration method
-			console.log("Registering with email/password");
-
+			// 1. Create the authentication user first
 			const userCredential = await createUserWithEmailAndPassword(
 				auth,
 				email,
@@ -100,29 +98,42 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 			);
 			const user = userCredential.user;
 
-			// Log the user's provider data after creation
-			console.log("New user provider data:", user.providerData);
-
-			try {
-				// Save user data to Firestore
-				await FirestoreService.saveUserData(user.uid, {
-					email: email,
-					firstName: firstName,
-					lastName: lastName,
-					last_login: Date.now(),
-				});
-			} catch (firestoreError) {
-				// If Firestore save fails, delete the auth user
-				await user.delete();
-				throw new Error("Failed to save user data. Please try again.");
-			}
-
+			// 2. Send verification email
 			await sendEmailVerification(user);
+
+			// 3. Sign out the user until they verify their email
+			await auth.signOut();
+
+			// 4. Set up an observer for email verification status
+			const unsubscribe = auth.onAuthStateChanged(async (user) => {
+				if (user?.emailVerified) {
+					try {
+						// Now save user data to Firestore
+						await FirestoreService.saveUserData(user.uid, {
+							email: email,
+							firstName: firstName,
+							lastName: lastName,
+							last_login: Date.now(),
+						});
+
+						alert("Email verified! You can now log in.");
+						navigate("/login");
+						onClose();
+					} catch (firestoreError) {
+						// If Firestore save fails, delete the auth user
+						await user.delete();
+						throw new Error(
+							"Failed to save user data. Please try again."
+						);
+					}
+					unsubscribe(); // Clean up the observer
+				}
+			});
+
 			alert(
-				"Registration successful! Please check your email for verification."
+				"Registration initiated! Please check your email for verification."
 			);
-			navigate("/dashboard");
-			onClose();
+			setIsCreatingAccount(false);
 		} catch (error: any) {
 			console.error("Error during registration:", error);
 			switch (error.code) {
@@ -154,6 +165,10 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 				password
 			);
 
+			if (!userCredential.user.emailVerified) {
+				alert("Please verify your email before logging in.");
+				return;
+			}
 			// Sync email after successful login
 			await FirestoreService.handleUserLogin(userCredential.user);
 

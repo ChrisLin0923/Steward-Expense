@@ -45,11 +45,12 @@ interface PresetAvatar {
 const Settings: React.FC = () => {
 	const { theme, setTheme } = useTheme();
 	const [selectedTheme, setSelectedTheme] = useState<ThemeType>(theme);
-	const [userProfile, setUserProfile] = useState<UserSettings>({
+	const [userProfile, setUserProfile] = useState({
 		firstName: "",
 		lastName: "",
 		email: "",
 		avatar: "",
+		theme: "",
 	});
 	const [currentPassword, setCurrentPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
@@ -260,40 +261,43 @@ const Settings: React.FC = () => {
 
 	useEffect(() => {
 		const loadUserProfile = async () => {
-			const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
+			setLoading(true);
+			try {
+				const currentUser = auth.currentUser;
 				if (currentUser) {
-					try {
-						const providers = currentUser.providerData.map(
-							(provider) => provider.providerId
-						);
+					const providers = currentUser.providerData.map(
+						(provider) => provider.providerId
+					);
 
-						const hasPasswordAuth = providers.includes("password");
-						setAuthProvider(
-							hasPasswordAuth ? "password" : "google.com"
-						);
+					const hasPasswordAuth = providers.includes("password");
+					setAuthProvider(
+						hasPasswordAuth ? "password" : "google.com"
+					);
 
-						const userData = await FirestoreService.getUserData(
-							currentUser.uid
-						);
-						if (userData) {
-							setUserProfile(userData as UserSettings);
-							if (userData.theme && !theme) {
-								setSelectedTheme(userData.theme as ThemeType);
-								await setTheme(userData.theme as ThemeType);
-							}
-						}
-					} catch (error) {
-						setError("Failed to load user profile");
-					}
-					setLoading(false);
+					const userData = await FirestoreService.getUserData(
+						currentUser.uid
+					);
+					const userSettings = await FirestoreService.getUserSetting(
+						currentUser.uid
+					);
+
+					setUserProfile({
+						firstName: userData?.firstName || "",
+						lastName: userData?.lastName || "",
+						email: userData?.email || "",
+						avatar: userData?.avatar || "",
+						theme: userData?.theme || "",
+					});
 				}
-			});
-
-			return () => unsubscribe();
+			} catch (error) {
+				console.error("Error loading user profile:", error);
+			} finally {
+				setLoading(false);
+			}
 		};
 
 		loadUserProfile();
-	}, []);
+	}, [theme]);
 
 	useEffect(() => {
 		const handleEmailVerification = async () => {
@@ -310,7 +314,13 @@ const Settings: React.FC = () => {
 					const userData = await FirestoreService.getUserData(
 						auth.currentUser.uid
 					);
-					setUserProfile(userData as UserSettings);
+					setUserProfile({
+						firstName: userData?.firstName || "",
+						lastName: userData?.lastName || "",
+						email: userData?.email || "",
+						avatar: userData?.avatar || "",
+						theme: userData?.theme || "",
+					});
 				}
 			}
 		};
@@ -326,7 +336,13 @@ const Settings: React.FC = () => {
 					const userData = await FirestoreService.getUserData(
 						user.uid
 					);
-					setUserProfile(userData as UserSettings);
+					setUserProfile({
+						firstName: userData?.firstName || "",
+						lastName: userData?.lastName || "",
+						email: userData?.email || "",
+						avatar: userData?.avatar || "",
+						theme: userData?.theme || "",
+					});
 					if (userData && userData.theme) {
 						setSelectedTheme(userData.theme as ThemeType);
 						await setTheme(userData.theme as ThemeType);
@@ -343,11 +359,7 @@ const Settings: React.FC = () => {
 	const handleSaveChanges = async () => {
 		setIsSaving(true);
 		try {
-			if (
-				!userProfile.firstName ||
-				!userProfile.lastName ||
-				!userProfile.email
-			) {
+			if (!userProfile.firstName || !userProfile.lastName) {
 				throw new Error("Please fill in all required fields");
 			}
 
@@ -357,10 +369,7 @@ const Settings: React.FC = () => {
 				settingsData.firstName = userProfile.firstName.trim();
 			if (userProfile.lastName)
 				settingsData.lastName = userProfile.lastName.trim();
-			if (userProfile.email)
-				settingsData.email = userProfile.email.trim();
 			if (userProfile.avatar) settingsData.avatar = userProfile.avatar;
-			if (selectedTheme) settingsData.theme = selectedTheme;
 
 			await FirestoreService.saveUserSetting(
 				auth.currentUser?.uid!,
