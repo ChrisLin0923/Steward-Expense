@@ -10,6 +10,7 @@ import Transaction from "./components/Transactions/Transaction";
 import Budget from "./components/Budget/Budget";
 import Settings from "./components/Setting/Settings";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
+import Onboard from "./components/Onboard/onboard";
 
 const AppContent: React.FC = () => {
 	const { setTheme } = useTheme();
@@ -48,7 +49,9 @@ const AppContent: React.FC = () => {
 					path='/login'
 					element={<Login showForm={true} onClose={() => {}} />}
 				/>
+
 				<Route element={<ProtectedRoute auth={auth} />}>
+					<Route path='/onboarding' element={<Onboard />} />
 					<Route path='/dashboard' element={<Dashboard />} />
 					<Route path='/transaction' element={<Transaction />} />
 					<Route path='/GoalsTracker' element={<Budget />} />

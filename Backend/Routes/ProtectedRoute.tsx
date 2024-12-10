@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthState } from "react-firebase-hooks/auth"; // Ensure you have this package installed
-import { Auth } from "firebase/auth"; // Import type for Auth
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Auth } from "firebase/auth";
+import { FirestoreService } from "../config/firestoreService";
 
 interface ProtectedRouteProps {
-	auth: Auth; // Specify the type for auth prop
+	auth: Auth;
 }
-
 /**
  * ProtectedRoute component to restrict access to authenticated users only.
  *
@@ -24,18 +24,22 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ auth }) => {
 	 * The useAuthState hook typically returns an array with three elements:
 	user: This is the current user object if the user is authenticated, or null if the user is not logged in. It contains information about the user (like their UID, email, etc.).
 	loading: This is a boolean that indicates whether the authentication state is currently being checked. It will be true while Firebase is determining if the user is logged in or not.
-	error: This holds any error that might occur during the authentication process. If there’s no error, this will usually be null.
 	 */
-	const [user, loading, error] = useAuthState(auth); // Use hook to get user state
+	const [user, loading, error] = useAuthState(auth);
 
 	if (loading) {
-		return <div>Loading...</div>; // Show loading state while checking auth
+		return <div>Loading...</div>;
 	}
 
 	if (error) {
 		console.error("Authentication error:", error);
-		return <div>Error occurred. Please try again.</div>; // Handle any error
+		return <div>Error occurred. Please try again.</div>;
 	}
+
+	if (!user) {
+		return <Navigate to='/login' />;
+	}
+
 	//If user is true (logged in) return <outlet/>:
 	/**
 	 * <Outlet /> is a special component from React Router that renders the matching
@@ -45,7 +49,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ auth }) => {
 	 * <Navigate /> is a component from React Router that programmatically navigates
 	 * to a specified path—in this case, the login page ('/login').
 	 */
-	return user ? <Outlet /> : <Navigate to='/login' />; // Redirect if not authenticated
+	return <Outlet />;
 };
 
 export default ProtectedRoute;

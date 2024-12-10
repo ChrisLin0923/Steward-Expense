@@ -11,6 +11,14 @@ body {
 	height: 100%; /* Ensure the root container takes full height */
 	width: 100%;
 }
+.onboard {
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	display: block;
+	background-color: var(--bg-primary);
+}
+
 .dashboard {
 	display: grid;
 	grid-template-columns: 230px 1fr; /* Sidebar and main content */

@@ -19,6 +19,8 @@ import {
 	endOfDay,
 } from "../../utils/dateUtils";
 
+import Onboard from "../Onboard/onboard";
+
 // Add this interface at the top of your file
 interface SavingsGoal {
 	id: string;

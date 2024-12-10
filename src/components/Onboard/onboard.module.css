@@ -1,0 +1,412 @@
+/* Container styles */
+.onboard {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--bg-primary);
+	width: 100vw;
+	height: 100vh;
+	overflow: scroll;
+}
+
+.cardContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	max-width: 600px;
+	width: 90%;
+}
+
+/* Card styles */
+.card {
+	background-color: var(--bg-secondary);
+	padding: 2.5rem;
+	border-radius: 1rem;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
+}
+
+/* Animations */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideIn {
+	from {
+		opacity: 0;
+		transform: translateX(-30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* Typography and content */
+.card h2 {
+	color: var(--text-primary);
+	margin-bottom: 1.5rem;
+	font-size: 2.2rem;
+	font-weight: 600;
+	opacity: 0;
+	animation: fadeIn 0.6s ease-out forwards;
+}
+
+.card p {
+	color: var(--text-secondary);
+	font-size: 1.2rem;
+	font-weight: 500;
+}
+
+.introContent {
+	color: var(--text-secondary);
+	font-size: 1.2rem;
+	line-height: 1.7;
+}
+
+.introContent p {
+	opacity: 0;
+	animation: fadeIn 0.6s ease-out 0.2s forwards;
+}
+
+.setupSteps {
+	margin: 2rem 0;
+	list-style: none;
+	padding-left: 0;
+}
+
+.setupSteps li {
+	margin: 1.2rem 0;
+	padding: 1rem;
+	background-color: var(--bg-primary);
+	border-radius: 0.8rem;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	opacity: 0;
+	transform-origin: left;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+	transition: all 0.2s ease;
+}
+
+.setupSteps li:hover {
+	transform: translateX(5px);
+	box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+}
+
+.setupSteps li:nth-child(1) {
+	animation: slideIn 0.5s ease-out 0.4s forwards;
+}
+.setupSteps li:nth-child(2) {
+	animation: slideIn 0.5s ease-out 0.6s forwards;
+}
+.setupSteps li:nth-child(3) {
+	animation: slideIn 0.5s ease-out 0.8s forwards;
+}
+
+/* Time estimate and skip note */
+.timeEstimate {
+	margin-top: 2rem;
+	font-size: 1rem;
+	opacity: 0;
+	animation: fadeIn 0.5s ease-out 1s forwards;
+	color: var(--text-secondary);
+	text-align: center;
+}
+
+.skipNote {
+	font-size: 0.9rem;
+	opacity: 0;
+	animation: fadeIn 0.5s ease-out 1.2s forwards;
+	color: var(--text-secondary);
+	text-align: center;
+	margin-top: 1rem;
+}
+
+/* Add these new styles */
+.toggleButtonGroup {
+	background-color: var(--bg-secondary);
+	display: flex;
+	gap: 0.5rem;
+	border-radius: 100px;
+	padding: 0.4rem;
+	margin-bottom: 1.5rem;
+	width: 50%;
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.toggleButton {
+	border-radius: 100px;
+	flex: 1;
+	padding: 0.75rem 1.5rem;
+	border: none;
+	font-size: 1rem;
+	font-weight: 500;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+/* Unselected state */
+.toggleButton[aria-pressed="false"] {
+	background-color: transparent;
+	color: var(--text-secondary);
+}
+
+.toggleButton[aria-pressed="false"]:hover {
+	background-color: rgba(var(--primary-rgb), 0.05);
+	color: var(--text-primary);
+	transform: translateY(-1px);
+}
+
+/* Selected state */
+.toggleButton[aria-pressed="true"] {
+	font-weight: 600;
+	transform: scale(1.02);
+}
+
+/* Income specific styles */
+.toggleButton[value="income"][aria-pressed="true"] {
+	background: linear-gradient(135deg, #2ecc71, #27ae60);
+	color: white;
+	box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2),
+		0 0 0 1px rgba(46, 204, 113, 0.1);
+}
+
+/* Expense specific styles */
+.toggleButton[value="expense"][aria-pressed="true"] {
+	background: linear-gradient(135deg, #e74c3c, #c0392b);
+	color: white;
+	box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2),
+		0 0 0 1px rgba(231, 76, 60, 0.1);
+}
+
+/* Active state animation */
+.toggleButton:active {
+	transform: scale(0.98);
+}
+
+/* Ripple effect */
+.toggleButton::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.1);
+	border-radius: inherit;
+	transform: translate(-50%, -50%) scale(0);
+	opacity: 0;
+	transition: transform 0.4s ease-out, opacity 0.3s ease-out;
+}
+
+.toggleButton:active::after {
+	transform: translate(-50%, -50%) scale(2);
+	opacity: 1;
+	transition: 0s;
+}
+
+/* Focus states */
+.toggleButton:focus {
+	outline: none;
+}
+
+.toggleButton:focus-visible {
+	box-shadow: 0 0 0 2px var(--bg-primary),
+		0 0 0 4px rgba(var(--primary-rgb), 0.3);
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+	.toggleButtonGroup {
+		width: 100%;
+	}
+
+	.toggleButton {
+		padding: 0.6rem 1rem;
+		font-size: 0.9rem;
+	}
+}
+
+/* Button container */
+.buttonContainer {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	opacity: 0;
+	animation: fadeIn 0.5s ease-out 1.4s forwards;
+}
+
+.button {
+	padding: 0.8rem 1.6rem;
+	border-radius: 0.8rem;
+	border: none;
+	font-size: 1rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+
+	color: var(--btn-text-secondary);
+}
+
+.buttonCompleted {
+	background-color: var(--btn-primary);
+	color: var(--btn-text-primary);
+	animation: glow 1s ease-in-out infinite;
+}
+@keyframes glow {
+	from {
+		box-shadow: 0 0 0 0 rgba(214, 244, 220, 0.7);
+	}
+	to {
+		box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+	}
+}
+
+.button:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.button:active {
+	transform: translateY(0);
+}
+
+.formWrapper {
+	margin-top: 1.5rem;
+	animation: fadeIn 0.4s ease-out 0.5s forwards;
+	opacity: 0;
+}
+
+.cardDescription {
+	color: var(--text-secondary);
+	font-size: 1.1rem;
+	opacity: 0;
+	animation: fadeIn 0.3s ease-out 0.5s forwards;
+}
+.confettiWrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index: 1000;
+}
+
+@keyframes fadeOutConfetti {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+.message {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+	color: var(--text-white);
+	padding: 12px 24px;
+	border-radius: 20px;
+	font-weight: 600;
+	font-size: 14px;
+	box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2);
+	z-index: 1000;
+	white-space: nowrap;
+	min-width: max-content;
+	text-align: center;
+	animation: fadeInOut 4s ease-in-out;
+}
+
+@keyframes fadeInOut {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -40%);
+	}
+	20% {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+	80% {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+	100% {
+		opacity: 0;
+		transform: translate(-50%, -60%);
+	}
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+	.cardContainer {
+		width: 95%;
+		padding: 1rem;
+	}
+
+	.card {
+		padding: 1.5rem;
+	}
+
+	.card h1 {
+		font-size: 1.8rem;
+	}
+
+	.introContent {
+		font-size: 1.1rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.onboard {
+		min-height: 100vh;
+		height: fit-content;
+		overflow: scroll;
+	}
+
+	.cardContainer {
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: fit-content;
+		padding: 1rem;
+	}
+
+	.buttonContainer {
+		flex-direction: row;
+		justify-content: space-between;
+		width: 100%;
+	}
+	.card {
+		display: block;
+		width: 95%;
+		height: fit-content;
+		padding: 1rem;
+	}
+
+	.toggleButtonGroup {
+		width: 55%;
+		margin-bottom: 0;
+	}
+
+	.card h2 {
+		font-size: 1.3rem;
+		margin-bottom: 0.5rem;
+	}
+	.card p {
+		font-size: 1rem;
+	}
+}

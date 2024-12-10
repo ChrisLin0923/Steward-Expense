@@ -7,6 +7,7 @@ import {
 	signInWithPopup,
 	fetchSignInMethodsForEmail,
 	sendPasswordResetEmail,
+	User,
 } from "firebase/auth";
 
 /**getDatabase() returns a reference to the firebase realtime database, we use it to establish a connection with the database.
@@ -45,6 +46,15 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 	 * @returns alert if password doesn't match with confirmPassword.
 	 * This function is called when the form is submitted, Both log-in and register form.
 	 */
+	const handleSuccessfulAuth = async (user: User) => {
+		const hasCompletedOnboarding =
+			await FirestoreService.checkUserOnboardingStatus(user.uid);
+		if (!hasCompletedOnboarding) {
+			navigate("/onboarding");
+		} else {
+			navigate("/dashboard");
+		}
+	};
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault(); // Prevent default form submission behavior
 
@@ -173,7 +183,7 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 			await FirestoreService.handleUserLogin(userCredential.user);
 
 			console.log("Signed In Successfully!");
-			navigate("/dashboard");
+			handleSuccessfulAuth(userCredential.user);
 		} catch (error: any) {
 			console.error("Error signing in:", error);
 			alert(error);
@@ -247,8 +257,7 @@ const Login: React.FC<LoginProps> = ({ showForm, onClose }) => {
 			}
 			//If userData has been set already, then we will not reset any email, firstName, lastName in the database.
 
-			// Navigate to the dashboard after successful login
-			navigate("/dashboard");
+			handleSuccessfulAuth(result.user);
 		} catch (error) {
 			console.error("Error signing in with Google:", error);
 		}

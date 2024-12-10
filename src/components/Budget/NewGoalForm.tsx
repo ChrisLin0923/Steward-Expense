@@ -30,6 +30,8 @@ interface NewGoalFormProps {
 			startDate: Date;
 		};
 	};
+
+	embedded?: boolean;
 }
 
 interface FormData {
@@ -50,6 +52,7 @@ const NewGoalForm: React.FC<NewGoalFormProps> = ({
 	type,
 	label,
 	initialData,
+	embedded = false,
 }) => {
 	const [formData, setFormData] = useState<FormData>({
 		title: initialData?.title || "",
@@ -147,6 +150,185 @@ const NewGoalForm: React.FC<NewGoalFormProps> = ({
 
 	if (!isVisible) return null;
 
+	// Embedded version (no overlay)
+	if (embedded) {
+		return (
+			<div className={styles.embeddedContainer}>
+				<div className={styles.formContent}>
+					<form onSubmit={handleSubmit}>
+						<div className={styles.formGroup}>
+							<label htmlFor='title'>Title</label>
+							<input
+								type='text'
+								id='title'
+								value={formData.title}
+								onChange={(e) =>
+									setFormData({
+										...formData,
+										title: e.target.value,
+									})
+								}
+								required
+							/>
+						</div>
+
+						<div className={styles.formGroup}>
+							<label htmlFor='targetAmount'>Target Amount</label>
+							<input
+								type='number'
+								id='targetAmount'
+								min={0}
+								value={formData.targetAmount || ""}
+								onKeyDown={(e) => {
+									if (e.key === "-") e.preventDefault();
+								}}
+								onChange={(e) => {
+									const value = e.target.value;
+									const regex = /^\d*\.?\d{0,2}$/;
+									if (regex.test(value) || value === "") {
+										setFormData({
+											...formData,
+											targetAmount: Number(
+												e.target.value
+											),
+										});
+									}
+								}}
+								placeholder='Enter amount'
+								required
+							/>
+						</div>
+
+						{type === "savings" && label === "" && (
+							<div className={styles.formGroup}>
+								<label htmlFor='amountSaved'>
+									Amount Saved
+								</label>
+								<input
+									type='number'
+									id='amountSaved'
+									value={formData.amountSaved || ""}
+									onChange={(e) => {
+										const value = e.target.value;
+										const regex = /^\d*\.?\d{0,2}$/;
+										if (regex.test(value) || value === "") {
+											setFormData({
+												...formData,
+												amountSaved: Number(
+													e.target.value
+												),
+											});
+										}
+									}}
+									onKeyDown={(e) => {
+										if (e.key === "-") e.preventDefault();
+									}}
+								/>
+							</div>
+						)}
+
+						{type === "budget" && (
+							<div className={styles.formGroup}>
+								<label htmlFor='tags'>
+									Tags you want to Track (comma-separated)
+								</label>
+								<input
+									type='text'
+									id='tags'
+									value={formData.tags}
+									required
+									onChange={(e) =>
+										setFormData({
+											...formData,
+											tags: e.target.value,
+										})
+									}
+									placeholder='e.g., groceries, coffee, dining'
+								/>
+							</div>
+						)}
+
+						{type === "budget" && (
+							<div className={styles.formGroup}>
+								<div className={styles.intervalGroup}>
+									<div style={{ flex: 1 }}>
+										<label htmlFor='interval'>
+											Interval
+										</label>
+										<select
+											id='interval'
+											className={styles.intervalSelect}
+											value={formData.interval?.type}
+											onChange={(e) =>
+												setFormData((prevData) => ({
+													...prevData,
+													interval: {
+														...prevData.interval!,
+														type: e.target
+															.value as FormData["interval"]["type"],
+													},
+												}))
+											}
+										>
+											<option value='monthly'>
+												Monthly
+											</option>
+											<option value='yearly'>
+												Yearly
+											</option>
+											<option value='weekly'>
+												Weekly
+											</option>
+											<option value='daily'>Daily</option>
+											<option value='once'>Once</option>
+										</select>
+									</div>
+
+									<div style={{ flex: 1 }}>
+										<label htmlFor='startDate'>
+											Start Date
+										</label>
+										<input
+											type='date'
+											id='startDate'
+											className={styles.dateInput}
+											value={formatDateForInput(
+												formData.interval.startDate
+											)}
+											onChange={(e) => {
+												const newDate = new Date(
+													e.target.value
+												);
+												if (!isNaN(newDate.getTime())) {
+													setFormData((prevData) => ({
+														...prevData,
+														interval: {
+															...prevData.interval,
+															startDate: newDate,
+														},
+													}));
+												}
+											}}
+										/>
+									</div>
+								</div>
+							</div>
+						)}
+
+						<div className={styles.formActions}>
+							<button type='submit' className={styles.submitBtn}>
+								{type === "budget"
+									? "Add Budget Goal"
+									: "Add Savings Goal"}
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		);
+	}
+
+	// Regular modal version (with overlay)
 	return (
 		<div className={`${styles.overlay} ${isClosing ? styles.closing : ""}`}>
 			<div
@@ -218,14 +400,14 @@ const NewGoalForm: React.FC<NewGoalFormProps> = ({
 								<input
 									type='number'
 									id='amountSaved'
-									value={formData.targetAmount || ""}
+									value={formData.amountSaved || ""}
 									onChange={(e) => {
 										const value = e.target.value;
 										const regex = /^\d*\.?\d{0,2}$/;
 										if (regex.test(value) || value === "") {
 											setFormData({
 												...formData,
-												targetAmount: Number(
+												amountSaved: Number(
 													e.target.value
 												),
 											});
@@ -247,6 +429,7 @@ const NewGoalForm: React.FC<NewGoalFormProps> = ({
 									type='text'
 									id='tags'
 									value={formData.tags}
+									required
 									onChange={(e) =>
 										setFormData({
 											...formData,

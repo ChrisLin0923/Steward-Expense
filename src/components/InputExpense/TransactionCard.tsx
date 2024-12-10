@@ -8,7 +8,8 @@ type TransactionCardProps = {
 	onClose: () => void;
 	setTransactions: React.Dispatch<React.SetStateAction<any[]>>;
 	type: "income" | "expense";
-	onTransactionAdded?: () => Promise<void>;
+	onTransactionAdded?: () => void;
+	embedded?: boolean;
 };
 
 export default function TransactionCard({
@@ -17,6 +18,7 @@ export default function TransactionCard({
 	setTransactions,
 	type,
 	onTransactionAdded,
+	embedded = false,
 }: TransactionCardProps) {
 	const [formData, setFormData] = useState({
 		amount: "",
@@ -129,6 +131,114 @@ export default function TransactionCard({
 			[e.target.name]: e.target.value,
 		}));
 	};
+
+	if (embedded) {
+		return (
+			<div className={styles.onboardingForm}>
+				<form onSubmit={handleSubmit} className={styles.compactForm}>
+					<div className={styles.inputGroup}>
+						<label htmlFor='amount'>Amount ($)</label>
+						<input
+							type='number'
+							id='amount'
+							name='amount'
+							value={formData.amount}
+							onChange={handleChange}
+							required
+							min='0'
+							step='0.01'
+							placeholder='0.00'
+							className={styles.onboardingInput}
+						/>
+					</div>
+
+					<div className={styles.inputGroup}>
+						<label htmlFor='category'>Category</label>
+						<select
+							id='category'
+							name='category'
+							value={formData.category}
+							onChange={handleChange}
+							required
+							className={styles.onboardingSelect}
+						>
+							<option value=''>Select category</option>
+							{categoryOptions.map((option) => (
+								<option key={option} value={option}>
+									{option}
+								</option>
+							))}
+						</select>
+					</div>
+
+					<div className={styles.inputGroup}>
+						<label htmlFor='description'>Description</label>
+						<input
+							type='text'
+							id='description'
+							name='description'
+							value={formData.description}
+							onChange={handleChange}
+							placeholder='What was this for?'
+							className={styles.onboardingInput}
+						/>
+					</div>
+
+					<div className={styles.inputGroup}>
+						<label htmlFor='tags'>Tags</label>
+						<input
+							placeholder='example: coffee, groceries, etc.'
+							type='text'
+							id='tags'
+							name='tags'
+							onChange={handleChange}
+							className={styles.onboardingInput}
+						/>
+					</div>
+					<div className={styles.inputGroup}>
+						<label htmlFor='paymentMethod'>Payment Method</label>
+						<select
+							id='paymentMethod'
+							name='paymentMethod'
+							value={formData.paymentMethod}
+							onChange={handleChange}
+							required
+							className={styles.onboardingSelect}
+						>
+							<option value=''>Select method</option>
+							{paymentMethodOptions.map((option) => (
+								<option key={option} value={option}>
+									{option}
+								</option>
+							))}
+						</select>
+					</div>
+
+					<div className={styles.inputGroup}>
+						<label htmlFor='date'>Date</label>
+						<input
+							type='date'
+							id='date'
+							name='date'
+							value={formData.date}
+							max={new Date().toISOString().split("T")[0]}
+							onChange={handleChange}
+							required
+							className={styles.onboardingInput}
+						/>
+					</div>
+
+					<button
+						type='submit'
+						disabled={isSubmitting}
+						className={styles.onboardingSubmitBtn}
+					>
+						{isSubmitting ? "Adding..." : "Add Transaction"}
+					</button>
+				</form>
+			</div>
+		);
+	}
 
 	const [isClosing, setIsClosing] = useState(false);
 

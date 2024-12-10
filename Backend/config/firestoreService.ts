@@ -72,6 +72,25 @@ interface UserSettings {
 // This class provides methods for creating, retrieving, updating, and deleting user data and transactions.
 // Static methods are used to ensure that each method is callable without instantiating the class.
 export class FirestoreService {
+	static async checkUserOnboardingStatus(userId: string): Promise<boolean> {
+		const userDoc = await getDoc(doc(db, "users", userId));
+		if (!userDoc.exists()) {
+			// New user - create their document with onboarding flag
+			await setDoc(doc(db, "users", userId), {
+				onboardingCompleted: false,
+				createdAt: new Date(),
+			});
+			return false;
+		}
+		return userDoc.data().onboardingCompleted || false;
+	}
+
+	static async completeOnboarding(userId: string) {
+		await updateDoc(doc(db, "users", userId), {
+			onboardingCompleted: true,
+		});
+	}
+
 	// Creates a new user document or updates an existing one
 	static async saveUserData(
 		userId: string,
