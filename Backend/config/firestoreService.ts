@@ -65,6 +65,11 @@ interface SavingsGoalUpdate {
 	title: string;
 	targetAmount: number;
 	type: "savings";
+	amountSaved?: number;
+	contributions?: {
+		amount: number;
+		date: Date;
+	}[];
 }
 
 interface NewSavingsGoal {
@@ -453,19 +458,20 @@ export class FirestoreService {
 	static async updateSavingsGoal(
 		userId: string,
 		goalId: string,
-		updatedData: {
-			title: string;
-			targetAmount: number;
-			type: "savings";
-		}
+		updatedData: SavingsGoalUpdate
 	) {
 		try {
 			const goalRef = doc(db, "users", userId, "savingGoals", goalId);
-			// Only update these specific fields
 			const updateFields = {
 				title: updatedData.title,
 				targetAmount: updatedData.targetAmount,
 				type: "savings",
+				...(updatedData.amountSaved !== undefined && {
+					amountSaved: updatedData.amountSaved,
+				}),
+				...(updatedData.contributions && {
+					contributions: updatedData.contributions,
+				}),
 			};
 			await updateDoc(goalRef, updateFields);
 		} catch (error) {

@@ -144,13 +144,6 @@ const BudgetGoalDetail: React.FC<{
 					999
 				);
 
-				console.log("Daily period bounds:", {
-					periodStart: todayStart.toLocaleString(),
-					periodEnd: todayEnd.toLocaleString(),
-					now: localNow.toLocaleString(),
-					transactionDate: localTransactionDate.toLocaleString(),
-				});
-
 				return { periodStart: todayStart, periodEnd: todayEnd };
 			}
 
@@ -237,15 +230,6 @@ const BudgetGoalDetail: React.FC<{
 					)
 				);
 
-				console.log("Transaction filter:", {
-					originalDate: transaction.date.toLocaleString(),
-					localDate: localTransactionDate.toLocaleString(),
-					isInPeriod,
-					hasMatchingTag,
-					amount: transaction.amount,
-					tags: transaction.tags,
-				});
-
 				return (
 					transaction.type === "expense" &&
 					hasMatchingTag &&
@@ -253,8 +237,6 @@ const BudgetGoalDetail: React.FC<{
 				);
 			})
 			.reduce((sum, transaction) => sum + transaction.amount, 0) || 0;
-
-	console.log("Current amount calculated:", currentAmount);
 
 	const percentageUsed = Math.round(
 		(currentAmount / goal.targetAmount) * 100
@@ -422,11 +404,6 @@ const SavingsGoalDetail: React.FC<{ goal: SavingsGoalData }> = ({ goal }) => {
 									goal.contributions
 										?.slice(0, index + 1)
 										.reduce((sum, c) => {
-											console.log(
-												"Current contribution:",
-												c.amount
-											);
-											console.log("Current sum:", sum);
 											return sum + c.amount;
 										}, 0) || 0;
 

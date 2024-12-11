@@ -195,57 +195,25 @@ const Dashboard: React.FC = () => {
 
 	const getTimeProgress = () => {
 		const today = new Date();
+		const firstDayOfMonth = new Date(
+			today.getFullYear(),
+			today.getMonth(),
+			1
+		);
 		const lastDayOfMonth = new Date(
 			today.getFullYear(),
 			today.getMonth() + 1,
 			0
 		);
-		lastDayOfMonth.setHours(23, 59, 59, 999);
-		const monthProgress =
-			(today.getTime() / lastDayOfMonth.getTime()) * 100;
+
+		// Calculate days elapsed and total days in month
+		const daysElapsed = today.getDate() - 1; // -1 because we start counting from 0
+		const totalDays = lastDayOfMonth.getDate();
+
+		// Calculate progress percentage
+		const monthProgress = (daysElapsed / totalDays) * 100;
+
 		return monthProgress;
-	};
-
-	const BudgetSection = () => {
-		const [isScrollable, setIsScrollable] = useState(false);
-		const sectionRef = useRef<HTMLDivElement>(null);
-
-		useEffect(() => {
-			const section = sectionRef.current;
-			if (!section) return;
-
-			const checkScroll = () => {
-				// Check if content is scrollable and not at bottom
-				const hasMoreContent =
-					section.scrollHeight > section.clientHeight &&
-					section.scrollTop + section.clientHeight <
-						section.scrollHeight;
-				setIsScrollable(hasMoreContent);
-			};
-
-			// Initial check
-			checkScroll();
-			// Check on scroll
-			section.addEventListener("scroll", checkScroll);
-			// Check on resize
-			window.addEventListener("resize", checkScroll);
-
-			return () => {
-				section.removeEventListener("scroll", checkScroll);
-				window.removeEventListener("resize", checkScroll);
-			};
-		}, []);
-
-		return (
-			<div
-				className={`${styles.budgetSection} ${
-					isScrollable ? styles.showGradient : ""
-				}`}
-				ref={sectionRef}
-			>
-				{/* Your budget goals content */}
-			</div>
-		);
 	};
 
 	// Add this helper function

@@ -468,6 +468,20 @@ const Budget: React.FC = () => {
 					date: new Date(),
 				};
 
+				await FirestoreService.updateSavingsGoal(
+					auth.currentUser.uid,
+					goal.id,
+					{
+						...goal,
+						amountSaved: newAmount,
+						type: "savings",
+						contributions: [
+							...(goal.contributions || []),
+							newContribution,
+						],
+					}
+				);
+
 				setIsSuccess(true);
 				setIsAdding(false);
 				setAmount("");
@@ -485,15 +499,6 @@ const Budget: React.FC = () => {
 						getMotivationalMessage(newAmount, goal.targetAmount)
 					);
 				}
-
-				await FirestoreService.updateSavingsGoal(
-					auth.currentUser.uid,
-					goal.id,
-					{
-						...goal,
-						type: "savings",
-					}
-				);
 
 				setTimeout(async () => {
 					await refreshSavingsData();
@@ -662,7 +667,7 @@ const Budget: React.FC = () => {
 										setAmount(pastedText);
 									}
 								}}
-								placeholder='Enter amount'
+								placeholder='Amount'
 								className={styles.savingsInput}
 							/>
 							<button
