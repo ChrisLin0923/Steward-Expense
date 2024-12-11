@@ -115,7 +115,7 @@ const Dashboard: React.FC = () => {
 					setTransactions(transactions);
 					setTotalSavingsAmount(
 						savingsGoals.reduce(
-							(sum, goal) => sum + goal.amountSaved,
+							(sum, goal) => sum + (goal.amountSaved || 0),
 							0
 						)
 					);

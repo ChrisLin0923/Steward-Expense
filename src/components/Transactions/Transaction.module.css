@@ -703,7 +703,7 @@ body {
 }
 
 /* Landscape Mobile (481px - 768px) */
-@media screen and (orientation: landscape) and (max-width: 1200px) {
+@media screen and (orientation: landscape) and (max-width: 1000px) {
 	.transaction {
 		display: flex;
 		flex-direction: column;
