@@ -172,6 +172,7 @@ const Onboard: React.FC = () => {
 				handleSuccess("savings");
 			} catch (error) {
 				console.error("Error saving savings goal:", error);
+				setMessage("Oops! Something went wrong. Please try again.");
 
 				// Clear error message after delay
 				const timer = setTimeout(() => {

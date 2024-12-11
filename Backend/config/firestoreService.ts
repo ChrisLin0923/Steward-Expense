@@ -52,9 +52,31 @@ interface SavingsGoal {
 	id: string;
 	title: string;
 	targetAmount: number;
-	amountSaved: number;
+	amountSaved?: number;
 	createdAt: Timestamp;
 	type: "savings";
+	contributions?: {
+		amount: number;
+		date: Date;
+	}[];
+}
+
+interface SavingsGoalUpdate {
+	title: string;
+	targetAmount: number;
+	type: "savings";
+}
+
+interface NewSavingsGoal {
+	title: string;
+	targetAmount: number;
+	amountSaved?: number;
+	createdAt: Date;
+	type: "savings";
+	contributions?: {
+		amount: number;
+		date: Date;
+	}[];
 }
 
 import { ThemeType } from "../../src/contexts/ThemeContext";
@@ -406,29 +428,23 @@ export class FirestoreService {
 	}
 
 	//savings goals functions for add, update, delete, and get
-	static async addSavingsGoal(
-		userId: string,
-		goalData: {
-			title: string;
-			targetAmount: number;
-			amountSaved: number;
-			createdAt: Date;
-			contributions?: Array<{ amount: number; date: Date }>;
-			type: "savings";
-		}
-	) {
+	static async addSavingsGoal(userId: string, goalData: NewSavingsGoal) {
 		try {
-			const savingGoalsRef = collection(
+			const savingsGoalRef = collection(
 				db,
 				"users",
 				userId,
 				"savingGoals"
 			);
-			const docRef = await addDoc(savingGoalsRef, {
-				...goalData,
-				createdAt: Timestamp.fromDate(goalData.createdAt),
-			});
-			return docRef.id;
+			const newGoal = {
+				title: goalData.title,
+				targetAmount: goalData.targetAmount,
+				amountSaved: goalData.amountSaved || 0,
+				createdAt: goalData.createdAt,
+				type: "savings",
+				contributions: goalData.contributions || [],
+			};
+			await addDoc(savingsGoalRef, newGoal);
 		} catch (error) {
 			console.error("Error adding saving goal:", error);
 			throw error;
@@ -437,17 +453,21 @@ export class FirestoreService {
 	static async updateSavingsGoal(
 		userId: string,
 		goalId: string,
-		updatedData: any
+		updatedData: {
+			title: string;
+			targetAmount: number;
+			type: "savings";
+		}
 	) {
 		try {
-			const goalRef = await doc(
-				db,
-				"users",
-				userId,
-				"savingGoals",
-				goalId
-			);
-			await updateDoc(goalRef, updatedData);
+			const goalRef = doc(db, "users", userId, "savingGoals", goalId);
+			// Only update these specific fields
+			const updateFields = {
+				title: updatedData.title,
+				targetAmount: updatedData.targetAmount,
+				type: "savings",
+			};
+			await updateDoc(goalRef, updateFields);
 		} catch (error) {
 			console.error("Error updating saving goal:", error);
 			throw error;

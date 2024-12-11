@@ -58,11 +58,12 @@ interface SavingsGoalData {
 	title: string;
 	targetAmount: number;
 	amountSaved: number;
-	contributions?: Array<{
+	createdAt: Date;
+	type: "savings";
+	contributions?: {
 		amount: number;
 		date: Date;
-	}>;
-	createdAt: Date;
+	}[];
 }
 
 interface Transaction {
@@ -293,7 +294,15 @@ const Budget: React.FC = () => {
 	};
 
 	const handleEditSavings = (goal: SavingsGoalData) => {
-		setEditingSavingsGoal(goal);
+		setEditingSavingsGoal({
+			id: goal.id,
+			title: goal.title,
+			targetAmount: goal.targetAmount,
+			type: "savings",
+			amountSaved: goal.amountSaved,
+			createdAt: goal.createdAt,
+			contributions: goal.contributions,
+		});
 		setShowNewSavingsForm(true);
 		setFormLabel("Edit Savings Goal");
 	};
@@ -445,9 +454,10 @@ const Budget: React.FC = () => {
 			try {
 				const newContributionAmount =
 					Number(amount) * (actionType === "add" ? 1 : -1);
-				const newAmount = goal.amountSaved + newContributionAmount;
+				const newAmount =
+					(goal.amountSaved || 0) + newContributionAmount;
 				const previousProgress = Math.floor(
-					(goal.amountSaved / goal.targetAmount) * 100
+					((goal.amountSaved || 0) / goal.targetAmount) * 100
 				);
 				const newProgress = Math.floor(
 					(newAmount / goal.targetAmount) * 100
@@ -481,11 +491,7 @@ const Budget: React.FC = () => {
 					goal.id,
 					{
 						...goal,
-						amountSaved: newAmount,
-						contributions: [
-							...(goal.contributions || []),
-							newContribution,
-						],
+						type: "savings",
 					}
 				);
 
@@ -510,11 +516,12 @@ const Budget: React.FC = () => {
 			e.stopPropagation();
 			setIsAdding(!isAdding);
 		};
-
-		const percentageSaved = Math.round(
-			(goal.amountSaved / goal.targetAmount) * 100
-		);
-		const remainingAmount = goal.targetAmount - goal.amountSaved;
+		const percentageSaved = goal.amountSaved
+			? Math.round((goal.amountSaved / goal.targetAmount) * 100)
+			: 0;
+		const remainingAmount = goal.amountSaved
+			? goal.targetAmount - goal.amountSaved
+			: goal.targetAmount;
 		return (
 			<div
 				className={styles.goalItem}
@@ -594,8 +601,8 @@ const Budget: React.FC = () => {
 
 				<div className={styles.progressSection}>
 					<SavingsProgressBar.SavingsProgressBar
-						savedAmount={goal.amountSaved}
-						total={goal.targetAmount}
+						savedAmount={goal.amountSaved || 0}
+						total={goal.targetAmount || 0}
 					/>
 				</div>
 
@@ -843,40 +850,35 @@ const Budget: React.FC = () => {
 		if (!user) return;
 		try {
 			if (editingSavingsGoal) {
+				// When editing, only pass title and targetAmount
 				await FirestoreService.updateSavingsGoal(
 					user.uid,
 					editingSavingsGoal.id,
-					goalData
+					{
+						title: goalData.title,
+						targetAmount: goalData.targetAmount,
+						type: "savings",
+					}
 				);
 			} else {
-				if (goalData.amountSaved > 0) {
-					const initialContribution = {
-						amount: Number(goalData.amountSaved),
-						date: new Date(),
-					};
-
-					await FirestoreService.addSavingsGoal(user.uid, {
-						title: goalData.title,
-						targetAmount: goalData.targetAmount,
-						amountSaved: goalData.amountSaved || 0,
-						createdAt: new Date(),
-						contributions: [
-							{
-								...initialContribution,
-								date: initialContribution.date,
-							},
-						],
-						type: "savings",
-					});
-				} else {
-					await FirestoreService.addSavingsGoal(user.uid, {
-						title: goalData.title,
-						targetAmount: goalData.targetAmount,
-						amountSaved: goalData.amountSaved || 0,
-						createdAt: new Date(),
-						type: "savings",
-					});
-				}
+				// New goal creation
+				const newGoal = {
+					title: goalData.title,
+					targetAmount: goalData.targetAmount,
+					amountSaved: goalData.amountSaved || 0,
+					createdAt: new Date(),
+					type: "savings" as const,
+					contributions:
+						goalData.amountSaved > 0
+							? [
+									{
+										amount: Number(goalData.amountSaved),
+										date: new Date(),
+									},
+							  ]
+							: [],
+				};
+				await FirestoreService.addSavingsGoal(user.uid, newGoal);
 			}
 
 			await refreshSavingsData();
@@ -892,7 +894,11 @@ const Budget: React.FC = () => {
 		goal: BudgetGoal | SavingsGoalData,
 		type: "budget" | "savings"
 	) => {
-		setSelectedGoal(goal);
+		if ("amountSaved" in goal) {
+			setSelectedGoal(goal);
+		} else {
+			setSelectedGoal({ ...goal, amountSaved: 0 });
+		}
 		setSelectedGoalType(type);
 	};
 
