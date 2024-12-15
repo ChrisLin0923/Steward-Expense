@@ -76,7 +76,7 @@ export default function TransactionCard({
 				description: formData.description,
 				tags: formData.tags
 					.split(",")
-					.map((tag) => tag.trim())
+					.map((tag) => tag.trim().toLowerCase()) //we are gonna save the tags in lowercase.
 					.filter((tag) => tag !== ""),
 				paymentMethod: formData.paymentMethod,
 				date: localDate,
@@ -105,7 +105,7 @@ export default function TransactionCard({
 			setTransactions(formattedTransactions);
 
 			if (onTransactionAdded) {
-				await onTransactionAdded();
+				onTransactionAdded();
 			}
 
 			setFormData({

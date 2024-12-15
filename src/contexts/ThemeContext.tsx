@@ -11,7 +11,7 @@ interface ThemeContextType {
 
 // Create context with a default value
 const ThemeContext = createContext<ThemeContextType>({
-	theme: "light",
+	theme: "dark",
 	setTheme: async () => {},
 });
 
