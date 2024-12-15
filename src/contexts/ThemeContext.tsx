@@ -24,7 +24,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
 	// Initialize with default theme
-	const [theme, setThemeState] = useState<ThemeType>("light");
+	const [theme, setThemeState] = useState<ThemeType>("dark");
 	const [isLoading, setIsLoading] = useState(true);
 
 	// Initialize theme from localStorage or default
@@ -34,7 +34,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 			document.documentElement.setAttribute("data-theme", savedTheme);
 			setThemeState(savedTheme);
 		} else {
-			document.documentElement.setAttribute("data-theme", "light");
+			document.documentElement.setAttribute("data-theme", "dark");
 		}
 	}, []);
 
