@@ -40,9 +40,7 @@ const Onboard: React.FC = () => {
 			const newCount = counter + 1;
 			setCounter(newCount);
 			if (newCount === 3) {
-				setMessage(
-					"Great! You've added your first 3 transactions! Click next to complete onboarding!"
-				);
+				setMessage("Great! Click next to complete onboarding!");
 			} else {
 				setMessage(
 					`You've added ${newCount} / 3 transactions! Keep going!`
