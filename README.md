@@ -8,9 +8,8 @@ Steward is a user-friendly expense tracking web application designed to help ind
 - **Expense & Income Tracking**: Add, edit, and delete transactions with category selection.
 - **Data Visualization**: Interactive charts and graphs (powered by Recharts) for better financial insights.
 - **Dashboard Overview**: Personalized financial summary with income vs. expense breakdown.
-- **CSV Import**: Upload and process bank statements to automate expense tracking.
 - **Session Persistence**: Seamless user experience with Firebase session management.
-- **Responsive UI**: Clean and minimal black-and-white design for desktop and mobile users.
+- **Responsive UI**: Clean and minimal design for desktop and mobile users.
 
 ## Tech Stack
 - **Frontend**: React, TypeScript, TSX, HTML, CSS
@@ -18,7 +17,7 @@ Steward is a user-friendly expense tracking web application designed to help ind
 - **Authentication**: Firebase Authentication (Google Sign-In integration)
 - **Data Visualization**: Recharts for interactive financial graphs
 - **State Management**: React Context API
-- **Hosting**: GitHub Pages / Firebase Hosting
+- **Hosting**: Vercel / Firebase Hosting
 
 ## Installation & Setup
 1. Clone the repository:
